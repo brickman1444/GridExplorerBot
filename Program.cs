@@ -23,7 +23,10 @@ namespace GridExplorerBot
 
             string text ="Hello World.";
 
-            Tweet(text);
+            using (StreamWriter file = File.CreateText("output.txt") )
+            {
+                file.WriteLine(text);
+            }
         }
 
         static void InitializeTwitterCredentials()
