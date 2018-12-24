@@ -27,7 +27,7 @@ namespace GridExplorerBot
             {
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
-                    file.WriteLine(Rooms.list[0].text + "\n" + counter);
+                    file.WriteLine(Rooms.list[0].Render() + counter);
                 }
 
                 counter++;

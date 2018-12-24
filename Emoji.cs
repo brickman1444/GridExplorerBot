@@ -16,5 +16,18 @@ namespace GridExplorerBot
 
             return objectID;
         }
+
+        public static string GetEmoji(Objects.ID id)
+        {
+            foreach ( KeyValuePair<string, Objects.ID> pair in charToIDMap)
+            {
+                if ( pair.Value == id)
+                {
+                    return pair.Key;
+                }
+            }
+
+            return "⬜";
+        }
     }
 }
