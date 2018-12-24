@@ -4,6 +4,14 @@ using System.Drawing;
 
 namespace GridExplorerBot
 {
+    public enum Direction
+    {
+        North,
+        West,
+        East,
+        South
+    }
+
     public class DynamicObjectSetup
     {
         public readonly string mDisplayText;
@@ -99,7 +107,49 @@ namespace GridExplorerBot
 
         public string HandleCommand(string inCommand)
         {
-            return "";
+            inCommand = inCommand.ToLower();
+
+            string[] tokens = inCommand.Split(' ');
+
+            string outText = "Unknown command";
+
+            if ( tokens[0] == "go" || tokens[0] == "move" )
+            {
+                if ( tokens[1] == "north")
+                {
+                    MovePlayerCharacter(Direction.North);
+
+                    outText = "You moved North";
+                }
+            }
+
+            return outText;
+        }
+
+        public DynamicObject FindFirstDynamicObject(Objects.ID id)
+        {
+            foreach ( var dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.mType == id)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            return null;
+        }
+
+        public void MovePlayerCharacter(Direction direction)
+        {
+            DynamicObject playerCharacter = FindFirstDynamicObject(Objects.ID.PlayerCharacter);
+
+            if (playerCharacter != null)
+            {
+                if (direction == Direction.North)
+                {
+                    playerCharacter.mPosition.X -= 1;
+                }
+            }
         }
     }
 
