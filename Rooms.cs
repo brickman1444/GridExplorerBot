@@ -6,6 +6,7 @@ namespace GridExplorerBot
 {
     public enum Direction
     {
+        Unknown,
         North,
         West,
         East,
@@ -115,12 +116,53 @@ namespace GridExplorerBot
 
             if ( tokens[0] == "go" || tokens[0] == "move" )
             {
-                if ( tokens[1] == "north")
-                {
-                    MovePlayerCharacter(Direction.North);
+                outText = HandleMoveCommand(tokens);
+            }
 
-                    outText = "You moved North";
-                }
+            return outText;
+        }
+
+        private string HandleMoveCommand(string[] tokens)
+        {
+            string outText = "";
+
+            Direction directionToMove = Direction.Unknown;
+            string prospectiveMessage = "";
+
+            if ( tokens[1] == "north")
+            {
+                directionToMove = Direction.North;
+
+                prospectiveMessage = "You moved North";
+            }
+            else if ( tokens[1] == "south")
+            {
+                directionToMove = Direction.South;
+
+                prospectiveMessage = "You moved South";
+            }
+            else if ( tokens[1] == "east")
+            {
+                directionToMove =Direction.East;
+
+                prospectiveMessage = "You moved East";
+            }
+            else if ( tokens[1] == "west")
+            {
+                directionToMove =Direction.West;
+
+                prospectiveMessage = "You moved West";
+            }
+
+            bool successfulMove = MovePlayerCharacter(directionToMove);
+
+            if (successfulMove)
+            {
+                outText = prospectiveMessage;
+            }
+            else
+            {
+                outText = "You could not move that direction.";
             }
 
             return outText;
@@ -139,17 +181,80 @@ namespace GridExplorerBot
             return null;
         }
 
-        public void MovePlayerCharacter(Direction direction)
+        public DynamicObject FindFirstDynamicObject(Point position)
+        {
+            foreach ( var dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.mPosition == position)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            return null;
+        }
+
+        public bool MovePlayerCharacter(Direction direction)
         {
             DynamicObject playerCharacter = FindFirstDynamicObject(Objects.ID.PlayerCharacter);
 
-            if (playerCharacter != null)
+            if (playerCharacter == null)
             {
-                if (direction == Direction.North)
-                {
-                    playerCharacter.mPosition.X -= 1;
-                }
+                return false;
             }
+
+            Point prospectivePosition = playerCharacter.mPosition;
+
+            if (direction == Direction.North)
+            {
+                prospectivePosition.X -= 1;
+            }
+            else if (direction == Direction.South)
+            {
+                prospectivePosition.X += 1;
+            }
+            else if (direction == Direction.East)
+            {
+                prospectivePosition.Y += 1;
+            }
+            else if (direction == Direction.West)
+            {
+                prospectivePosition.Y -= 1;
+            }
+            else
+            {
+                return false;
+            }
+
+            if (CanSpaceBeMovedTo(prospectivePosition))
+            {
+                playerCharacter.mPosition = prospectivePosition;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        bool CanSpaceBeMovedTo(Point position)
+        {
+            DynamicObject dynamicObjectAtPosition = FindFirstDynamicObject(position);
+
+            if (dynamicObjectAtPosition != null)
+            {
+                return false;
+            }
+
+            Objects.ID staticObjectAtPosition = mStaticRoomGrid[position.X,position.Y];
+
+            if (staticObjectAtPosition != Objects.ID.Empty)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 
