@@ -21,18 +21,22 @@ namespace GridExplorerBot
 
             InitializeTwitterCredentials();
 
+            string outputText = "";
+
             int counter = 0;
 
             while (true)
             {
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
-                    file.WriteLine(Rooms.list[0].Render() + counter);
+                    file.WriteLine(outputText + '\n' + Rooms.TheRoom.Render() + counter);
                 }
 
                 counter++;
 
                 string inputText = Console.ReadLine();
+
+                outputText = Rooms.TheRoom.HandleCommand(inputText);
             }
         }
 

@@ -96,11 +96,16 @@ namespace GridExplorerBot
 
             return outString;
         }
+
+        public string HandleCommand(string inCommand)
+        {
+            return "";
+        }
     }
 
     static class Rooms
     {
-        public static Room[] list = {
+        public static Room TheRoom =
             new Room("⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛\n"
                    + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
                    + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
@@ -111,7 +116,6 @@ namespace GridExplorerBot
                    + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
                    + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
                    + "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛",
-                   new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } ),
-        };
+                   new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } );
     }
 }
