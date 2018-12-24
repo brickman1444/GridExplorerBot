@@ -8,9 +8,11 @@ namespace GridExplorerBot
         {
             List<string> outList = new List<string>();
 
-            for (int i = 0; i < inputText.Length - 1; i++ )
+            System.Globalization.TextElementEnumerator enumerator = System.Globalization.StringInfo.GetTextElementEnumerator(inputText);
+
+            while (enumerator.MoveNext())
             {
-                outList.Add( new System.Globalization.StringInfo(inputText).SubstringByTextElements(i, 1));
+                outList.Add(enumerator.GetTextElement());
             }
 
             return outList;

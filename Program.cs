@@ -30,10 +30,6 @@ namespace GridExplorerBot
                     file.WriteLine(Rooms.list[0].text + "\n" + counter);
                 }
 
-                string test = "⬜😀⬜";
-
-                List<string> foo = StringUtils.SplitEmojiString(test);
-
                 counter++;
 
                 string inputText = Console.ReadLine();
