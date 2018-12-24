@@ -21,11 +21,9 @@ namespace GridExplorerBot
 
             InitializeTwitterCredentials();
 
-            string text ="Hello World.";
-
             using (StreamWriter file = File.CreateText("output.txt") )
             {
-                file.WriteLine(text);
+                file.WriteLine(Rooms.list[0].text);
             }
         }
 
