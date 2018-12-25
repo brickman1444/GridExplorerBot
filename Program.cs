@@ -21,7 +21,7 @@ namespace GridExplorerBot
 
             TwitterUtils.InitializeCredentials();
 
-            string outputText = "";
+            string commandResponse = "";
 
             int counter = 0;
 
@@ -29,14 +29,16 @@ namespace GridExplorerBot
             {
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
-                    file.WriteLine(outputText + '\n' + Rooms.TheRoom.Render() + counter);
+                    string output = commandResponse + '\n' + Rooms.TheRoom.Render() + counter;
+                    file.WriteLine(output);
+                    //TwitterUtils.Tweet(output);
                 }
 
                 counter++;
 
                 string inputText = Console.ReadLine();
 
-                outputText = Rooms.TheRoom.HandleCommand(inputText);
+                commandResponse = Rooms.TheRoom.HandleCommand(inputText);
             }
         }
     }
