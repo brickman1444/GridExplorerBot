@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
@@ -9,7 +11,13 @@ namespace GridExplorerBot
                 new KeyValuePair<string, Objects.ID>( "😀", Objects.ID.PlayerCharacter ),
                 new KeyValuePair<string, Objects.ID>( "⬛", Objects.ID.Wall ),
                 new KeyValuePair<string, Objects.ID>( "⬜", Objects.ID.Empty ), 
-                new KeyValuePair<string, Objects.ID>( "🐘", Objects.ID.Empty ), } );
+                new KeyValuePair<string, Objects.ID>( "🐘", Objects.ID.Elephant ), } );
+
+        static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
+            new KeyValuePair<Objects.ID,Type>[] {
+                new KeyValuePair<Objects.ID, Type>( Objects.ID.PlayerCharacter, typeof(PlayerCharacter) )
+            }
+        );
 
         public static Objects.ID GetID(string inputText)
         {
@@ -29,6 +37,24 @@ namespace GridExplorerBot
             }
 
             return "⬜";
+        }
+
+        public static DynamicObject CreateObject(string saveData)
+        {
+            string[] tokens = saveData.Split(',');
+
+            Objects.ID id = (Objects.ID)int.Parse(tokens[0]);
+
+            Type dynamicObjectType = idToTypeMap.GetValueOrDefault(id, null);
+
+            if (dynamicObjectType == null)
+            {
+                dynamicObjectType = typeof(DynamicObject);
+            }
+
+            Debug.Assert( dynamicObjectType == typeof(DynamicObject) || dynamicObjectType.IsSubclassOf(typeof(DynamicObject)));
+
+            return (DynamicObject)Activator.CreateInstance(dynamicObjectType);
         }
     }
 }

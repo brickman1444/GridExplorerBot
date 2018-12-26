@@ -142,7 +142,7 @@ namespace GridExplorerBot
 
             foreach (string dynamicObjectToken in  new System.ArraySegment<string>(tokens,1, tokens.Length - 1))
             {
-                DynamicObject dynamicObject = new DynamicObject();
+                DynamicObject dynamicObject = Emoji.CreateObject(dynamicObjectToken);
 
                 dynamicObject.Load(dynamicObjectToken);
                 mDynamicObjects.Add(dynamicObject);

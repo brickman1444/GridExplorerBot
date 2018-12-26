@@ -38,9 +38,9 @@ namespace GridExplorerBot
         {
             string outSaveData = "";
 
-            outSaveData += mDisplayText + ',';
-
             outSaveData += ((int)mType).ToString() + ',';
+
+            outSaveData += mDisplayText + ',';
 
             outSaveData += mPosition.X.ToString() + ',';
 
@@ -55,8 +55,8 @@ namespace GridExplorerBot
 
             Debug.Assert(tokens.Length == 4);
 
-            mDisplayText = tokens[0];
-            mType = (Objects.ID)int.Parse(tokens[1]);
+            mType = (Objects.ID)int.Parse(tokens[0]);
+            mDisplayText = tokens[1];
             mPosition.X = int.Parse(tokens[2]);
             mPosition.Y = int.Parse(tokens[3]);
         }
