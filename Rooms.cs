@@ -25,57 +25,6 @@ namespace GridExplorerBot
         }
     }
 
-    public class DynamicObject
-    {
-        public string mDisplayText = "";
-        public Point mPosition = new Point();
-        public Objects.ID mType = Objects.ID.Unknown;
-
-        public DynamicObject()
-        {
-
-        }
-
-        public DynamicObject( DynamicObjectSetup setup )
-        {
-            mDisplayText = setup.mDisplayText;
-            mType = Emoji.GetID(setup.mDisplayText);
-            mPosition = setup.mStartingPosition;
-        }
-
-        public string Save()
-        {
-            string outSaveData = "";
-
-            outSaveData += mDisplayText + ',';
-
-            outSaveData += ((int)mType).ToString() + ',';
-
-            outSaveData += mPosition.X.ToString() + ',';
-
-            outSaveData += mPosition.Y.ToString();
-
-            return outSaveData;
-        }
-
-        public void Load(string inSaveData)
-        {
-            string[] tokens = inSaveData.Split(',');
-
-            Debug.Assert(tokens.Length == 4);
-
-            mDisplayText = tokens[0];
-            mType = (Objects.ID)int.Parse(tokens[1]);
-            mPosition.X = int.Parse(tokens[2]);
-            mPosition.Y = int.Parse(tokens[3]);
-        }
-
-        public void Simulate(string inCommand)
-        {
-            
-        }
-    }
-
     public class Room
     {
         Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows,Game.numRoomColumns];
@@ -223,59 +172,15 @@ namespace GridExplorerBot
 
             inCommand = inCommand.ToLower();
 
-            string[] tokens = inCommand.Split(' ');
-
-            string outText = "Unknown command";
-
-            if ( tokens[0] == "go" || tokens[0] == "move" )
-            {
-                outText = HandleMoveCommand(tokens);
-            }
-
-            return outText;
-        }
-
-        private string HandleMoveCommand(string[] tokens)
-        {
             string outText = "";
 
-            Direction directionToMove = Direction.Unknown;
-            string prospectiveMessage = "";
-
-            if ( tokens[1] == "north")
+            foreach ( DynamicObject dynamicObject in mDynamicObjects)
             {
-                directionToMove = Direction.North;
-
-                prospectiveMessage = "You moved North";
-            }
-            else if ( tokens[1] == "south")
-            {
-                directionToMove = Direction.South;
-
-                prospectiveMessage = "You moved South";
-            }
-            else if ( tokens[1] == "east")
-            {
-                directionToMove =Direction.East;
-
-                prospectiveMessage = "You moved East";
-            }
-            else if ( tokens[1] == "west")
-            {
-                directionToMove =Direction.West;
-
-                prospectiveMessage = "You moved West";
-            }
-
-            bool successfulMove = MovePlayerCharacter(directionToMove);
-
-            if (successfulMove)
-            {
-                outText = prospectiveMessage;
-            }
-            else
-            {
-                outText = "You could not move that direction.";
+                string simulateResult = dynamicObject.Simulate(inCommand, this);
+                if (simulateResult != "")
+                {
+                    outText = simulateResult;
+                }
             }
 
             return outText;
@@ -307,51 +212,7 @@ namespace GridExplorerBot
             return null;
         }
 
-        public bool MovePlayerCharacter(Direction direction)
-        {
-            DynamicObject playerCharacter = FindFirstDynamicObject(Objects.ID.PlayerCharacter);
-
-            if (playerCharacter == null)
-            {
-                return false;
-            }
-
-            Point prospectivePosition = playerCharacter.mPosition;
-
-            if (direction == Direction.North)
-            {
-                prospectivePosition.X -= 1;
-            }
-            else if (direction == Direction.South)
-            {
-                prospectivePosition.X += 1;
-            }
-            else if (direction == Direction.East)
-            {
-                prospectivePosition.Y += 1;
-            }
-            else if (direction == Direction.West)
-            {
-                prospectivePosition.Y -= 1;
-            }
-            else
-            {
-                return false;
-            }
-
-            if (CanSpaceBeMovedTo(prospectivePosition))
-            {
-                playerCharacter.mPosition = prospectivePosition;
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        bool CanSpaceBeMovedTo(Point position)
+        public bool CanSpaceBeMovedTo(Point position)
         {
             DynamicObject dynamicObjectAtPosition = FindFirstDynamicObject(position);
 
