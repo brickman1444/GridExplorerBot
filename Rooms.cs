@@ -165,11 +165,6 @@ namespace GridExplorerBot
 
         public string Simulate(string inCommand)
         {
-            if (inCommand == "")
-            {
-                return "";
-            }
-
             inCommand = inCommand.ToLower();
 
             string outText = "";

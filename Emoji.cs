@@ -15,7 +15,8 @@ namespace GridExplorerBot
 
         static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
             new KeyValuePair<Objects.ID,Type>[] {
-                new KeyValuePair<Objects.ID, Type>( Objects.ID.PlayerCharacter, typeof(PlayerCharacter) )
+                new KeyValuePair<Objects.ID, Type>( Objects.ID.PlayerCharacter, typeof(PlayerCharacter) ),
+                new KeyValuePair<Objects.ID, Type>( Objects.ID.Elephant, typeof(Elephant) ),
             }
         );
 
