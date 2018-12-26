@@ -43,6 +43,12 @@ namespace GridExplorerBot
     {
         Objects.ID[,] mStaticRoomGrid = new Objects.ID[10,10];
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
+        int mInitialRoomIndex = -1;
+
+        public Room()
+        {
+
+        }
 
         public Room( ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups )
         {
@@ -65,6 +71,13 @@ namespace GridExplorerBot
             {
                 mDynamicObjects.Add( new DynamicObject( setup ));
             }
+        }
+
+        void SetInitialRoomIndex(int roomIndex)
+        {
+            Debug.Assert( Rooms.IsValidInitialRoomIndex( roomIndex  ) );
+
+            mInitialRoomIndex = roomIndex;
         }
 
         DynamicObject GetDynamicObjectAtPosition( Point position )
@@ -108,6 +121,37 @@ namespace GridExplorerBot
             }
 
             return outString;
+        }
+
+        public string Save()
+        {
+            string outSaveData = "";
+
+            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ) );
+
+            outSaveData += mInitialRoomIndex + " ";
+
+            return outSaveData;
+        }
+
+        public void Load(string inSaveData)
+        {
+            string[] tokens = inSaveData.Split(" ");
+
+            Debug.Assert( tokens.Length > 0 );
+
+            LoadFromInitialRoom( int.Parse( tokens[0] ) );
+
+            mDynamicObjects.Clear();
+        }
+
+        public void LoadFromInitialRoom(int inInitialRoomIndex)
+        {
+            mInitialRoomIndex = inInitialRoomIndex;
+
+            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+
+            mStaticRoomGrid = Rooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
         }
 
         public string HandleCommand(string inCommand)
@@ -265,15 +309,15 @@ namespace GridExplorerBot
 
             return true;
         }
-
-        public void RemoveAllDynamicObjects()
-        {
-            mDynamicObjects.Clear();
-        }
     }
 
     static class Rooms
     {
+        public static bool IsValidInitialRoomIndex(int index)
+        {
+            return index >= 0 && index < initialRooms.Length;
+        }
+
         public static Room[] initialRooms = {
             new Room( new string[] {
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛",

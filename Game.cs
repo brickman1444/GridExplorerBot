@@ -25,11 +25,11 @@ namespace GridExplorerBot
                 return false;
             }
 
-            int initialRoomIndex = int.Parse(lines[saveDataRowIndex]);
+            string saveDataLine = lines[saveDataRowIndex];
 
-            mRoom = Rooms.initialRooms[initialRoomIndex];
+            mRoom = new Room();
 
-            mRoom.RemoveAllDynamicObjects();
+            mRoom.Load( saveDataLine );
 
             return true;
         }
@@ -37,7 +37,8 @@ namespace GridExplorerBot
         public void GenerateFreshGame()
         {
             mLastCommandResponse = "";
-            mRoom = Rooms.initialRooms[0];
+            mRoom = new Room();
+            mRoom.LoadFromInitialRoom(0);
         }
 
         public string Render()
@@ -56,7 +57,7 @@ namespace GridExplorerBot
 
         public void Save()
         {
-            mSaveDataString = "0";
+            mSaveDataString = mRoom.Save();
         }
     }
 }
