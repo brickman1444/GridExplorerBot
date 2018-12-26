@@ -19,31 +19,37 @@ namespace GridExplorerBot
 
             Console.WriteLine("Beginning program");
 
-            TwitterUtils.InitializeCredentials();
-
-            string previousGameText;
-
-            using (StreamReader file = File.OpenText("output.txt") )
-            {
-                previousGameText = file.ReadToEnd();
-            }
-
-            Game theGame = new Game();
-
-            theGame.ParsePreviousText(previousGameText);
+            //TwitterUtils.InitializeCredentials();
 
             while (true)
             {
+                string previousGameText;
+                using (StreamReader file = File.OpenText("output.txt") )
+                {
+                    previousGameText = file.ReadToEnd();
+                }
+
+                Game theGame = new Game();
+
+                bool successfullyParsed = theGame.ParsePreviousText(previousGameText);
+
+                if (!successfullyParsed)
+                {
+                    theGame.GenerateFreshGame();
+                }
+
+                string inputText = Console.ReadLine();
+
+                theGame.Simulate(inputText);
+
+                theGame.Save();
+
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
                     string output = theGame.Render();
                     file.Write(output);
                     //TwitterUtils.Tweet(output);
                 }
-
-                string inputText = Console.ReadLine();
-
-                theGame.Simulate(inputText);
             }
         }
     }

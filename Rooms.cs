@@ -112,6 +112,11 @@ namespace GridExplorerBot
 
         public string HandleCommand(string inCommand)
         {
+            if (inCommand == "")
+            {
+                return "";
+            }
+
             inCommand = inCommand.ToLower();
 
             string[] tokens = inCommand.Split(' ');

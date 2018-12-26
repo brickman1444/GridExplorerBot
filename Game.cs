@@ -13,6 +13,7 @@ namespace GridExplorerBot
 
         string mLastCommandResponse = "";
         Room mRoom = null;
+        string mSaveDataString = "";
 
         // Returns true if the game was successfully parsed
         public bool ParsePreviousText(string inputText)
@@ -33,18 +34,29 @@ namespace GridExplorerBot
             return true;
         }
 
+        public void GenerateFreshGame()
+        {
+            mLastCommandResponse = "";
+            mRoom = Rooms.initialRooms[0];
+        }
+
         public string Render()
         {
             string commandResponse = mLastCommandResponse;
             string roomRender = mRoom.Render();
             string inventory = "Inventory";
-            string saveData = "0";
+            string saveData = mSaveDataString;
             return commandResponse + '\n' + roomRender + '\n' + inventory + '\n' + saveData;
         }
 
         public void Simulate(string inputCommand)
         {
             mLastCommandResponse = mRoom.HandleCommand(inputCommand);
+        }
+
+        public void Save()
+        {
+            mSaveDataString = "0";
         }
     }
 }
