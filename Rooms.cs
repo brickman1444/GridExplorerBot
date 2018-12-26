@@ -384,6 +384,8 @@ namespace GridExplorerBot
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
-                   new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } ) };
+                   new DynamicObjectSetup[] {
+                       new DynamicObjectSetup("😀", new Point(5,5)),
+                       new DynamicObjectSetup("🐘", new Point(1,1)), } ) };
     }
 }

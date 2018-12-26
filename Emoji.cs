@@ -8,7 +8,8 @@ namespace GridExplorerBot
             new KeyValuePair<string,Objects.ID>[] { 
                 new KeyValuePair<string, Objects.ID>( "😀", Objects.ID.PlayerCharacter ),
                 new KeyValuePair<string, Objects.ID>( "⬛", Objects.ID.Wall ),
-                new KeyValuePair<string, Objects.ID>( "⬜", Objects.ID.Empty ), } );
+                new KeyValuePair<string, Objects.ID>( "⬜", Objects.ID.Empty ), 
+                new KeyValuePair<string, Objects.ID>( "🐘", Objects.ID.Empty ), } );
 
         public static Objects.ID GetID(string inputText)
         {

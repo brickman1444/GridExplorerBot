@@ -7,7 +7,8 @@ namespace GridExplorerBot
             Unknown,
             PlayerCharacter,
             Empty,
-            Wall
+            Wall,
+            Elephant,
         }
     }
 }
