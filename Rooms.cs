@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
-
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
@@ -41,24 +41,24 @@ namespace GridExplorerBot
 
     public class Room
     {
-        readonly string mStaticRoomText;
         Objects.ID[,] mStaticRoomGrid = new Objects.ID[10,10];
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
 
-        public Room( string inStaticRoomText, IEnumerable<DynamicObjectSetup> dynamicObjectSetups )
+        public Room( ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups )
         {
-            mStaticRoomText = inStaticRoomText;
+            Debug.Assert(roomLines.Count == Game.numRoomRows);
 
-            string[] lines = mStaticRoomText.Split('\n');
-
-            for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
+            int lineIndex = 0;
+            foreach (string line in roomLines)
             {
-                List<string> splitLine = StringUtils.SplitEmojiString(lines[lineIndex]);
+                List<string> splitLine = StringUtils.SplitEmojiString(line);
 
                 for (int columnIndex = 0; columnIndex < splitLine.Count; columnIndex++)
                 {
                     mStaticRoomGrid[lineIndex,columnIndex] = Emoji.GetID(splitLine[columnIndex]);
                 }
+
+                lineIndex++;
             }
 
             foreach ( var setup in dynamicObjectSetups )
@@ -100,7 +100,11 @@ namespace GridExplorerBot
                     }
                 }
 
-                outString += '\n';
+                // Add a new line after every line except the end
+                if (rowIndex < mStaticRoomGrid.GetLength(0) - 1)
+                {
+                    outString += '\n';
+                }
             }
 
             return outString;
@@ -256,21 +260,27 @@ namespace GridExplorerBot
 
             return true;
         }
+
+        public void RemoveAllDynamicObjects()
+        {
+            mDynamicObjects.Clear();
+        }
     }
 
     static class Rooms
     {
-        public static Room TheRoom =
-            new Room("⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛\n"
-                   + "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛",
-                   new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } );
+        public static Room[] initialRooms = {
+            new Room( new string[] {
+                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
+                   new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } ) };
     }
 }

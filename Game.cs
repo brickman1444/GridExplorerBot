@@ -1,0 +1,50 @@
+namespace GridExplorerBot
+{
+    public class Game
+    {
+        public const int numRoomRows = 10;
+        public const int numRoomColumns = 10;
+        public const int numCommandResponseRows = 1;
+        public const int numInventoryRows = 1;
+        public const int numSaveDataRows = 1;
+        public const int numTotalRows = numCommandResponseRows + numRoomRows + numInventoryRows + numSaveDataRows;
+
+        public const int saveDataRowIndex = numTotalRows - 1;
+
+        string mLastCommandResponse = "";
+        Room mRoom = null;
+
+        // Returns true if the game was successfully parsed
+        public bool ParsePreviousText(string inputText)
+        {
+            string[] lines = inputText.Split('\n');
+
+            if (lines.Length != numTotalRows)
+            {
+                return false;
+            }
+
+            int initialRoomIndex = int.Parse(lines[saveDataRowIndex]);
+
+            mRoom = Rooms.initialRooms[initialRoomIndex];
+
+            mRoom.RemoveAllDynamicObjects();
+
+            return true;
+        }
+
+        public string Render()
+        {
+            string commandResponse = mLastCommandResponse;
+            string roomRender = mRoom.Render();
+            string inventory = "Inventory";
+            string saveData = "0";
+            return commandResponse + '\n' + roomRender + '\n' + inventory + '\n' + saveData;
+        }
+
+        public void Simulate(string inputCommand)
+        {
+            mLastCommandResponse = mRoom.HandleCommand(inputCommand);
+        }
+    }
+}

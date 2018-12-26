@@ -21,24 +21,29 @@ namespace GridExplorerBot
 
             TwitterUtils.InitializeCredentials();
 
-            string commandResponse = "";
+            string previousGameText;
 
-            int counter = 0;
+            using (StreamReader file = File.OpenText("output.txt") )
+            {
+                previousGameText = file.ReadToEnd();
+            }
+
+            Game theGame = new Game();
+
+            theGame.ParsePreviousText(previousGameText);
 
             while (true)
             {
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
-                    string output = commandResponse + '\n' + Rooms.TheRoom.Render() + counter;
-                    file.WriteLine(output);
+                    string output = theGame.Render();
+                    file.Write(output);
                     //TwitterUtils.Tweet(output);
                 }
 
-                counter++;
-
                 string inputText = Console.ReadLine();
 
-                commandResponse = Rooms.TheRoom.HandleCommand(inputText);
+                theGame.Simulate(inputText);
             }
         }
     }
