@@ -27,15 +27,47 @@ namespace GridExplorerBot
 
     public class DynamicObject
     {
-        public string mDisplayText;
-        public Point mPosition;
-        public readonly Objects.ID mType;
+        public string mDisplayText = "";
+        public Point mPosition = new Point();
+        public Objects.ID mType = Objects.ID.Unknown;
+
+        public DynamicObject()
+        {
+
+        }
 
         public DynamicObject( DynamicObjectSetup setup )
         {
             mDisplayText = setup.mDisplayText;
             mType = Emoji.GetID(setup.mDisplayText);
             mPosition = setup.mStartingPosition;
+        }
+
+        public string Save()
+        {
+            string outSaveData = "";
+
+            outSaveData += mDisplayText + ',';
+
+            outSaveData += ((int)mType).ToString() + ',';
+
+            outSaveData += mPosition.X.ToString() + ',';
+
+            outSaveData += mPosition.Y.ToString();
+
+            return outSaveData;
+        }
+
+        public void Load(string inSaveData)
+        {
+            string[] tokens = inSaveData.Split(',');
+
+            Debug.Assert(tokens.Length == 4);
+
+            mDisplayText = tokens[0];
+            mType = (Objects.ID)int.Parse(tokens[1]);
+            mPosition.X = int.Parse(tokens[2]);
+            mPosition.Y = int.Parse(tokens[3]);
         }
     }
 
@@ -73,7 +105,7 @@ namespace GridExplorerBot
             }
         }
 
-        void SetInitialRoomIndex(int roomIndex)
+        public void SetInitialRoomIndex(int roomIndex)
         {
             Debug.Assert( Rooms.IsValidInitialRoomIndex( roomIndex  ) );
 
@@ -131,6 +163,15 @@ namespace GridExplorerBot
 
             outSaveData += mInitialRoomIndex + " ";
 
+            List<string> dynamicObjectTokens = new List<string>();
+
+            foreach ( DynamicObject dynamicObject in mDynamicObjects)
+            {
+                dynamicObjectTokens.Add( dynamicObject.Save() );
+            }
+
+            outSaveData += string.Join(' ', dynamicObjectTokens);
+
             return outSaveData;
         }
 
@@ -140,18 +181,32 @@ namespace GridExplorerBot
 
             Debug.Assert( tokens.Length > 0 );
 
-            LoadFromInitialRoom( int.Parse( tokens[0] ) );
+            SetInitialRoomIndex( int.Parse( tokens[0] ) );
+            LoadStaticGridFromInitialRoom();
 
             mDynamicObjects.Clear();
+
+            foreach (string dynamicObjectToken in  new System.ArraySegment<string>(tokens,1, tokens.Length - 1))
+            {
+                DynamicObject dynamicObject = new DynamicObject();
+
+                dynamicObject.Load(dynamicObjectToken);
+                mDynamicObjects.Add(dynamicObject);
+            }
         }
 
-        public void LoadFromInitialRoom(int inInitialRoomIndex)
+        public void LoadStaticGridFromInitialRoom()
         {
-            mInitialRoomIndex = inInitialRoomIndex;
-
             Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
 
             mStaticRoomGrid = Rooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
+        }
+
+        public void LoadDynamicObjectsFromInitialRoom()
+        {
+            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+
+            mDynamicObjects = Rooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
         }
 
         public string HandleCommand(string inCommand)

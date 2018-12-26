@@ -38,7 +38,9 @@ namespace GridExplorerBot
         {
             mLastCommandResponse = "";
             mRoom = new Room();
-            mRoom.LoadFromInitialRoom(0);
+            mRoom.SetInitialRoomIndex(0);
+            mRoom.LoadStaticGridFromInitialRoom();
+            mRoom.LoadDynamicObjectsFromInitialRoom();
         }
 
         public string Render()
