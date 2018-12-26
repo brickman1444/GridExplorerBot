@@ -73,7 +73,7 @@ namespace GridExplorerBot
 
     public class Room
     {
-        Objects.ID[,] mStaticRoomGrid = new Objects.ID[10,10];
+        Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows,Game.numRoomColumns];
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
         int mInitialRoomIndex = -1;
 
@@ -375,16 +375,15 @@ namespace GridExplorerBot
 
         public static Room[] initialRooms = {
             new Room( new string[] {
-                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
+                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
                    new DynamicObjectSetup[] { new DynamicObjectSetup("😀", new Point(5,5)) } ) };
     }
 }
