@@ -27,7 +27,7 @@ namespace GridExplorerBot
 
         }
 
-        public DynamicObject( DynamicObjectSetup setup )
+        public void Setup( DynamicObjectSetup setup )
         {
             mDisplayText = setup.mDisplayText;
             mType = Emoji.GetID(setup.mDisplayText);

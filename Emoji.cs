@@ -40,12 +40,8 @@ namespace GridExplorerBot
             return "⬜";
         }
 
-        public static DynamicObject CreateObject(string saveData)
+        public static DynamicObject CreateObject(Objects.ID id)
         {
-            string[] tokens = saveData.Split(',');
-
-            Objects.ID id = (Objects.ID)int.Parse(tokens[0]);
-
             Type dynamicObjectType = idToTypeMap.GetValueOrDefault(id, null);
 
             if (dynamicObjectType == null)
@@ -56,6 +52,15 @@ namespace GridExplorerBot
             Debug.Assert( dynamicObjectType == typeof(DynamicObject) || dynamicObjectType.IsSubclassOf(typeof(DynamicObject)));
 
             return (DynamicObject)Activator.CreateInstance(dynamicObjectType);
+        }
+
+        public static DynamicObject CreateObject(string saveData)
+        {
+            string[] tokens = saveData.Split(',');
+
+            Objects.ID id = (Objects.ID)int.Parse(tokens[0]);
+
+            return CreateObject(id);
         }
     }
 }

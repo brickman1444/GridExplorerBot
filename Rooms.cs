@@ -55,7 +55,11 @@ namespace GridExplorerBot
 
             foreach ( var setup in dynamicObjectSetups )
             {
-                mDynamicObjects.Add( new DynamicObject( setup ));
+                Objects.ID id = Emoji.GetID(setup.mDisplayText);
+                DynamicObject dynamicObject = Emoji.CreateObject(id);
+                dynamicObject.Setup(setup);
+
+                mDynamicObjects.Add( dynamicObject);
             }
         }
 
