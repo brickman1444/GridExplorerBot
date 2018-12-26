@@ -69,6 +69,11 @@ namespace GridExplorerBot
             mPosition.X = int.Parse(tokens[2]);
             mPosition.Y = int.Parse(tokens[3]);
         }
+
+        public void Simulate(string inCommand)
+        {
+            
+        }
     }
 
     public class Room
@@ -209,7 +214,7 @@ namespace GridExplorerBot
             mDynamicObjects = InitialRooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
         }
 
-        public string HandleCommand(string inCommand)
+        public string Simulate(string inCommand)
         {
             if (inCommand == "")
             {

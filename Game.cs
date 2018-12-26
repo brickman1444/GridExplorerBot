@@ -54,7 +54,7 @@ namespace GridExplorerBot
 
         public void Simulate(string inputCommand)
         {
-            mLastCommandResponse = mRoom.HandleCommand(inputCommand);
+            mLastCommandResponse = mRoom.Simulate(inputCommand);
         }
 
         public void Save()
