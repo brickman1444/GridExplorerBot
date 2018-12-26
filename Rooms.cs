@@ -107,7 +107,7 @@ namespace GridExplorerBot
 
         public void SetInitialRoomIndex(int roomIndex)
         {
-            Debug.Assert( Rooms.IsValidInitialRoomIndex( roomIndex  ) );
+            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( roomIndex  ) );
 
             mInitialRoomIndex = roomIndex;
         }
@@ -159,7 +159,7 @@ namespace GridExplorerBot
         {
             string outSaveData = "";
 
-            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ) );
+            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ) );
 
             outSaveData += mInitialRoomIndex + " ";
 
@@ -197,16 +197,16 @@ namespace GridExplorerBot
 
         public void LoadStaticGridFromInitialRoom()
         {
-            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
 
-            mStaticRoomGrid = Rooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
+            mStaticRoomGrid = InitialRooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
         }
 
         public void LoadDynamicObjectsFromInitialRoom()
         {
-            Debug.Assert( Rooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
 
-            mDynamicObjects = Rooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
+            mDynamicObjects = InitialRooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
         }
 
         public string HandleCommand(string inCommand)
@@ -364,28 +364,5 @@ namespace GridExplorerBot
 
             return true;
         }
-    }
-
-    static class Rooms
-    {
-        public static bool IsValidInitialRoomIndex(int index)
-        {
-            return index >= 0 && index < initialRooms.Length;
-        }
-
-        public static Room[] initialRooms = {
-            new Room( new string[] {
-                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
-                   new DynamicObjectSetup[] {
-                       new DynamicObjectSetup("😀", new Point(5,5)),
-                       new DynamicObjectSetup("🐘", new Point(1,1)), } ) };
     }
 }
