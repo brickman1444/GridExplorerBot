@@ -11,10 +11,10 @@ namespace GridExplorerBot
             Console.WriteLine("starting via lambda");
             Console.WriteLine("Input:");
 
-            StreamReader reader = new StreamReader(inputStream);
-            Console.WriteLine(reader.ReadToEnd());
-            
-            return inputStream;
+            string input = StringUtils.GetString(inputStream);
+            Console.WriteLine(input);
+
+            return StringUtils.GetStream("test response");
         }
 
         public static void Main(string[] args)
@@ -23,7 +23,8 @@ namespace GridExplorerBot
 
             Console.WriteLine("Beginning program");
 
-            //TwitterUtils.InitializeCredentials();
+            TwitterUtils.InitializeCredentials();
+            TwitterUtils.RegisterWebHook();
 
             while (true)
             {

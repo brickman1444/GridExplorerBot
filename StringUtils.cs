@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections.Generic;
 
 namespace GridExplorerBot
@@ -16,6 +17,23 @@ namespace GridExplorerBot
             }
 
             return outList;
+        }
+
+        public static string GetString(Stream stream)
+        {
+            StreamReader reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+
+        public static MemoryStream GetStream(string str)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(str);
+            writer.Flush();
+            stream.Position = 0;
+
+            return stream;
         }
     }
 }
