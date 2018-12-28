@@ -37,31 +37,41 @@ namespace GridExplorerBot
 
         public string Save()
         {
-            List<byte> bytes = new List<byte>();
+            Stack<byte> bytes = new Stack<byte>();
 
-            bytes.Add( (byte)mType ); // 127 values 7 bits
-
-            bytes.Add( (byte)mDisplayEmojiIndex ); // 63 values 6 bits
-
-            byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
-
-            bytes.Add( positionIndex );
+            Save(ref bytes);
 
             return System.Convert.ToBase64String(bytes.ToArray());
         }
 
         public void Load(string inSaveData)
         {
-            byte[] bytes = System.Convert.FromBase64String(inSaveData);
+            Stack<byte> bytes = new Stack<byte>(System.Convert.FromBase64String(inSaveData));
 
-            mType = (Objects.ID)bytes[0];
+            Load(ref bytes);
+        }
 
-            mDisplayEmojiIndex = bytes[1];
+        protected virtual void Save(ref Stack<byte> bytes)
+        {
+            bytes.Push( (byte)mType ); // 127 values 7 bits
 
-            byte positionIndex = bytes[2];
+            byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
+
+            bytes.Push( positionIndex );
+
+            bytes.Push( (byte)mDisplayEmojiIndex ); // 63 values 6 bits
+        }
+
+        protected virtual void Load(ref Stack<byte> bytes)
+        {
+            mType = (Objects.ID)bytes.Pop();
+
+            byte positionIndex = bytes.Pop();
 
             mPosition.X = positionIndex / Game.numRoomColumns;
             mPosition.Y = positionIndex % Game.numRoomColumns;
+
+            mDisplayEmojiIndex = bytes.Pop();
         }
 
         public virtual string Simulate(string inCommand, Room room)

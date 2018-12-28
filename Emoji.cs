@@ -76,9 +76,13 @@ namespace GridExplorerBot
 
         public static DynamicObject CreateObject(string saveData)
         {
-            byte[] bytes = System.Convert.FromBase64String(saveData);
+            // Create a fake object with the real Load code. This
+            // ensures that this code and the Load code always
+            // work the same.
+            DynamicObject tempObject = new DynamicObject();
+            tempObject.Load(saveData);
 
-            Objects.ID id = (Objects.ID)bytes[0];
+            Objects.ID id = tempObject.mType;
 
             return CreateObject(id);
         }
