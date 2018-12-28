@@ -95,11 +95,11 @@ namespace GridExplorerBot
 
                     if ( dynamicObject == null)
                     {
-                        outString += Emoji.GetEmoji(mStaticRoomGrid[rowIndex,columnIndex]);
+                        outString += Emoji.GetEmoji(mStaticRoomGrid[rowIndex,columnIndex], 0);
                     }
                     else
                     {
-                        outString += dynamicObject.mDisplayText;
+                        outString += dynamicObject.Render();
                     }
                 }
 

@@ -6,12 +6,12 @@ namespace GridExplorerBot
 {
     public static class Emoji
     {
-        static Dictionary<string,Objects.ID> charToIDMap = new Dictionary<string, Objects.ID>( 
-            new KeyValuePair<string,Objects.ID>[] { 
-                new KeyValuePair<string, Objects.ID>( "😀", Objects.ID.PlayerCharacter ),
-                new KeyValuePair<string, Objects.ID>( "⬛", Objects.ID.Wall ),
-                new KeyValuePair<string, Objects.ID>( "⬜", Objects.ID.Empty ), 
-                new KeyValuePair<string, Objects.ID>( "🐘", Objects.ID.Elephant ), } );
+        static Dictionary<Objects.ID, string[]> idToCharsMap = new Dictionary<Objects.ID, string[]>( 
+            new KeyValuePair<Objects.ID, string[]>[] { 
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.PlayerCharacter, new string[]{"😀"} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Wall, new string[]{"⬛"} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Empty, new string[]{"⬜"} ), 
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Elephant, new string[]{"🐘"} ), } );
 
         static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
             new KeyValuePair<Objects.ID,Type>[] {
@@ -22,22 +22,42 @@ namespace GridExplorerBot
 
         public static Objects.ID GetID(string inputText)
         {
-            Objects.ID objectID = charToIDMap.GetValueOrDefault(inputText, Objects.ID.Unknown);
-
-            return objectID;
-        }
-
-        public static string GetEmoji(Objects.ID id)
-        {
-            foreach ( KeyValuePair<string, Objects.ID> pair in charToIDMap)
+            foreach ( KeyValuePair<Objects.ID, string[]> pair in idToCharsMap)
             {
-                if ( pair.Value == id)
+                foreach ( string displayString in pair.Value )
                 {
-                    return pair.Key;
+                    if ( displayString == inputText )
+                    {
+                        return pair.Key;
+                    }
                 }
             }
 
-            return "⬜";
+            return Objects.ID.Unknown;
+        }
+
+        public static string GetEmoji(Objects.ID id, int index)
+        {
+            string[] displayChars = idToCharsMap.GetValueOrDefault(id, new string[]{ "⬜" });
+
+            return displayChars[index];
+        }
+
+        public static int GetEmojiIndex(Objects.ID id, string emoji)
+        {
+            string[] displayChars = idToCharsMap.GetValueOrDefault(id, new string[]{ "⬜" });
+
+            for ( int index = 0; index < displayChars.Length; index++)
+            {
+                if (displayChars[index] == emoji)
+                {
+                    return index;
+                }
+            }
+
+            Debug.Fail("Couldn't find emoji");
+
+            return -1;
         }
 
         public static DynamicObject CreateObject(Objects.ID id)
@@ -56,9 +76,9 @@ namespace GridExplorerBot
 
         public static DynamicObject CreateObject(string saveData)
         {
-            string[] tokens = saveData.Split(',');
+            byte[] bytes = System.Convert.FromBase64String(saveData);
 
-            Objects.ID id = (Objects.ID)int.Parse(tokens[0]);
+            Objects.ID id = (Objects.ID)bytes[0];
 
             return CreateObject(id);
         }

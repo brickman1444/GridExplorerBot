@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace GridExplorerBot
 {
@@ -18,7 +19,7 @@ namespace GridExplorerBot
     
     public class DynamicObject
     {
-        public string mDisplayText = "";
+        private int mDisplayEmojiIndex = -1;
         public Point mPosition = new Point();
         public Objects.ID mType = Objects.ID.Unknown;
 
@@ -29,41 +30,48 @@ namespace GridExplorerBot
 
         public void Setup( DynamicObjectSetup setup )
         {
-            mDisplayText = setup.mDisplayText;
             mType = Emoji.GetID(setup.mDisplayText);
+            mDisplayEmojiIndex = Emoji.GetEmojiIndex(mType, setup.mDisplayText);
             mPosition = setup.mStartingPosition;
         }
 
         public string Save()
         {
-            string outSaveData = "";
+            List<byte> bytes = new List<byte>();
 
-            outSaveData += ((int)mType).ToString() + ',';
+            bytes.Add( (byte)mType ); // 127 values 7 bits
 
-            outSaveData += mDisplayText + ',';
+            bytes.Add( (byte)mDisplayEmojiIndex ); // 63 values 6 bits
 
-            outSaveData += mPosition.X.ToString() + ',';
+            byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
 
-            outSaveData += mPosition.Y.ToString();
+            bytes.Add( positionIndex );
 
-            return outSaveData;
+            return System.Convert.ToBase64String(bytes.ToArray());
         }
 
         public void Load(string inSaveData)
         {
-            string[] tokens = inSaveData.Split(',');
+            byte[] bytes = System.Convert.FromBase64String(inSaveData);
 
-            Debug.Assert(tokens.Length == 4);
+            mType = (Objects.ID)bytes[0];
 
-            mType = (Objects.ID)int.Parse(tokens[0]);
-            mDisplayText = tokens[1];
-            mPosition.X = int.Parse(tokens[2]);
-            mPosition.Y = int.Parse(tokens[3]);
+            mDisplayEmojiIndex = bytes[1];
+
+            byte positionIndex = bytes[2];
+
+            mPosition.X = positionIndex / Game.numRoomColumns;
+            mPosition.Y = positionIndex % Game.numRoomColumns;
         }
 
         public virtual string Simulate(string inCommand, Room room)
         {
             return "";
+        }
+
+        public string Render()
+        {
+            return Emoji.GetEmoji(mType, mDisplayEmojiIndex);
         }
     }
 }
