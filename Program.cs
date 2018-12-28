@@ -9,12 +9,19 @@ namespace GridExplorerBot
         public static Stream awsLambdaHandler(Stream inputStream)
         {
             Console.WriteLine("starting via lambda");
-            Console.WriteLine("Input:");
 
             string input = StringUtils.GetString(inputStream);
-            Console.WriteLine(input);
+            Console.WriteLine("Input:" + input);
 
-            return StringUtils.GetStream("test response");
+            WebUtils.WebRequest request = WebUtils.GetJsonObject(input);
+
+            string response = "default response";
+            if ( TwitterUtils.IsChallengeRequest(request))
+            {
+                response = TwitterUtils.HandleChallengeRequest(request);
+            }
+
+            return StringUtils.GetStream(response);
         }
 
         public static void Main(string[] args)
