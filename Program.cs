@@ -9,7 +9,11 @@ namespace GridExplorerBot
         public static Stream awsLambdaHandler(Stream inputStream)
         {
             Console.WriteLine("starting via lambda");
-            Main(new string[0]);
+            Console.WriteLine("Input:");
+
+            StreamReader reader = new StreamReader(inputStream);
+            Console.WriteLine(reader.ReadToEnd());
+            
             return inputStream;
         }
 
