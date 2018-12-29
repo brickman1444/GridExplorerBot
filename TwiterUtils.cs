@@ -43,6 +43,12 @@ namespace GridExplorerBot
             task.Wait();
         }
 
+        public static void SubscribeToAccountActivity()
+        {
+            var task = Webhooks.SubscribeToAccountActivityEventsAsync("production", Auth.Credentials);
+            task.Wait();
+        }
+
         public static bool IsChallengeRequest(WebUtils.WebRequest request)
         {
             if (request.httpMethod != "GET")
