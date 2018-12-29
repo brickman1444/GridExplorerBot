@@ -85,8 +85,8 @@ namespace GridExplorerBot
 
             body.response_token = "sha256=";
 
-            byte[] key = System.Text.Encoding.Unicode.GetBytes(consumerSecret);
-            byte[] crc_token = System.Text.Encoding.Unicode.GetBytes(request.queryStringParameters["crc_token"]);
+            byte[] key = System.Text.Encoding.UTF8.GetBytes(consumerSecret);
+            byte[] crc_token = System.Text.Encoding.UTF8.GetBytes(request.queryStringParameters["crc_token"]);
             using (System.Security.Cryptography.HMACSHA256 hmac = new System.Security.Cryptography.HMACSHA256(key))
             {
                 body.response_token += System.Convert.ToBase64String(hmac.ComputeHash(crc_token));
