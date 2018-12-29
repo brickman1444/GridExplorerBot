@@ -15,6 +15,8 @@ namespace GridExplorerBot
 
             WebUtils.WebRequest request = WebUtils.GetJsonObject(input);
 
+            TwitterUtils.InitializeCredentials();
+
             string response = "default response";
             if ( TwitterUtils.IsChallengeRequest(request))
             {
@@ -31,7 +33,13 @@ namespace GridExplorerBot
             Console.WriteLine("Beginning program");
 
             TwitterUtils.InitializeCredentials();
-            TwitterUtils.RegisterWebHook();
+
+            WebUtils.WebRequest request = new WebUtils.WebRequest();
+            request.queryStringParameters["crc_token"] = "foo";
+
+            TwitterUtils.HandleChallengeRequest(request);
+
+            //TwitterUtils.RegisterWebHook();
 
             while (true)
             {
