@@ -9,6 +9,10 @@ namespace GridExplorerBot
         {
             public string httpMethod = "";
             public Dictionary<string,string> queryStringParameters = new Dictionary<string, string>();
+            public string body = "";
+
+            public bool IsGet() { return httpMethod == "GET"; }
+            public bool IsPost() { return httpMethod == "POST"; }
         }
 
         public static WebRequest GetJsonObject(string jsonText)

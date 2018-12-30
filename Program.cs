@@ -6,6 +6,8 @@ namespace GridExplorerBot
 {
     static class Program
     {
+        public static DateTime oldestSupportedData = new DateTime(1546106351);
+
         public static Stream awsLambdaHandler(Stream inputStream)
         {
             Console.WriteLine("starting via lambda");
@@ -21,6 +23,10 @@ namespace GridExplorerBot
             if ( TwitterUtils.IsChallengeRequest(request))
             {
                 response = TwitterUtils.HandleChallengeRequest(request);
+            }
+            else if ( TwitterUtils.IsAccountActivityRequest(request))
+            {
+                response = TwitterUtils.HandleAccountActivityRequest(request);
             }
 
             return StringUtils.GetStream(response);

@@ -8,6 +8,7 @@ namespace GridExplorerBot
 {
     static class TwitterUtils
     {
+        const string gridExplorerBotScreenName = "gridexplorerbot";
         static string consumerSecret = "";
 
         public static void InitializeCredentials()
@@ -51,15 +52,17 @@ namespace GridExplorerBot
 
         public static bool IsChallengeRequest(WebUtils.WebRequest request)
         {
-            if (request.httpMethod != "GET")
+            if (!request.IsGet())
             {
                 return false;
             }
 
+            // TODO: Make this more robust?
+
             return true;
         }
 
-        class ChallengeRequestResponse
+        class WebRequestResponse
         {
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
             bool isBase64Encoded = false;
@@ -85,7 +88,9 @@ namespace GridExplorerBot
 
         public static string HandleChallengeRequest(WebUtils.WebRequest request)
         {
-            ChallengeRequestResponse response = new ChallengeRequestResponse();
+            Console.WriteLine("Handling Challenge Request");
+
+            WebRequestResponse response = new WebRequestResponse();
 
             ChallengeBody body = new ChallengeBody();
 
@@ -103,6 +108,85 @@ namespace GridExplorerBot
             string jsonOut = Newtonsoft.Json.JsonConvert.SerializeObject(response);
 
             return jsonOut;
+        }
+
+        public static bool IsAccountActivityRequest(WebUtils.WebRequest request)
+        {
+            if (!request.IsPost())
+            {
+                return false;
+            }
+
+            if (request.body == "")
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        class TweetCreateEvent
+        {
+            public string created_at = "";
+            public long id = 0;
+            public string text = "";
+            public long in_reply_to_status_id = 0;
+            public string in_reply_to_screen_name = "";
+            public string timestamp_ms = "";
+        }
+
+        class AccountActivityBody
+        {
+            public string for_user_id = "";
+            public TweetCreateEvent[] tweet_create_events = {};
+        }
+
+        public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
+        {
+            Console.WriteLine("Handling Account Activity Request");
+
+            AccountActivityBody accountActivity = JsonConvert.DeserializeObject<AccountActivityBody>(request.body);
+
+            if (accountActivity.tweet_create_events.Length == 0)
+            {
+                // No tweets created. 
+                Console.WriteLine("No tweets created");
+
+                // TODO: Return valid response?
+                return "";
+            }
+
+            foreach ( TweetCreateEvent tweetCreateEvent in accountActivity.tweet_create_events)
+            {
+                if (tweetCreateEvent.in_reply_to_status_id == 0
+                || tweetCreateEvent.in_reply_to_screen_name != gridExplorerBotScreenName)
+                {
+                    Console.WriteLine("Not a reply to grid explorer bot. id: " + tweetCreateEvent.id);
+                    continue;
+                }
+
+                // TODO: DOn't reply to self
+
+                Tweetinvi.Models.ITweet parentTweet = Tweetinvi.Tweet.GetTweet(tweetCreateEvent.in_reply_to_status_id);
+
+                if (parentTweet.CreatedAt < Program.oldestSupportedData)
+                {
+                    Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + tweetCreateEvent.id);
+                    continue;
+                }
+
+                Game game = new Game();
+                game.GenerateFreshGame();
+                game.Save();
+
+                Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(game.Render(), tweetCreateEvent.id);
+
+                Console.WriteLine("Published new tweet. id: " + newTweet.Id);
+            }
+
+            WebRequestResponse response = new WebRequestResponse();
+
+            return JsonConvert.SerializeObject(response);
         }
     }
 }
