@@ -9,12 +9,12 @@ namespace GridExplorerBot
     static class TwitterUtils
     {
         const string gridExplorerBotScreenName = "gridexplorerbot";
-        static string consumerSecret = "";
+        const string webHookEnvironmentName = "production";
 
         public static void InitializeCredentials()
         {
             string consumerKey = System.Environment.GetEnvironmentVariable ("twitterConsumerKey");
-            consumerSecret = System.Environment.GetEnvironmentVariable ("twitterConsumerSecret");
+            string consumerSecret = System.Environment.GetEnvironmentVariable ("twitterConsumerSecret");
             string accessToken = System.Environment.GetEnvironmentVariable ("twitterAccessToken");
             string accessTokenSecret = System.Environment.GetEnvironmentVariable ("twitterAccessTokenSecret");
 
@@ -40,13 +40,13 @@ namespace GridExplorerBot
 
         public static void RegisterWebHook()
         {
-            var task = Webhooks.RegisterWebhookAsync("production",@"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
+            var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName,@"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
             task.Wait();
         }
 
         public static void SubscribeToAccountActivity()
         {
-            var task = Webhooks.SubscribeToAccountActivityEventsAsync("production", Auth.Credentials);
+            var task = Webhooks.SubscribeToAccountActivityEventsAsync(webHookEnvironmentName, Auth.Credentials);
             task.Wait();
         }
 
@@ -96,7 +96,7 @@ namespace GridExplorerBot
 
             body.response_token = "sha256=";
 
-            byte[] key = System.Text.Encoding.UTF8.GetBytes(consumerSecret);
+            byte[] key = System.Text.Encoding.UTF8.GetBytes(Tweetinvi.Auth.Credentials.ConsumerSecret);
             byte[] crc_token = System.Text.Encoding.UTF8.GetBytes(request.queryStringParameters["crc_token"]);
             using (System.Security.Cryptography.HMACSHA256 hmac = new System.Security.Cryptography.HMACSHA256(key))
             {
@@ -206,6 +206,26 @@ namespace GridExplorerBot
             WebRequestResponse response = new WebRequestResponse();
 
             return JsonConvert.SerializeObject(response);
+        }
+
+        public static void TestChallengeRequest()
+        {
+            var task = Webhooks.ChallengeWebhookAsync(webHookEnvironmentName, "16034296", Tweetinvi.Auth.Credentials);
+            task.Wait();
+        }
+
+        public static void GetListOfSubscriptions()
+        {
+            Tweetinvi.Models.TwitterCredentials tempCredentials = new Tweetinvi.Models.TwitterCredentials(Tweetinvi.Auth.Credentials.ConsumerKey, Tweetinvi.Auth.Credentials.ConsumerSecret);
+            Tweetinvi.Auth.InitializeApplicationOnlyCredentials(tempCredentials, true);
+
+            Tweetinvi.Core.Public.Models.Authentication.ConsumerOnlyCredentials credentials = new Tweetinvi.Core.Public.Models.Authentication.ConsumerOnlyCredentials(tempCredentials.ConsumerKey, tempCredentials.ConsumerSecret)
+            {
+                ApplicationOnlyBearerToken = tempCredentials.ApplicationOnlyBearerToken
+            };
+
+            var task = Webhooks.GetListOfSubscriptionsAsync(webHookEnvironmentName, credentials);
+            task.Wait();
         }
     }
 }
