@@ -125,14 +125,22 @@ namespace GridExplorerBot
             return true;
         }
 
+        class User
+        {
+            public long? id = null;
+            public string name = "";
+            public string screen_name = "";
+        }
+
         class TweetCreateEvent
         {
             public string created_at = "";
-            public long id = 0;
+            public string id_str = "";
             public string text = "";
-            public long in_reply_to_status_id = 0;
+            public long? in_reply_to_status_id = null;
             public string in_reply_to_screen_name = "";
             public string timestamp_ms = "";
+            public User user = null;
         }
 
         class AccountActivityBody
@@ -144,6 +152,8 @@ namespace GridExplorerBot
         public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
         {
             Console.WriteLine("Handling Account Activity Request");
+
+            Console.WriteLine(request.body);
 
             AccountActivityBody accountActivity = JsonConvert.DeserializeObject<AccountActivityBody>(request.body);
 
@@ -158,20 +168,26 @@ namespace GridExplorerBot
 
             foreach ( TweetCreateEvent tweetCreateEvent in accountActivity.tweet_create_events)
             {
-                if (tweetCreateEvent.in_reply_to_status_id == 0
+                if (!tweetCreateEvent.in_reply_to_status_id.HasValue
                 || tweetCreateEvent.in_reply_to_screen_name != gridExplorerBotScreenName)
                 {
-                    Console.WriteLine("Not a reply to grid explorer bot. id: " + tweetCreateEvent.id);
+                    Console.WriteLine("Not a reply to grid explorer bot. id: " + tweetCreateEvent.id_str);
                     continue;
                 }
 
-                // TODO: DOn't reply to self
+                if(tweetCreateEvent.user == null
+                || tweetCreateEvent.user.screen_name == ""
+                || tweetCreateEvent.user.screen_name == gridExplorerBotScreenName)
+                {
+                    Console.WriteLine("Invalid user info or reply to self. id: "+ tweetCreateEvent.id_str);
+                    continue;
+                }
 
-                Tweetinvi.Models.ITweet parentTweet = Tweetinvi.Tweet.GetTweet(tweetCreateEvent.in_reply_to_status_id);
+                Tweetinvi.Models.ITweet parentTweet = Tweetinvi.Tweet.GetTweet(tweetCreateEvent.in_reply_to_status_id.Value);
 
                 if (parentTweet.CreatedAt < Program.oldestSupportedData)
                 {
-                    Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + tweetCreateEvent.id);
+                    Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + tweetCreateEvent.id_str);
                     continue;
                 }
 
@@ -179,7 +195,10 @@ namespace GridExplorerBot
                 game.GenerateFreshGame();
                 game.Save();
 
-                Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(game.Render(), tweetCreateEvent.id);
+                string textToPublish = string.Format("@{0} {1}",tweetCreateEvent.user.screen_name, game.Render());
+
+                long replyTweetId = long.Parse(tweetCreateEvent.id_str);
+                Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(textToPublish, replyTweetId);
 
                 Console.WriteLine("Published new tweet. id: " + newTweet.Id);
             }
