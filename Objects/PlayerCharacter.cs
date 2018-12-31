@@ -15,14 +15,14 @@ namespace GridExplorerBot
 
             string outText = "Unknown command";
 
-            if ( tokens[0] == "go" || tokens[0] == "move" )
+            if (tokens[0] == "go" || tokens[0] == "move")
             {
                 outText = HandleMoveCommand(tokens, room);
             }
 
             return outText;
         }
-        
+
         private string HandleMoveCommand(string[] tokens, Room room)
         {
             string outText = "";
@@ -30,27 +30,27 @@ namespace GridExplorerBot
             Direction directionToMove = Direction.Unknown;
             string prospectiveMessage = "";
 
-            if ( tokens[1] == "north")
+            if (tokens[1] == "north" || tokens[1] == "up")
             {
                 directionToMove = Direction.North;
 
                 prospectiveMessage = "You moved North";
             }
-            else if ( tokens[1] == "south")
+            else if (tokens[1] == "south" || tokens[1] == "down")
             {
                 directionToMove = Direction.South;
 
                 prospectiveMessage = "You moved South";
             }
-            else if ( tokens[1] == "east")
+            else if (tokens[1] == "east" || tokens[1] == "right")
             {
-                directionToMove =Direction.East;
+                directionToMove = Direction.East;
 
                 prospectiveMessage = "You moved East";
             }
-            else if ( tokens[1] == "west")
+            else if (tokens[1] == "west" || tokens[1] == "left")
             {
-                directionToMove =Direction.West;
+                directionToMove = Direction.West;
 
                 prospectiveMessage = "You moved West";
             }
