@@ -1,5 +1,9 @@
+using System.Collections.Generic;
+
 namespace GridExplorerBot
 {
+
+
     public class Game
     {
         public const int numRoomRows = 9;
@@ -12,7 +16,9 @@ namespace GridExplorerBot
         public const int saveDataRowIndex = numTotalRows - 1;
 
         string mLastCommandResponse = "";
-        Room mRoom = null;
+
+        public Room mRoom = null;
+        public Inventory mInventory = new Inventory();
         string mSaveDataString = "";
 
         // Returns true if the game was successfully parsed
@@ -47,14 +53,14 @@ namespace GridExplorerBot
         {
             string commandResponse = mLastCommandResponse;
             string roomRender = mRoom.Render();
-            string inventory = "Inventory";
+            string inventory = mInventory.Render();
             string saveData = mSaveDataString;
             return commandResponse + '\n' + roomRender + '\n' + inventory + '\n' + saveData;
         }
 
         public void Simulate(string inputCommand)
         {
-            mLastCommandResponse = mRoom.Simulate(inputCommand);
+            mLastCommandResponse = mRoom.Simulate(inputCommand, this);
         }
 
         public void Save()

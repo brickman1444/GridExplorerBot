@@ -168,7 +168,7 @@ namespace GridExplorerBot
             mDynamicObjects = InitialRooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
         }
 
-        public string Simulate(string inCommand)
+        public string Simulate(string inCommand, Game game)
         {
             inCommand = inCommand.ToLower();
 
@@ -178,7 +178,7 @@ namespace GridExplorerBot
 
             foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                string simulateResult = dynamicObject.Simulate(inCommand, this);
+                string simulateResult = dynamicObject.Simulate(inCommand, game);
                 if (simulateResult != "")
                 {
                     outText = simulateResult;

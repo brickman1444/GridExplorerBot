@@ -7,11 +7,11 @@ namespace GridExplorerBot
     {
         bool mIsWalkingRight = true;
 
-        public override string Simulate(string inCommand, Room room)
+        public override string Simulate(string inCommand, Game game)
         {
             Point prospectivePoint = GetProspectiveMoveLocation(mIsWalkingRight);
 
-            if (room.CanSpaceBeMovedTo(prospectivePoint))
+            if (game.mRoom.CanSpaceBeMovedTo(prospectivePoint))
             {
                 mPosition = prospectivePoint;
             }
@@ -19,7 +19,7 @@ namespace GridExplorerBot
             {
                 Point alternateProspectivePoint = GetProspectiveMoveLocation(!mIsWalkingRight);
 
-                if (room.CanSpaceBeMovedTo(alternateProspectivePoint))
+                if (game.mRoom.CanSpaceBeMovedTo(alternateProspectivePoint))
                 {
                     mPosition = alternateProspectivePoint;
                     mIsWalkingRight = !mIsWalkingRight;

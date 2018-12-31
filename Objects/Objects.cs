@@ -19,7 +19,7 @@ namespace GridExplorerBot
 
     public class DynamicObject
     {
-        private int mDisplayEmojiIndex = -1;
+        public int mDisplayEmojiIndex = -1;
         public Point mPosition = new Point();
         public Objects.ID mType = Objects.ID.Unknown;
 
@@ -76,7 +76,7 @@ namespace GridExplorerBot
             mDisplayEmojiIndex = bytes.Pop();
         }
 
-        public virtual string Simulate(string inCommand, Room room)
+        public virtual string Simulate(string inCommand, Game room)
         {
             return "";
         }

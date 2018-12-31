@@ -4,7 +4,7 @@ namespace GridExplorerBot
 {
     public class PlayerCharacter : DynamicObject
     {
-        public override string Simulate(string command, Room room)
+        public override string Simulate(string command, Game game)
         {
             if (command.Length == 0)
             {
@@ -17,11 +17,11 @@ namespace GridExplorerBot
 
             if (tokens[0] == "go" || tokens[0] == "move")
             {
-                outText = HandleMoveCommand(tokens, room);
+                outText = HandleMoveCommand(tokens, game.mRoom);
             }
             else if (tokens[0] == "take" || tokens[0] == "grab")
             {
-                outText = HandleTakeCommand(tokens, room);
+                outText = HandleTakeCommand(tokens, game);
             }
 
             return outText;
@@ -110,7 +110,7 @@ namespace GridExplorerBot
             }
         }
 
-        private string HandleTakeCommand(string[] tokens, Room room)
+        private string HandleTakeCommand(string[] tokens, Game game)
         {
             if (tokens.Length != 2)
             {
@@ -124,14 +124,20 @@ namespace GridExplorerBot
                 return "";
             }
 
-            DynamicObject objectToPickUp = room.FindDynamicObjectAdjacentTo(mPosition, objectTypeToPickUp);
+            DynamicObject objectToPickUp = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, objectTypeToPickUp);
 
             if (objectToPickUp == null)
             {
                 return "There wasn't " + tokens[1] + " nearby";
             }
 
-            room.MarkObjectForDeletion(objectToPickUp);
+            if (!objectToPickUp.CanBePickedUp())
+            {
+                return tokens[1] + " can't be picked up";
+            }
+
+            game.mRoom.MarkObjectForDeletion(objectToPickUp);
+            game.mInventory.AddItem(objectToPickUp);
 
             return "You picked up " + objectToPickUp.Render();
         }
