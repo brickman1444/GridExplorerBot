@@ -23,6 +23,10 @@ namespace GridExplorerBot
             {
                 outText = HandleTakeCommand(tokens, game);
             }
+            else if (tokens[0] == "drop")
+            {
+                outText = HandleDropCommand(tokens, game);
+            }
 
             return outText;
         }
@@ -31,33 +35,8 @@ namespace GridExplorerBot
         {
             string outText = "";
 
-            Direction directionToMove = Direction.Unknown;
-            string prospectiveMessage = "";
-
-            if (tokens[1] == "north" || tokens[1] == "up")
-            {
-                directionToMove = Direction.North;
-
-                prospectiveMessage = "You moved North";
-            }
-            else if (tokens[1] == "south" || tokens[1] == "down")
-            {
-                directionToMove = Direction.South;
-
-                prospectiveMessage = "You moved South";
-            }
-            else if (tokens[1] == "east" || tokens[1] == "right")
-            {
-                directionToMove = Direction.East;
-
-                prospectiveMessage = "You moved East";
-            }
-            else if (tokens[1] == "west" || tokens[1] == "left")
-            {
-                directionToMove = Direction.West;
-
-                prospectiveMessage = "You moved West";
-            }
+            Direction directionToMove = Room.GetDirection(tokens[1]);
+            string prospectiveMessage = "You moved " + directionToMove;
 
             bool successfulMove = Move(directionToMove, room);
 
@@ -75,28 +54,12 @@ namespace GridExplorerBot
 
         public bool Move(Direction direction, Room room)
         {
-            Point prospectivePosition = mPosition;
-
-            if (direction == Direction.North)
-            {
-                prospectivePosition.X -= 1;
-            }
-            else if (direction == Direction.South)
-            {
-                prospectivePosition.X += 1;
-            }
-            else if (direction == Direction.East)
-            {
-                prospectivePosition.Y += 1;
-            }
-            else if (direction == Direction.West)
-            {
-                prospectivePosition.Y -= 1;
-            }
-            else
+            if (direction == Direction.Unknown)
             {
                 return false;
             }
+
+            Point prospectivePosition = MathUtils.GetAdjacentPoint(mPosition, direction);
 
             if (room.CanSpaceBeMovedTo(prospectivePosition))
             {
@@ -140,6 +103,50 @@ namespace GridExplorerBot
             game.mInventory.AddItem(objectToPickUp);
 
             return "You picked up " + objectToPickUp.Render();
+        }
+
+        private string HandleDropCommand(string[] tokens, Game game)
+        {
+            if (tokens.Length != 3)
+            {
+                return "";
+            }
+
+            Objects.ID objectTypeToDrop = Emoji.GetID(tokens[1]);
+
+            if (objectTypeToDrop == Objects.ID.Unknown)
+            {
+                return "";
+            }
+
+            int balance = game.mInventory.GetBalance(objectTypeToDrop);
+
+            if (balance < 1)
+            {
+                return "You don't have " + tokens[1];
+            }
+
+            Direction direction = Room.GetDirection(tokens[2]);
+
+            if (direction == Direction.Unknown)
+            {
+                return "Invalid direction";
+            }
+
+            Point prospectiveDropPosition = MathUtils.GetAdjacentPoint(mPosition, direction);
+
+            if (!game.mRoom.CanSpaceBeMovedTo(prospectiveDropPosition))
+            {
+                return "Space isn't open";
+            }
+
+            game.mInventory.RemoveItem(objectTypeToDrop);
+            DynamicObject dynamicObject = Emoji.CreateObject(objectTypeToDrop);
+            dynamicObject.mPosition = prospectiveDropPosition;
+            dynamicObject.mType = objectTypeToDrop;
+            game.mRoom.AddNewItem(dynamicObject);
+
+            return "You dropped " + tokens[1];
         }
     }
 }

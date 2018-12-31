@@ -30,6 +30,7 @@ namespace GridExplorerBot
         Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows, Game.numRoomColumns];
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
         List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
+        List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
         int mInitialRoomIndex = -1;
 
         public Room()
@@ -190,6 +191,8 @@ namespace GridExplorerBot
                 mDynamicObjects.Remove(dynamicObject);
             }
 
+            mDynamicObjects.AddRange(mSpawnedDynamicObjects);
+
             return outText;
         }
 
@@ -237,6 +240,11 @@ namespace GridExplorerBot
             mDynamicObjectsToBeDeleted.Add(dynamicObject);
         }
 
+        public void AddNewItem(DynamicObject dynamicObject)
+        {
+            mSpawnedDynamicObjects.Add(dynamicObject);
+        }
+
         public bool CanSpaceBeMovedTo(Point position)
         {
             DynamicObject dynamicObjectAtPosition = FindFirstDynamicObject(position);
@@ -256,7 +264,7 @@ namespace GridExplorerBot
             return true;
         }
 
-        public bool ArePointsAdjacent(Point a, Point b)
+        public static bool ArePointsAdjacent(Point a, Point b)
         {
             if (a.Y == b.Y)
             {
@@ -289,6 +297,28 @@ namespace GridExplorerBot
             }
 
             return false;
+        }
+
+        public static Direction GetDirection(string directionString)
+        {
+            if (directionString == "north" || directionString == "up")
+            {
+                return Direction.North;
+            }
+            else if (directionString == "south" || directionString == "down")
+            {
+                return Direction.South;
+            }
+            else if (directionString == "east" || directionString == "right")
+            {
+                return Direction.East;
+            }
+            else if (directionString == "west" || directionString == "left")
+            {
+                return Direction.West;
+            }
+
+            return Direction.Unknown;
         }
     }
 }

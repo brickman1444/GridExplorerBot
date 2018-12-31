@@ -19,7 +19,7 @@ namespace GridExplorerBot
 
     public class DynamicObject
     {
-        public int mDisplayEmojiIndex = -1;
+        public int mDisplayEmojiIndex = 0;
         public Point mPosition = new Point();
         public Objects.ID mType = Objects.ID.Unknown;
 

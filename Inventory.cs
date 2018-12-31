@@ -103,6 +103,20 @@ namespace GridExplorerBot
             }
         }
 
+        public void RemoveItem(Objects.ID type)
+        {
+            InventoryEntry entry = GetEntry(type);
+
+            if (entry.mQuantity > 1)
+            {
+                entry.mQuantity--;
+            }
+            else
+            {
+                mEntries.Remove(entry);
+            }
+        }
+
         public InventoryEntry GetEntry(Objects.ID type)
         {
             foreach (InventoryEntry entry in mEntries)
@@ -114,6 +128,13 @@ namespace GridExplorerBot
             }
 
             return null;
+        }
+
+        public int GetBalance(Objects.ID type)
+        {
+            InventoryEntry entry = GetEntry(type);
+
+            return (entry != null ? entry.mQuantity : 0);
         }
     }
 }

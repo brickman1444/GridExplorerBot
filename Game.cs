@@ -2,8 +2,6 @@ using System.Collections.Generic;
 
 namespace GridExplorerBot
 {
-
-
     public class Game
     {
         public const int numRoomRows = 9;
