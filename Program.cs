@@ -38,15 +38,6 @@ namespace GridExplorerBot
 
             Console.WriteLine("Beginning program");
 
-            TwitterUtils.InitializeCredentials();
-
-            WebUtils.WebRequest request = new WebUtils.WebRequest();
-            request.queryStringParameters["crc_token"] = "foo";
-
-            TwitterUtils.HandleChallengeRequest(request);
-
-            //TwitterUtils.RegisterWebHook();
-
             while (true)
             {
                 string previousGameText;
@@ -55,26 +46,13 @@ namespace GridExplorerBot
                     previousGameText = file.ReadToEnd();
                 }
 
-                Game theGame = new Game();
-
-                bool successfullyParsed = theGame.ParsePreviousText(previousGameText);
-
-                if (!successfullyParsed)
-                {
-                    theGame.GenerateFreshGame();
-                }
-
                 string inputText = Console.ReadLine();
 
-                theGame.Simulate(inputText);
-
-                theGame.Save();
+                string gameOutput = RunOneTick(previousGameText, inputText);
 
                 using (StreamWriter file = File.CreateText("output.txt") )
                 {
-                    string output = theGame.Render();
-                    file.Write(output);
-                    //TwitterUtils.Tweet(output);
+                    file.Write(gameOutput);
                 }
             }
         }
