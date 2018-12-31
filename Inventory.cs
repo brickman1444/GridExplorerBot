@@ -19,6 +19,23 @@ namespace GridExplorerBot
 
             return outText;
         }
+
+        public string Save()
+        {
+            byte type = (byte)mType;
+            byte displayIndex = (byte)mDisplayEmojiIndex;
+            byte quantity = (byte)mQuantity;
+            byte[] bytes = { type, displayIndex, quantity };
+            return StringUtils.SaveDataEncode(bytes);
+        }
+
+        public void Load(string saveData)
+        {
+            byte[] bytes = StringUtils.SaveDataDecode(saveData);
+            mType = (Objects.ID)bytes[0];
+            mDisplayEmojiIndex = bytes[1];
+            mQuantity = bytes[2];
+        }
     }
 
     public class Inventory
@@ -35,6 +52,34 @@ namespace GridExplorerBot
             }
 
             return string.Join(' ', renderedEntries);
+        }
+
+        public string Save()
+        {
+            string outSaveData = "";
+
+            List<string> entryTokens = new List<string>();
+
+            foreach (InventoryEntry entry in mEntries)
+            {
+                entryTokens.Add(entry.Save());
+            }
+
+            outSaveData += string.Join(' ', entryTokens);
+
+            return outSaveData;
+        }
+
+        public void Load(string saveData)
+        {
+            string[] tokens = saveData.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string token in tokens)
+            {
+                InventoryEntry entry = new InventoryEntry();
+                entry.Load(token);
+                mEntries.Add(entry);
+            }
         }
 
         public void AddItem(DynamicObject dynamicObject)

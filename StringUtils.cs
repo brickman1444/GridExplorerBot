@@ -35,5 +35,15 @@ namespace GridExplorerBot
 
             return stream;
         }
+
+        public static string SaveDataEncode(byte[] bytes)
+        {
+            return System.Convert.ToBase64String(bytes);
+        }
+
+        public static byte[] SaveDataDecode(string saveData)
+        {
+            return System.Convert.FromBase64String(saveData);
+        }
     }
 }

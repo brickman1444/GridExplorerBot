@@ -18,7 +18,7 @@ namespace GridExplorerBot
         string mLastCommandResponse = "";
 
         public Room mRoom = null;
-        public Inventory mInventory = new Inventory();
+        public Inventory mInventory = null;
         string mSaveDataString = "";
 
         // Returns true if the game was successfully parsed
@@ -34,8 +34,9 @@ namespace GridExplorerBot
             string saveDataLine = lines[saveDataRowIndex];
 
             mRoom = new Room();
+            mInventory = new Inventory();
 
-            mRoom.Load( saveDataLine );
+            Load( saveDataLine );
 
             return true;
         }
@@ -43,6 +44,7 @@ namespace GridExplorerBot
         public void GenerateFreshGame()
         {
             mLastCommandResponse = "";
+            mInventory = new Inventory();
             mRoom = new Room();
             mRoom.SetInitialRoomIndex(0);
             mRoom.LoadStaticGridFromInitialRoom();
@@ -65,7 +67,14 @@ namespace GridExplorerBot
 
         public void Save()
         {
-            mSaveDataString = mRoom.Save();
+            mSaveDataString = mInventory.Save() + ":" + mRoom.Save();
+        }
+
+        public void Load(string saveData)
+        {
+            string[] tokens = saveData.Split(':');
+            mInventory.Load(tokens[0]);
+            mRoom.Load(tokens[1]);
         }
     }
 }
