@@ -78,5 +78,23 @@ namespace GridExplorerBot
                 }
             }
         }
+
+        public static string RunOneTick(string previousGameText, string command)
+        {
+            Game theGame = new Game();
+
+            bool successfullyParsed = theGame.ParsePreviousText(previousGameText);
+
+            if (!successfullyParsed)
+            {
+                theGame.GenerateFreshGame();
+            }
+
+            theGame.Simulate(command);
+
+            theGame.Save();
+
+            return theGame.Render();
+        }
     }
 }
