@@ -22,6 +22,8 @@ namespace GridExplorerBot
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
                    new DynamicObjectSetup[] {
                        new DynamicObjectSetup("😀", new Point(5,5)),
-                       new DynamicObjectSetup("🐘", new Point(1,1)), } ) };
+                       new DynamicObjectSetup(Emoji.Elephant, new Point(1,1)),
+                       new DynamicObjectSetup(Emoji.Pen, new Point(4,4)),
+                       } ) };
     }
 }

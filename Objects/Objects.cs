@@ -13,10 +13,10 @@ namespace GridExplorerBot
             Empty,
             Wall,
             Elephant,
+            Pen,
         }
     }
 
-    
     public class DynamicObject
     {
         private int mDisplayEmojiIndex = -1;
@@ -28,7 +28,9 @@ namespace GridExplorerBot
 
         }
 
-        public void Setup( DynamicObjectSetup setup )
+        public virtual bool CanBePickedUp() { return false; }
+
+        public void Setup(DynamicObjectSetup setup)
         {
             mType = Emoji.GetID(setup.mDisplayText);
             mDisplayEmojiIndex = Emoji.GetEmojiIndex(mType, setup.mDisplayText);
@@ -53,13 +55,13 @@ namespace GridExplorerBot
 
         protected virtual void Save(ref Stack<byte> bytes)
         {
-            bytes.Push( (byte)mType ); // 127 values 7 bits
+            bytes.Push((byte)mType); // 127 values 7 bits
 
             byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
 
-            bytes.Push( positionIndex );
+            bytes.Push(positionIndex);
 
-            bytes.Push( (byte)mDisplayEmojiIndex ); // 63 values 6 bits
+            bytes.Push((byte)mDisplayEmojiIndex); // 63 values 6 bits
         }
 
         protected virtual void Load(ref Stack<byte> bytes)

@@ -19,6 +19,10 @@ namespace GridExplorerBot
             {
                 outText = HandleMoveCommand(tokens, room);
             }
+            else if (tokens[0] == "take" || tokens[0] == "grab")
+            {
+                outText = HandleTakeCommand(tokens, room);
+            }
 
             return outText;
         }
@@ -104,6 +108,32 @@ namespace GridExplorerBot
             {
                 return false;
             }
+        }
+
+        private string HandleTakeCommand(string[] tokens, Room room)
+        {
+            if (tokens.Length != 2)
+            {
+                return "";
+            }
+
+            Objects.ID objectTypeToPickUp = Emoji.GetID(tokens[1]);
+
+            if (objectTypeToPickUp == Objects.ID.Unknown)
+            {
+                return "";
+            }
+
+            DynamicObject objectToPickUp = room.FindDynamicObjectAdjacentTo(mPosition, objectTypeToPickUp);
+
+            if (objectToPickUp == null)
+            {
+                return "There wasn't " + tokens[1] + " nearby";
+            }
+
+            room.MarkObjectForDeletion(objectToPickUp);
+
+            return "You picked up " + objectToPickUp.Render();
         }
     }
 }

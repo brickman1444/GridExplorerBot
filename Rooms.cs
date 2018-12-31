@@ -18,7 +18,7 @@ namespace GridExplorerBot
         public readonly string mDisplayText;
         public readonly Point mStartingPosition;
 
-        public DynamicObjectSetup( string inDisplayText, Point inStartingPosition )
+        public DynamicObjectSetup(string inDisplayText, Point inStartingPosition)
         {
             mDisplayText = inDisplayText;
             mStartingPosition = inStartingPosition;
@@ -27,8 +27,9 @@ namespace GridExplorerBot
 
     public class Room
     {
-        Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows,Game.numRoomColumns];
+        Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows, Game.numRoomColumns];
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
+        List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
         int mInitialRoomIndex = -1;
 
         public Room()
@@ -36,7 +37,7 @@ namespace GridExplorerBot
 
         }
 
-        public Room( ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups )
+        public Room(ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups)
         {
             Debug.Assert(roomLines.Count == Game.numRoomRows);
 
@@ -47,34 +48,34 @@ namespace GridExplorerBot
 
                 for (int columnIndex = 0; columnIndex < splitLine.Count; columnIndex++)
                 {
-                    mStaticRoomGrid[lineIndex,columnIndex] = Emoji.GetID(splitLine[columnIndex]);
+                    mStaticRoomGrid[lineIndex, columnIndex] = Emoji.GetID(splitLine[columnIndex]);
                 }
 
                 lineIndex++;
             }
 
-            foreach ( var setup in dynamicObjectSetups )
+            foreach (var setup in dynamicObjectSetups)
             {
                 Objects.ID id = Emoji.GetID(setup.mDisplayText);
                 DynamicObject dynamicObject = Emoji.CreateObject(id);
                 dynamicObject.Setup(setup);
 
-                mDynamicObjects.Add( dynamicObject);
+                mDynamicObjects.Add(dynamicObject);
             }
         }
 
         public void SetInitialRoomIndex(int roomIndex)
         {
-            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( roomIndex  ) );
+            Debug.Assert(InitialRooms.IsValidInitialRoomIndex(roomIndex));
 
             mInitialRoomIndex = roomIndex;
         }
 
-        DynamicObject GetDynamicObjectAtPosition( Point position )
+        DynamicObject GetDynamicObjectAtPosition(Point position)
         {
-            foreach ( DynamicObject dynamicObject in mDynamicObjects )
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                if ( dynamicObject.mPosition == position)
+                if (dynamicObject.mPosition == position)
                 {
                     return dynamicObject;
                 }
@@ -87,15 +88,15 @@ namespace GridExplorerBot
         {
             string outString = "";
 
-            for ( int rowIndex = 0; rowIndex < mStaticRoomGrid.GetLength(0); rowIndex++)
+            for (int rowIndex = 0; rowIndex < mStaticRoomGrid.GetLength(0); rowIndex++)
             {
                 for (int columnIndex = 0; columnIndex < mStaticRoomGrid.GetLength(1); columnIndex++)
                 {
-                    DynamicObject dynamicObject = GetDynamicObjectAtPosition( new Point( rowIndex, columnIndex));
+                    DynamicObject dynamicObject = GetDynamicObjectAtPosition(new Point(rowIndex, columnIndex));
 
-                    if ( dynamicObject == null)
+                    if (dynamicObject == null)
                     {
-                        outString += Emoji.GetEmoji(mStaticRoomGrid[rowIndex,columnIndex], 0);
+                        outString += Emoji.GetEmoji(mStaticRoomGrid[rowIndex, columnIndex], 0);
                     }
                     else
                     {
@@ -117,15 +118,15 @@ namespace GridExplorerBot
         {
             string outSaveData = "";
 
-            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ) );
+            Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
             outSaveData += mInitialRoomIndex + " ";
 
             List<string> dynamicObjectTokens = new List<string>();
 
-            foreach ( DynamicObject dynamicObject in mDynamicObjects)
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                dynamicObjectTokens.Add( dynamicObject.Save() );
+                dynamicObjectTokens.Add(dynamicObject.Save());
             }
 
             outSaveData += string.Join(' ', dynamicObjectTokens);
@@ -137,14 +138,14 @@ namespace GridExplorerBot
         {
             string[] tokens = inSaveData.Split(" ");
 
-            Debug.Assert( tokens.Length > 0 );
+            Debug.Assert(tokens.Length > 0);
 
-            SetInitialRoomIndex( int.Parse( tokens[0] ) );
+            SetInitialRoomIndex(int.Parse(tokens[0]));
             LoadStaticGridFromInitialRoom();
 
             mDynamicObjects.Clear();
 
-            foreach (string dynamicObjectToken in  new System.ArraySegment<string>(tokens,1, tokens.Length - 1))
+            foreach (string dynamicObjectToken in new System.ArraySegment<string>(tokens, 1, tokens.Length - 1))
             {
                 DynamicObject dynamicObject = Emoji.CreateObject(dynamicObjectToken);
 
@@ -155,14 +156,14 @@ namespace GridExplorerBot
 
         public void LoadStaticGridFromInitialRoom()
         {
-            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+            Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
             mStaticRoomGrid = InitialRooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
         }
 
         public void LoadDynamicObjectsFromInitialRoom()
         {
-            Debug.Assert( InitialRooms.IsValidInitialRoomIndex( mInitialRoomIndex ));
+            Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
             mDynamicObjects = InitialRooms.initialRooms[mInitialRoomIndex].mDynamicObjects;
         }
@@ -171,9 +172,11 @@ namespace GridExplorerBot
         {
             inCommand = inCommand.ToLower();
 
+            Debug.Assert(mDynamicObjectsToBeDeleted.Count == 0);
+
             string outText = "";
 
-            foreach ( DynamicObject dynamicObject in mDynamicObjects)
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
                 string simulateResult = dynamicObject.Simulate(inCommand, this);
                 if (simulateResult != "")
@@ -182,12 +185,17 @@ namespace GridExplorerBot
                 }
             }
 
+            foreach (DynamicObject dynamicObject in mDynamicObjectsToBeDeleted)
+            {
+                mDynamicObjects.Remove(dynamicObject);
+            }
+
             return outText;
         }
 
         public DynamicObject FindFirstDynamicObject(Objects.ID id)
         {
-            foreach ( var dynamicObject in mDynamicObjects)
+            foreach (var dynamicObject in mDynamicObjects)
             {
                 if (dynamicObject.mType == id)
                 {
@@ -200,7 +208,7 @@ namespace GridExplorerBot
 
         public DynamicObject FindFirstDynamicObject(Point position)
         {
-            foreach ( var dynamicObject in mDynamicObjects)
+            foreach (var dynamicObject in mDynamicObjects)
             {
                 if (dynamicObject.mPosition == position)
                 {
@@ -209,6 +217,24 @@ namespace GridExplorerBot
             }
 
             return null;
+        }
+
+        public DynamicObject FindDynamicObjectAdjacentTo(Point position, Objects.ID typeToFind)
+        {
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
+            {
+                if (ArePointsAdjacent(dynamicObject.mPosition, position) && dynamicObject.mType == typeToFind)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            return null;
+        }
+
+        public void MarkObjectForDeletion(DynamicObject dynamicObject)
+        {
+            mDynamicObjectsToBeDeleted.Add(dynamicObject);
         }
 
         public bool CanSpaceBeMovedTo(Point position)
@@ -220,7 +246,7 @@ namespace GridExplorerBot
                 return false;
             }
 
-            Objects.ID staticObjectAtPosition = mStaticRoomGrid[position.X,position.Y];
+            Objects.ID staticObjectAtPosition = mStaticRoomGrid[position.X, position.Y];
 
             if (staticObjectAtPosition != Objects.ID.Empty)
             {
@@ -228,6 +254,41 @@ namespace GridExplorerBot
             }
 
             return true;
+        }
+
+        public bool ArePointsAdjacent(Point a, Point b)
+        {
+            if (a.Y == b.Y)
+            {
+                if (a.X + 1 == b.X)
+                {
+                    // a
+                    // b
+                    return true;
+                }
+                else if (a.X - 1 == b.X)
+                {
+                    // b
+                    // a
+                    return true;
+                }
+            }
+
+            if (a.X == b.X)
+            {
+                if (a.Y + 1 == b.Y)
+                {
+                    // ab
+                    return true;
+                }
+                else if (a.Y - 1 == b.Y)
+                {
+                    // ba
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

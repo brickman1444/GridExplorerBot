@@ -7,7 +7,7 @@ Quaff / Drink
 Eat
 Offer / Pay
 Jump
-Loot / Take
+Loot / Take / Grab
 Drop
 Inspect / Look At
 Look Up
