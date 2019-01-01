@@ -13,14 +13,14 @@ namespace GridExplorerBot
 
         public static void InitializeCredentials()
         {
-            string consumerKey = System.Environment.GetEnvironmentVariable ("twitterConsumerKey");
-            string consumerSecret = System.Environment.GetEnvironmentVariable ("twitterConsumerSecret");
-            string accessToken = System.Environment.GetEnvironmentVariable ("twitterAccessToken");
-            string accessTokenSecret = System.Environment.GetEnvironmentVariable ("twitterAccessTokenSecret");
+            string consumerKey = System.Environment.GetEnvironmentVariable("twitterConsumerKey");
+            string consumerSecret = System.Environment.GetEnvironmentVariable("twitterConsumerSecret");
+            string accessToken = System.Environment.GetEnvironmentVariable("twitterAccessToken");
+            string accessTokenSecret = System.Environment.GetEnvironmentVariable("twitterAccessTokenSecret");
 
             if (consumerKey == null)
             {
-                using ( StreamReader fs = File.OpenText( "localconfig/twitterKeys.txt" ) )
+                using (StreamReader fs = File.OpenText("localconfig/twitterKeys.txt"))
                 {
                     consumerKey = fs.ReadLine();
                     consumerSecret = fs.ReadLine();
@@ -32,7 +32,7 @@ namespace GridExplorerBot
             Tweetinvi.Auth.SetUserCredentials(consumerKey, consumerSecret, accessToken, accessTokenSecret);
         }
 
-        public static void Tweet( string text )
+        public static void Tweet(string text)
         {
             Console.WriteLine("Publishing tweet: " + text);
             var tweet = Tweetinvi.Tweet.PublishTweet(text);
@@ -40,7 +40,7 @@ namespace GridExplorerBot
 
         public static void RegisterWebHook()
         {
-            var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName,@"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
+            var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName, @"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
             task.Wait();
         }
 
@@ -71,10 +71,10 @@ namespace GridExplorerBot
             int statusCode = 200;
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            Dictionary<string,string> headers = new Dictionary<string, string>();
-           
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            Dictionary<string,string> multiValueHeaders = new Dictionary<string, string>();
+            Dictionary<string, string> multiValueHeaders = new Dictionary<string, string>();
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
             public string body = "";
@@ -133,7 +133,7 @@ namespace GridExplorerBot
         class AccountActivityBody
         {
             public string for_user_id = "";
-            public TweetCreateEvent[] tweet_create_events = {};
+            public TweetCreateEvent[] tweet_create_events = { };
         }
 
         public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
@@ -153,7 +153,7 @@ namespace GridExplorerBot
                 return "";
             }
 
-            foreach ( TweetCreateEvent tweetCreateEvent in accountActivity.tweet_create_events)
+            foreach (TweetCreateEvent tweetCreateEvent in accountActivity.tweet_create_events)
             {
                 long userReplyTweetId = long.Parse(tweetCreateEvent.id_str);
                 Tweetinvi.Models.ITweet userTweet = Tweetinvi.Tweet.GetTweet(userReplyTweetId);
@@ -165,11 +165,19 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                if(userTweet.CreatedBy == null
+                if (userTweet.CreatedBy == null
                 || userTweet.CreatedBy.ScreenName == ""
                 || userTweet.CreatedBy.ScreenName == gridExplorerBotScreenName)
                 {
-                    Console.WriteLine("Invalid user info or reply to self. id: "+ tweetCreateEvent.id_str);
+                    Console.WriteLine("Invalid user info or reply to self. id: " + tweetCreateEvent.id_str);
+                    continue;
+                }
+
+                if (userTweet.Text == "restart" || userTweet.Text == "reset")
+                {
+                    string freshGameOutput = Program.StartFreshGame();
+
+                    Tweet(freshGameOutput);
                     continue;
                 }
 
@@ -183,7 +191,7 @@ namespace GridExplorerBot
 
                 string gameOutput = Program.RunOneTick(parentGridBotTweet.Text, userTweet.Text);
 
-                string textToPublish = string.Format("@{0} {1}",userTweet.CreatedBy.ScreenName, gameOutput);
+                string textToPublish = string.Format("@{0} {1}", userTweet.CreatedBy.ScreenName, gameOutput);
 
                 Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(textToPublish, userReplyTweetId);
 

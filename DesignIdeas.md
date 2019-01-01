@@ -15,6 +15,7 @@ Commands:
 - Look Up
 - Offer / Pay
 - Pick Up / Grab / Loot / Take
+- Restart / Reset
 - Rub
 - Throw / Toss
 - Unlock
