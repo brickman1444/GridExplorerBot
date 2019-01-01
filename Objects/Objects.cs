@@ -14,6 +14,7 @@ namespace GridExplorerBot
             Wall,
             Elephant,
             Pen,
+            Lock,
         }
     }
 
@@ -29,11 +30,16 @@ namespace GridExplorerBot
 
         public virtual bool CanBePickedUp() { return false; }
 
-        public virtual void Setup(DynamicObjectSetup setup)
+        public void Setup(DynamicObjectSetup setup)
         {
             mType = Emoji.GetID(setup.mDisplayText);
-            Debug.Assert(Emoji.GetEmojiIndex(mType, setup.mDisplayText) == 0, "To use a non-default emoji you'll have to override Setup() and save some state");
             mPosition = setup.mStartingPosition;
+            SetupState(setup);
+        }
+
+        protected virtual void SetupState(DynamicObjectSetup setup)
+        {
+            Debug.Assert(Emoji.GetEmojiIndex(mType, setup.mDisplayText) == 0, "To use a non-default emoji you'll have to override Setup() and save some state");
         }
 
         public string Save()

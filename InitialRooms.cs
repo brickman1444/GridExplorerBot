@@ -14,16 +14,17 @@ namespace GridExplorerBot
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
-                   "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬛⬛⬛⬜⬛⬛⬛⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
                    new DynamicObjectSetup[] {
-                       new DynamicObjectSetup("😀", new Point(5,5)),
+                       new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
                        new DynamicObjectSetup(Emoji.Elephant, new Point(1,1)),
                        new DynamicObjectSetup(Emoji.Pen, new Point(4,4)),
+                       new DynamicObjectSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ) };
     }
 }

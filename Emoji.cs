@@ -12,6 +12,14 @@ namespace GridExplorerBot
             public static string Confused = "😕";
         }
 
+        public static class Environment
+        {
+            public static string LockedWithPen = "🔏";
+            public static string LockedWithKey = "🔐";
+            public static string Locked = "🔒";
+            public static string Unlocked = "🔓";
+        }
+
         public static string Pen = "🖋️";
         public static string Elephant = "🐘";
 
@@ -21,13 +29,15 @@ namespace GridExplorerBot
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Wall, new string[]{"⬛"} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Empty, new string[]{"⬜"} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Elephant, new string[]{Elephant} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Pen, new string[]{Pen} ), });
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Pen, new string[]{Pen} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Lock, new string[]{Environment.Locked, Environment.Unlocked, Environment.LockedWithKey, Environment.LockedWithPen} ), });
 
         static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
             new KeyValuePair<Objects.ID, Type>[] {
                 new KeyValuePair<Objects.ID, Type>( Objects.ID.PlayerCharacter, typeof(PlayerCharacter) ),
                 new KeyValuePair<Objects.ID, Type>( Objects.ID.Elephant, typeof(Elephant) ),
                 new KeyValuePair<Objects.ID, Type>( Objects.ID.Pen, typeof(InventoryObject) ),
+                new KeyValuePair<Objects.ID, Type>( Objects.ID.Lock, typeof(Lock) ),
             }
         );
 
