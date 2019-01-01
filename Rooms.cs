@@ -72,18 +72,6 @@ namespace GridExplorerBot
             mInitialRoomIndex = roomIndex;
         }
 
-        DynamicObject GetDynamicObjectAtPosition(Point position)
-        {
-            foreach (DynamicObject dynamicObject in mDynamicObjects)
-            {
-                if (dynamicObject.mPosition == position)
-                {
-                    return dynamicObject;
-                }
-            }
-
-            return null;
-        }
 
         public string Render()
         {
@@ -93,7 +81,7 @@ namespace GridExplorerBot
             {
                 for (int columnIndex = 0; columnIndex < mStaticRoomGrid.GetLength(1); columnIndex++)
                 {
-                    DynamicObject dynamicObject = GetDynamicObjectAtPosition(new Point(rowIndex, columnIndex));
+                    DynamicObject dynamicObject = FindFirstDynamicObject(new Point(rowIndex, columnIndex));
 
                     if (dynamicObject == null)
                     {
@@ -233,6 +221,11 @@ namespace GridExplorerBot
             }
 
             return null;
+        }
+
+        public Objects.ID GetStaticObject(Point position)
+        {
+            return mStaticRoomGrid[position.X, position.Y];
         }
 
         public void MarkObjectForDeletion(DynamicObject dynamicObject)

@@ -18,7 +18,7 @@ namespace GridExplorerBot
         {
             base.Save(ref bytes);
 
-            bytes.Push( System.Convert.ToByte(mStatus));
+            bytes.Push(System.Convert.ToByte(mStatus));
         }
 
         protected override void Load(ref Stack<byte> bytes)
@@ -52,7 +52,7 @@ namespace GridExplorerBot
         {
             string emoji = Emoji.Environment.Locked;
 
-            switch(mStatus)
+            switch (mStatus)
             {
                 case Status.Locked: emoji = Emoji.Environment.Locked; break;
                 case Status.Unlocked: emoji = Emoji.Environment.Unlocked; break;

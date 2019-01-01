@@ -18,6 +18,7 @@ namespace GridExplorerBot
         static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
         static Regex dropRegex = new Regex("^drop\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
         static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
+        static Regex inspectRegex = new Regex("^(inspect|look)\\s(?<direction>[a-z]+?)$");
 
         public override string Simulate(string command, Game game)
         {
@@ -49,6 +50,11 @@ namespace GridExplorerBot
             {
                 Match match = useRegex.Match(command);
                 outText = HandleUseCommand(match.Groups["actor"].Value, match.Groups["target"].Value, game);
+            }
+            else if (inspectRegex.IsMatch(command))
+            {
+                Match match = inspectRegex.Match(command);
+                outText = HandleInspectCommand(match.Groups["direction"].Value, game);
             }
             else
             {
@@ -239,6 +245,29 @@ namespace GridExplorerBot
             }
 
             return outText;
+        }
+
+        string HandleInspectCommand(string directionString, Game game)
+        {
+            Direction direction = Room.GetDirection(directionString);
+
+            if (direction == Direction.Unknown)
+            {
+                return "Invalid direction";
+            }
+
+            Point inspectPosition = MathUtils.GetAdjacentPoint(mPosition, direction);
+
+            DynamicObject dynamicObject = game.mRoom.FindFirstDynamicObject(inspectPosition);
+
+            if (dynamicObject != null)
+            {
+                return Descriptions.GetDescription(dynamicObject.mType);
+            }
+            else
+            {
+                return Descriptions.GetDescription(game.mRoom.GetStaticObject(inspectPosition));
+            }
         }
     }
 }
