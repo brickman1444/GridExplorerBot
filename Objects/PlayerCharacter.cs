@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace GridExplorerBot
 {
@@ -13,6 +14,10 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Default;
 
+        static Regex moveRegex = new Regex("^(move|go)\\s(?<direction>[a-zA-Z]+?)$");
+        static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-zA-Z]+?)$");
+        static Regex dropRegex = new Regex("^drop\\s(?<object>[a-zA-Z]+?)\\s(?<direction>[a-zA-Z]+?)$");
+
         public override string Simulate(string command, Game game)
         {
             mStatus = Status.Default;
@@ -22,21 +27,22 @@ namespace GridExplorerBot
                 return "";
             }
 
-            string[] tokens = command.Split(' ');
-
             string outText = "";
 
-            if (tokens[0] == "go" || tokens[0] == "move")
+            if (moveRegex.IsMatch(command))
             {
-                outText = HandleMoveCommand(tokens, game.mRoom);
+                Match match = moveRegex.Match(command);
+                outText = HandleMoveCommand(match.Groups["direction"].Value, game.mRoom);
             }
-            else if (tokens[0] == "take" || tokens[0] == "grab")
+            else if (pickUpRegex.IsMatch(command))
             {
-                outText = HandleTakeCommand(tokens, game);
+                Match match = pickUpRegex.Match(command);
+                outText = HandleTakeCommand(match.Groups["object"].Value, game);
             }
-            else if (tokens[0] == "drop")
+            else if (dropRegex.IsMatch(command))
             {
-                outText = HandleDropCommand(tokens, game);
+                Match match = dropRegex.Match(command);
+                outText = HandleDropCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
             }
             else
             {
@@ -59,11 +65,11 @@ namespace GridExplorerBot
             return emoji;
         }
 
-        private string HandleMoveCommand(string[] tokens, Room room)
+        private string HandleMoveCommand(string directionString, Room room)
         {
             string outText = "";
 
-            Direction directionToMove = Room.GetDirection(tokens[1]);
+            Direction directionToMove = Room.GetDirection(directionString);
             string prospectiveMessage = "You moved " + directionToMove;
 
             bool successfulMove = Move(directionToMove, room);
@@ -101,14 +107,9 @@ namespace GridExplorerBot
             }
         }
 
-        private string HandleTakeCommand(string[] tokens, Game game)
+        private string HandleTakeCommand(string objectString, Game game)
         {
-            if (tokens.Length != 2)
-            {
-                return "";
-            }
-
-            Objects.ID objectTypeToPickUp = Emoji.GetID(tokens[1]);
+            Objects.ID objectTypeToPickUp = Emoji.GetID(objectString);
 
             if (objectTypeToPickUp == Objects.ID.Unknown)
             {
@@ -119,12 +120,12 @@ namespace GridExplorerBot
 
             if (objectToPickUp == null)
             {
-                return "There wasn't " + tokens[1] + " nearby";
+                return "There wasn't " + objectString + " nearby";
             }
 
             if (!objectToPickUp.CanBePickedUp())
             {
-                return tokens[1] + " can't be picked up";
+                return objectString + " can't be picked up";
             }
 
             game.mRoom.MarkObjectForDeletion(objectToPickUp);
@@ -133,14 +134,9 @@ namespace GridExplorerBot
             return "You picked up " + objectToPickUp.Render();
         }
 
-        private string HandleDropCommand(string[] tokens, Game game)
+        private string HandleDropCommand(string objectString, string directionString, Game game)
         {
-            if (tokens.Length != 3)
-            {
-                return "";
-            }
-
-            Objects.ID objectTypeToDrop = Emoji.GetID(tokens[1]);
+            Objects.ID objectTypeToDrop = Emoji.GetID(objectString);
 
             if (objectTypeToDrop == Objects.ID.Unknown)
             {
@@ -151,10 +147,10 @@ namespace GridExplorerBot
 
             if (balance < 1)
             {
-                return "You don't have " + tokens[1];
+                return "You don't have " + objectString;
             }
 
-            Direction direction = Room.GetDirection(tokens[2]);
+            Direction direction = Room.GetDirection(directionString);
 
             if (direction == Direction.Unknown)
             {
@@ -174,7 +170,7 @@ namespace GridExplorerBot
             dynamicObject.mType = objectTypeToDrop;
             game.mRoom.AddNewItem(dynamicObject);
 
-            return "You dropped " + tokens[1];
+            return "You dropped " + objectString;
         }
     }
 }
