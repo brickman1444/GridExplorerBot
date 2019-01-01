@@ -14,9 +14,10 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Default;
 
-        static Regex moveRegex = new Regex("^(move|go)\\s(?<direction>[a-zA-Z]+?)$");
-        static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-zA-Z]+?)$");
-        static Regex dropRegex = new Regex("^drop\\s(?<object>[a-zA-Z]+?)\\s(?<direction>[a-zA-Z]+?)$");
+        static Regex moveRegex = new Regex("^(move|go)\\s(?<direction>[a-z]+?)$");
+        static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
+        static Regex dropRegex = new Regex("^drop\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
+        static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
 
         public override string Simulate(string command, Game game)
         {
@@ -43,6 +44,11 @@ namespace GridExplorerBot
             {
                 Match match = dropRegex.Match(command);
                 outText = HandleDropCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
+            }
+            else if (useRegex.IsMatch(command))
+            {
+                Match match = useRegex.Match(command);
+                outText = HandleUseCommand(match.Groups["actor"].Value, match.Groups["target"].Value, game);
             }
             else
             {
@@ -120,7 +126,7 @@ namespace GridExplorerBot
 
             if (objectToPickUp == null)
             {
-                return "There wasn't " + objectString + " nearby";
+                return "There isn't " + objectString + " nearby";
             }
 
             if (!objectToPickUp.CanBePickedUp())
@@ -171,6 +177,68 @@ namespace GridExplorerBot
             game.mRoom.AddNewItem(dynamicObject);
 
             return "You dropped " + objectString;
+        }
+
+        string HandleUseCommand(string actorString, string targetString, Game game)
+        {
+            Objects.ID actorType = Emoji.GetID(actorString);
+
+            if (actorType == Objects.ID.Unknown)
+            {
+                return "";
+            }
+
+            int balance = game.mInventory.GetBalance(actorType);
+
+            if (balance < 1)
+            {
+                return "You don't have " + actorString;
+            }
+
+            Objects.ID targetType = Emoji.GetID(targetString);
+
+            if (targetType == Objects.ID.Unknown)
+            {
+                return "";
+            }
+
+            DynamicObject targetObject = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, targetType);
+
+            if (targetObject == null)
+            {
+                return "There isn't " + targetString + " nearby";
+            }
+
+            string outText = "";
+
+            if (actorType == Objects.ID.Pen)
+            {
+                outText = HandlePenUse(targetObject);
+            }
+
+            if (outText == "")
+            {
+                outText = "You don't think you can do that.";
+            }
+
+            return outText;
+        }
+
+        string HandlePenUse(DynamicObject targetObject)
+        {
+            string outText = "";
+
+            if (targetObject is Lock)
+            {
+                Lock targetLock = targetObject as Lock;
+                if (targetLock.CanBeUnlockedWithPen())
+                {
+                    targetLock.Unlock();
+                    outText = "You unlocked the lock";
+                }
+            }
+
+            return outText;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace GridExplorerBot
         static Dictionary<string, Objects.ID> tokenToIDMap = new Dictionary<string, Objects.ID>(
             new KeyValuePair<string, Objects.ID>[] {
                 new KeyValuePair<string, Objects.ID>( "pen", Objects.ID.Pen ),
+                new KeyValuePair<string, Objects.ID>( "lock", Objects.ID.Lock ),
             }
         );
 

@@ -62,5 +62,20 @@ namespace GridExplorerBot
 
             return emoji;
         }
+
+        public bool CanBeUnlockedWithPen()
+        {
+            return mStatus == Status.LockedWithPen;
+        }
+
+        public bool CanBeUnlockedWithKey()
+        {
+            return mStatus == Status.LockedWithKey;
+        }
+
+        public void Unlock()
+        {
+            mStatus = Status.Unlocked;
+        }
     }
 }
