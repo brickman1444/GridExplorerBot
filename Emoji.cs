@@ -6,12 +6,18 @@ namespace GridExplorerBot
 {
     public static class Emoji
     {
+        public static class Player
+        {
+            public static string Default = "😀";
+            public static string Confused = "😕";
+        }
+
         public static string Pen = "🖋️";
         public static string Elephant = "🐘";
 
         static Dictionary<Objects.ID, string[]> idToCharsMap = new Dictionary<Objects.ID, string[]>(
             new KeyValuePair<Objects.ID, string[]>[] {
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.PlayerCharacter, new string[]{"😀"} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.PlayerCharacter, new string[]{Player.Default, Player.Confused} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Wall, new string[]{"⬛"} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Empty, new string[]{"⬜"} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Elephant, new string[]{Elephant} ),
@@ -52,7 +58,7 @@ namespace GridExplorerBot
             return Objects.ID.Unknown;
         }
 
-        public static string GetEmoji(Objects.ID id, int index)
+        public static string GetEmoji(Objects.ID id, int index = 0)
         {
             string[] displayChars = idToCharsMap.GetValueOrDefault(id, new string[] { "⬜" });
 

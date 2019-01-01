@@ -1,11 +1,22 @@
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace GridExplorerBot
 {
     public class PlayerCharacter : DynamicObject
     {
+        public enum Status
+        {
+            Default,
+            Confused
+        }
+
+        Status mStatus = Status.Default;
+
         public override string Simulate(string command, Game game)
         {
+            mStatus = Status.Default;
+
             if (command.Length == 0)
             {
                 return "";
@@ -13,7 +24,7 @@ namespace GridExplorerBot
 
             string[] tokens = command.Split(' ');
 
-            string outText = "Unknown command";
+            string outText = "";
 
             if (tokens[0] == "go" || tokens[0] == "move")
             {
@@ -27,8 +38,25 @@ namespace GridExplorerBot
             {
                 outText = HandleDropCommand(tokens, game);
             }
+            else
+            {
+                outText = "Unknown command";
+                mStatus = Status.Confused;
+            }
 
             return outText;
+        }
+
+        public override string Render()
+        {
+            string emoji = Emoji.Player.Default;
+
+            if (mStatus == Status.Confused)
+            {
+                emoji = Emoji.Player.Confused;
+            }
+
+            return emoji;
         }
 
         private string HandleMoveCommand(string[] tokens, Room room)

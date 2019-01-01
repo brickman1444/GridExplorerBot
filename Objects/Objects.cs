@@ -19,7 +19,6 @@ namespace GridExplorerBot
 
     public class DynamicObject
     {
-        public int mDisplayEmojiIndex = 0;
         public Point mPosition = new Point();
         public Objects.ID mType = Objects.ID.Unknown;
 
@@ -30,10 +29,10 @@ namespace GridExplorerBot
 
         public virtual bool CanBePickedUp() { return false; }
 
-        public void Setup(DynamicObjectSetup setup)
+        public virtual void Setup(DynamicObjectSetup setup)
         {
             mType = Emoji.GetID(setup.mDisplayText);
-            mDisplayEmojiIndex = Emoji.GetEmojiIndex(mType, setup.mDisplayText);
+            Debug.Assert(Emoji.GetEmojiIndex(mType, setup.mDisplayText) == 0, "To use a non-default emoji you'll have to override Setup() and save some state");
             mPosition = setup.mStartingPosition;
         }
 
@@ -60,8 +59,6 @@ namespace GridExplorerBot
             byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
 
             bytes.Push(positionIndex);
-
-            bytes.Push((byte)mDisplayEmojiIndex); // 63 values 6 bits
         }
 
         protected virtual void Load(ref Stack<byte> bytes)
@@ -72,8 +69,6 @@ namespace GridExplorerBot
 
             mPosition.X = positionIndex / Game.numRoomColumns;
             mPosition.Y = positionIndex % Game.numRoomColumns;
-
-            mDisplayEmojiIndex = bytes.Pop();
         }
 
         public virtual string Simulate(string inCommand, Game room)
@@ -81,9 +76,9 @@ namespace GridExplorerBot
             return "";
         }
 
-        public string Render()
+        public virtual string Render()
         {
-            return Emoji.GetEmoji(mType, mDisplayEmojiIndex);
+            return Emoji.GetEmoji(mType);
         }
     }
 }

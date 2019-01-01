@@ -94,7 +94,7 @@ namespace GridExplorerBot
             {
                 InventoryEntry entry = new InventoryEntry()
                 {
-                    mDisplayEmojiIndex = dynamicObject.mDisplayEmojiIndex,
+                    mDisplayEmojiIndex = Emoji.GetEmojiIndex(dynamicObject.mType, dynamicObject.Render()),
                     mQuantity = 1,
                     mType = dynamicObject.mType
                 };
