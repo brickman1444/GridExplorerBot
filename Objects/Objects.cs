@@ -29,6 +29,7 @@ namespace GridExplorerBot
         }
 
         public virtual bool CanBePickedUp() { return false; }
+        public virtual bool CanBeMovedThrough() { return false; }
 
         public void Setup(DynamicObjectSetup setup)
         {

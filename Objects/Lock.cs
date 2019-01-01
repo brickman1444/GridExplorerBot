@@ -63,6 +63,11 @@ namespace GridExplorerBot
             return emoji;
         }
 
+        public override bool CanBeMovedThrough()
+        {
+            return mStatus == Status.Unlocked;
+        }
+
         public bool CanBeUnlockedWithPen()
         {
             return mStatus == Status.LockedWithPen;

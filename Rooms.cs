@@ -247,11 +247,12 @@ namespace GridExplorerBot
 
         public bool CanSpaceBeMovedTo(Point position)
         {
-            DynamicObject dynamicObjectAtPosition = FindFirstDynamicObject(position);
-
-            if (dynamicObjectAtPosition != null)
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                return false;
+                if (dynamicObject.mPosition == position && !dynamicObject.CanBeMovedThrough())
+                {
+                    return false;
+                }
             }
 
             Objects.ID staticObjectAtPosition = mStaticRoomGrid[position.X, position.Y];
