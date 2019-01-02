@@ -20,21 +20,18 @@ namespace GridExplorerBot
             return outText;
         }
 
-        public string Save()
+        public void Save(BitStreams.BitStream stream)
         {
-            byte type = (byte)mType;
-            byte displayIndex = (byte)mDisplayEmojiIndex;
-            byte quantity = (byte)mQuantity;
-            byte[] bytes = { type, displayIndex, quantity };
-            return StringUtils.SaveDataEncode(bytes);
+            stream.WriteByte((byte)mType, 7); // 127 7 bits
+            stream.WriteByte((byte)mDisplayEmojiIndex, 3); // 7 3 bits
+            stream.WriteByte((byte)mQuantity, 7); // 7 3 bits
         }
 
-        public void Load(string saveData)
+        public void Load(BitStreams.BitStream stream)
         {
-            byte[] bytes = StringUtils.SaveDataDecode(saveData);
-            mType = (Objects.ID)bytes[0];
-            mDisplayEmojiIndex = bytes[1];
-            mQuantity = bytes[2];
+            mType = (Objects.ID)stream.ReadByte(7);
+            mDisplayEmojiIndex = stream.ReadByte(3);
+            mQuantity = stream.ReadByte(7);
         }
     }
 
@@ -58,26 +55,31 @@ namespace GridExplorerBot
         {
             string outSaveData = "";
 
-            List<string> entryTokens = new List<string>();
+            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[17]);
+
+            stream.WriteByte((byte)mEntries.Count, 4); // 10 4
 
             foreach (InventoryEntry entry in mEntries)
             {
-                entryTokens.Add(entry.Save());
+                entry.Save(stream);
             }
 
-            outSaveData += string.Join(' ', entryTokens);
+            outSaveData = StringUtils.SaveDataEncode(stream.GetStreamData());
 
             return outSaveData;
         }
 
         public void Load(string saveData)
         {
-            string[] tokens = saveData.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+            byte[] bytes = StringUtils.SaveDataDecode(saveData);
+            BitStreams.BitStream stream = new BitStreams.BitStream(bytes);
 
-            foreach (string token in tokens)
+            byte numEntries = stream.ReadByte(4);
+
+            for (int entryIndex = 0; entryIndex < numEntries; entryIndex++)
             {
                 InventoryEntry entry = new InventoryEntry();
-                entry.Load(token);
+                entry.Load(stream);
                 mEntries.Add(entry);
             }
         }
