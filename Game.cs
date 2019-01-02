@@ -65,14 +65,22 @@ namespace GridExplorerBot
 
         public void Save()
         {
-            mSaveDataString = mInventory.Save() + ":" + mRoom.Save();
+            // arbitrary estimated size
+            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[36]);
+
+            mInventory.Save(stream);
+            mRoom.Save(stream);
+
+            mSaveDataString = StringUtils.SaveDataEncode(stream.GetStreamData());
         }
 
         public void Load(string saveData)
         {
-            string[] tokens = saveData.Split(':');
-            mInventory.Load(tokens[0]);
-            mRoom.Load(tokens[1]);
+            byte[] bytes = StringUtils.SaveDataDecode(saveData);
+            BitStreams.BitStream stream = new BitStreams.BitStream( bytes );
+
+            mInventory.Load(stream);
+            mRoom.Load(stream);
         }
     }
 }

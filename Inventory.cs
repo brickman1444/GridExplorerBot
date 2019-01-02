@@ -51,10 +51,8 @@ namespace GridExplorerBot
             return string.Join(' ', renderedEntries);
         }
 
-        public string Save()
+        public string Save(BitStreams.BitStream stream)
         {
-            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[17]);
-
             stream.WriteByte((byte)mEntries.Count, 4); // 10 4
 
             foreach (InventoryEntry entry in mEntries)
@@ -67,11 +65,8 @@ namespace GridExplorerBot
             return outSaveData;
         }
 
-        public void Load(string saveData)
+        public void Load(BitStreams.BitStream stream)
         {
-            byte[] bytes = StringUtils.SaveDataDecode(saveData);
-            BitStreams.BitStream stream = new BitStreams.BitStream(bytes);
-
             byte numEntries = stream.ReadByte(4);
 
             for (int entryIndex = 0; entryIndex < numEntries; entryIndex++)

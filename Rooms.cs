@@ -103,12 +103,8 @@ namespace GridExplorerBot
             return outString;
         }
 
-        public string Save()
+        public string Save(BitStreams.BitStream stream)
         {
-            // 15 bits per object * 10 objects per room = 150 bits = 19 bytes
-
-            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[19]);
-
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
             stream.WriteByte((byte)mInitialRoomIndex, 6); // 63 6
@@ -125,11 +121,8 @@ namespace GridExplorerBot
             return outSaveData;
         }
 
-        public void Load(string inSaveData)
+        public void Load(BitStreams.BitStream stream)
         {
-            byte[] bytes = StringUtils.SaveDataDecode(inSaveData);
-            BitStreams.BitStream stream = new BitStreams.BitStream(bytes);
-
             int roomIndex = stream.ReadByte(6);
             SetInitialRoomIndex(roomIndex);
             LoadStaticGridFromInitialRoom();
