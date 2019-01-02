@@ -105,40 +105,44 @@ namespace GridExplorerBot
 
         public string Save()
         {
-            string outSaveData = "";
+            // 15 bits per object * 10 objects per room = 150 bits = 19 bytes
+
+            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[19]);
 
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
-            outSaveData += mInitialRoomIndex + " ";
+            stream.WriteByte((byte)mInitialRoomIndex, 6); // 63 6
 
-            List<string> dynamicObjectTokens = new List<string>();
+            stream.WriteByte((byte)mDynamicObjects.Count, 4); // 15 4
 
             foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                dynamicObjectTokens.Add(dynamicObject.Save());
+                dynamicObject.Save(stream);
             }
 
-            outSaveData += string.Join(' ', dynamicObjectTokens);
+            string outSaveData = StringUtils.SaveDataEncode(stream.GetStreamData());
 
             return outSaveData;
         }
 
         public void Load(string inSaveData)
         {
-            string[] tokens = inSaveData.Split(" ");
+            byte[] bytes = StringUtils.SaveDataDecode(inSaveData);
+            BitStreams.BitStream stream = new BitStreams.BitStream(bytes);
 
-            Debug.Assert(tokens.Length > 0);
-
-            SetInitialRoomIndex(int.Parse(tokens[0]));
+            int roomIndex = stream.ReadByte(6);
+            SetInitialRoomIndex(roomIndex);
             LoadStaticGridFromInitialRoom();
+
+            int dynamicObjectCount = stream.ReadByte(4);
 
             mDynamicObjects.Clear();
 
-            foreach (string dynamicObjectToken in new System.ArraySegment<string>(tokens, 1, tokens.Length - 1))
+            for (int dynamicObjectIndex = 0; dynamicObjectIndex < dynamicObjectCount; dynamicObjectIndex++)
             {
-                DynamicObject dynamicObject = Emoji.CreateObject(dynamicObjectToken);
+                DynamicObject dynamicObject = Emoji.CreateObject(stream);
 
-                dynamicObject.Load(dynamicObjectToken);
+                dynamicObject.Load(stream);
                 mDynamicObjects.Add(dynamicObject);
             }
         }

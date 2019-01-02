@@ -43,36 +43,20 @@ namespace GridExplorerBot
             Debug.Assert(Emoji.GetEmojiIndex(mType, setup.mDisplayText) == 0, "To use a non-default emoji you'll have to override Setup() and save some state");
         }
 
-        public string Save()
+        public virtual void Save(BitStreams.BitStream stream)
         {
-            Stack<byte> bytes = new Stack<byte>();
-
-            Save(ref bytes);
-
-            return System.Convert.ToBase64String(bytes.ToArray());
-        }
-
-        public void Load(string inSaveData)
-        {
-            Stack<byte> bytes = new Stack<byte>(System.Convert.FromBase64String(inSaveData));
-
-            Load(ref bytes);
-        }
-
-        protected virtual void Save(ref Stack<byte> bytes)
-        {
-            bytes.Push((byte)mType); // 127 values 7 bits
+            stream.WriteByte((byte)mType, 7);  // 127 7 bits
 
             byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
 
-            bytes.Push(positionIndex);
+            stream.WriteByte(positionIndex, 7);
         }
 
-        protected virtual void Load(ref Stack<byte> bytes)
+        public virtual void Load(BitStreams.BitStream stream)
         {
-            mType = (Objects.ID)bytes.Pop();
+            mType = (Objects.ID)stream.ReadByte(7);
 
-            byte positionIndex = bytes.Pop();
+            byte positionIndex = stream.ReadByte(7);
 
             mPosition.X = positionIndex / Game.numRoomColumns;
             mPosition.Y = positionIndex % Game.numRoomColumns;

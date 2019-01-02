@@ -45,18 +45,18 @@ namespace GridExplorerBot
             return prospectivePoint;
         }
 
-        protected override void Save(ref Stack<byte> bytes)
+        public override void Save(BitStreams.BitStream stream)
         {
-            base.Save(ref bytes);
+            base.Save(stream);
 
-            bytes.Push( System.Convert.ToByte(mIsWalkingRight));
+            stream.WriteBit((BitStreams.Bit)mIsWalkingRight);
         }
 
-        protected override void Load(ref Stack<byte> bytes)
+        public override void Load(BitStreams.BitStream stream)
         {
-            base.Load(ref bytes);
+            base.Load(stream);
 
-            mIsWalkingRight = System.Convert.ToBoolean(bytes.Pop());
+            mIsWalkingRight = stream.ReadBit().AsBool();
         }
     }
 }

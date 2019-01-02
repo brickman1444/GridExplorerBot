@@ -14,18 +14,18 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Locked;
 
-        protected override void Save(ref Stack<byte> bytes)
+        public override void Save(BitStreams.BitStream stream)
         {
-            base.Save(ref bytes);
+            base.Save(stream);
 
-            bytes.Push(System.Convert.ToByte(mStatus));
+            stream.WriteByte((byte)mStatus, 2);
         }
 
-        protected override void Load(ref Stack<byte> bytes)
+        public override void Load(BitStreams.BitStream stream)
         {
-            base.Load(ref bytes);
+            base.Load(stream);
 
-            mStatus = (Status)bytes.Pop();
+            mStatus = (Status)stream.ReadByte(2);
         }
 
         protected override void SetupState(DynamicObjectSetup setup)

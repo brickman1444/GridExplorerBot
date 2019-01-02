@@ -107,15 +107,17 @@ namespace GridExplorerBot
             return (DynamicObject)Activator.CreateInstance(dynamicObjectType);
         }
 
-        public static DynamicObject CreateObject(string saveData)
+        public static DynamicObject CreateObject(BitStreams.BitStream stream)
         {
-            // Create a fake object with the real Load code. This
-            // ensures that this code and the Load code always
-            // work the same.
-            DynamicObject tempObject = new DynamicObject();
-            tempObject.Load(saveData);
+            // Because there's no interface to get the current offset of the stream,
+            // we can't progress forward and then seek back to where we were.
+            Objects.ID id = (Objects.ID)stream.ReadByte(7);
 
-            Objects.ID id = tempObject.mType;
+            // HACK
+            for (int returnedBit = 0; returnedBit < 7; returnedBit++)
+            {
+                stream.ReturnBit();
+            }
 
             return CreateObject(id);
         }
