@@ -6,6 +6,7 @@ Commands:
 - Drink / Quaff
 - Drop
 - Eat
+- Help / List Commands
 - Hug
 - Jump
 - Kill
@@ -20,6 +21,7 @@ Commands:
 - Throw / Toss
 - Unlock
 - Use
+- Wait
 
 
 Interactions:
