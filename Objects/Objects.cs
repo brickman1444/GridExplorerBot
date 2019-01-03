@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Drawing;
 using System.Collections.Generic;
 
 namespace GridExplorerBot
@@ -47,19 +46,14 @@ namespace GridExplorerBot
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits
 
-            byte positionIndex = (byte)(mPosition.X * Game.numRoomColumns + mPosition.Y); // 81 values 7 bits
-
-            stream.WriteByte(positionIndex, 7);
+            mPosition.Save(stream);
         }
 
         public virtual void Load(BitStreams.BitStream stream)
         {
             mType = (Objects.ID)stream.ReadByte(7);
 
-            byte positionIndex = stream.ReadByte(7);
-
-            mPosition.X = positionIndex / Game.numRoomColumns;
-            mPosition.Y = positionIndex % Game.numRoomColumns;
+            mPosition.Load(stream);
         }
 
         public virtual string Simulate(string inCommand, Game room)

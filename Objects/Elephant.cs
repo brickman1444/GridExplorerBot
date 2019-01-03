@@ -1,4 +1,3 @@
-using System.Drawing;
 using System.Collections.Generic;
 
 namespace GridExplorerBot
@@ -35,11 +34,11 @@ namespace GridExplorerBot
 
             if ( isWalkingRight)
             {
-                prospectivePoint.Y += 1;
+                prospectivePoint.mColumn += 1;
             }
             else
             {
-                prospectivePoint.Y -= 1;
+                prospectivePoint.mRow -= 1;
             }
 
             return prospectivePoint;

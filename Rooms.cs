@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Drawing;
 using System.Diagnostics;
 
 namespace GridExplorerBot
@@ -211,7 +210,7 @@ namespace GridExplorerBot
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                if (ArePointsAdjacent(dynamicObject.mPosition, position) && dynamicObject.mType == typeToFind)
+                if (MathUtils.ArePointsAdjacent(dynamicObject.mPosition, position) && dynamicObject.mType == typeToFind)
                 {
                     return dynamicObject;
                 }
@@ -222,7 +221,7 @@ namespace GridExplorerBot
 
         public Objects.ID GetStaticObject(Point position)
         {
-            return mStaticRoomGrid[position.X, position.Y];
+            return mStaticRoomGrid[position.mRow, position.mColumn];
         }
 
         public void MarkObjectForDeletion(DynamicObject dynamicObject)
@@ -245,7 +244,7 @@ namespace GridExplorerBot
                 }
             }
 
-            Objects.ID staticObjectAtPosition = mStaticRoomGrid[position.X, position.Y];
+            Objects.ID staticObjectAtPosition = GetStaticObject(position);
 
             if (staticObjectAtPosition != Objects.ID.Empty)
             {
@@ -253,41 +252,6 @@ namespace GridExplorerBot
             }
 
             return true;
-        }
-
-        public static bool ArePointsAdjacent(Point a, Point b)
-        {
-            if (a.Y == b.Y)
-            {
-                if (a.X + 1 == b.X)
-                {
-                    // a
-                    // b
-                    return true;
-                }
-                else if (a.X - 1 == b.X)
-                {
-                    // b
-                    // a
-                    return true;
-                }
-            }
-
-            if (a.X == b.X)
-            {
-                if (a.Y + 1 == b.Y)
-                {
-                    // ab
-                    return true;
-                }
-                else if (a.Y - 1 == b.Y)
-                {
-                    // ba
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public static Direction GetDirection(string directionString)
