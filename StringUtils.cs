@@ -38,12 +38,12 @@ namespace GridExplorerBot
 
         public static string SaveDataEncode(byte[] bytes)
         {
-            return System.Convert.ToBase64String(bytes);
+            return Cromulent.Encoding.Z85.ToZ85String(bytes, true);
         }
 
         public static byte[] SaveDataDecode(string saveData)
         {
-            return System.Convert.FromBase64String(saveData);
+            return Cromulent.Encoding.Z85.FromZ85String(saveData);
         }
     }
 }
