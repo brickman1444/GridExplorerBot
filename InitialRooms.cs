@@ -1,14 +1,24 @@
+using System.Collections.Generic;
+
 namespace GridExplorerBot
 {
-    static class InitialRooms
+    public static class InitialRooms
     {
-        public static bool IsValidInitialRoomIndex(int index)
+        public enum ID
         {
-            return index >= 0 && index < initialRooms.Length;
+            Unknown,
+            Circus,
+            VampireCastleCourtyard,
+        };
+
+        public static bool IsValidInitialRoomIndex(ID id)
+        {
+            return initialRooms.ContainsKey(id);
         }
 
-        public static Room[] initialRooms = {
-            new Room( new string[] {
+        public static Dictionary<InitialRooms.ID,Room> initialRooms = new Dictionary<InitialRooms.ID, Room>()
+        {
+            [ID.Circus] = new Room( new string[] {
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
@@ -24,7 +34,7 @@ namespace GridExplorerBot
                        new DynamicObjectSetup(Emoji.Pen, new Point(4,4)),
                        new DynamicObjectSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ),
-            new Room( new string[] {
+            [ID.VampireCastleCourtyard] = new Room( new string[] {
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
@@ -36,6 +46,7 @@ namespace GridExplorerBot
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
                    new DynamicObjectSetup[] {
                        new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
-                       } ), };
+                       } ),
+        };
     }
 }

@@ -30,7 +30,7 @@ namespace GridExplorerBot
         List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
         List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
         List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
-        int mInitialRoomIndex = -1;
+        InitialRooms.ID mInitialRoomIndex = InitialRooms.ID.Unknown;
 
         public Room()
         {
@@ -64,7 +64,7 @@ namespace GridExplorerBot
             }
         }
 
-        public void SetInitialRoomIndex(int roomIndex)
+        public void SetInitialRoomIndex(InitialRooms.ID roomIndex)
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(roomIndex));
 
@@ -122,7 +122,7 @@ namespace GridExplorerBot
 
         public void Load(BitStreams.BitStream stream)
         {
-            int roomIndex = stream.ReadByte(6);
+            InitialRooms.ID roomIndex = (InitialRooms.ID)stream.ReadByte(6);
             SetInitialRoomIndex(roomIndex);
             LoadStaticGridFromInitialRoom();
 
