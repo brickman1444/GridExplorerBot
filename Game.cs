@@ -44,7 +44,7 @@ namespace GridExplorerBot
             mLastCommandResponse = "";
             mInventory = new Inventory();
             mRoom = new Room();
-            mRoom.SetInitialRoomIndex(InitialRooms.ID.Circus);
+            mRoom.SetInitialRoomIndex(InitialRooms.ID.VampireCastleCourtyard);
             mRoom.LoadStaticGridFromInitialRoom();
             mRoom.LoadDynamicObjectsFromInitialRoom();
         }

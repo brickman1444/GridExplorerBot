@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
@@ -8,7 +9,8 @@ namespace GridExplorerBot
         public enum Status
         {
             Default,
-            Confused
+            Confused,
+            Sleeping,
         }
 
         Status mStatus = Status.Default;
@@ -18,19 +20,20 @@ namespace GridExplorerBot
         static Regex dropRegex = new Regex("^drop\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
         static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
         static Regex inspectRegex = new Regex("^(inspect|look)\\s(?<direction>[a-z]+?)$");
+        static Regex waitRegex = new Regex("^(|wait)$");
 
         public override string Simulate(string command, Game game)
         {
             mStatus = Status.Default;
 
-            if (command.Length == 0)
-            {
-                return "";
-            }
-
             string outText = "";
 
-            if (moveRegex.IsMatch(command))
+            if (waitRegex.IsMatch(command))
+            {
+                outText = "You wait calmly";
+                mStatus = Status.Sleeping;
+            }
+            else if (moveRegex.IsMatch(command))
             {
                 Match match = moveRegex.Match(command);
                 outText = HandleMoveCommand(match.Groups["direction"].Value, game.mRoom);
@@ -66,14 +69,16 @@ namespace GridExplorerBot
 
         public override string Render()
         {
-            string emoji = Emoji.Player.Default;
-
-            if (mStatus == Status.Confused)
+            switch (mStatus)
             {
-                emoji = Emoji.Player.Confused;
+                case Status.Default: return Emoji.Player.Default;
+                case Status.Confused: return Emoji.Player.Confused;
+                case Status.Sleeping: return Emoji.Player.Sleeping;
             }
 
-            return emoji;
+            Debug.Fail("Unknnown status");
+
+            return Emoji.Player.Default;
         }
 
         private string HandleMoveCommand(string directionString, Room room)
