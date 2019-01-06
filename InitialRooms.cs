@@ -39,13 +39,15 @@ namespace GridExplorerBot
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
-                    "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
+                    "⬜⬜🕸️🕸️⬜⬜⬜⬜⬜",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️⬜⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️⬜⬜🍯⬜⬛",
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
                    new DynamicObjectSetup[] {
                        new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
+                       new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,8)),
+                       new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,0)),
                        } ),
         };
     }

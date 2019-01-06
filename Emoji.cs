@@ -24,6 +24,7 @@ namespace GridExplorerBot
             public static string HoneyPot = "🍯";
             public static string Wall = "⬛";
             public static string Empty = "⬜";
+            public static string Door = "🚪";
         }
 
         public static string Pen = "🖋️";

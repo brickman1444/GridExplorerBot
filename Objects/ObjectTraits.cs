@@ -77,6 +77,14 @@ namespace GridExplorerBot
                 mLookDescription = "A honeypot full of bees",
                 mCanStaticObjectBeMovedThrough = false,
             },
+            [Objects.ID.Door] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Door},
+                mInputTokens = new string[]{},
+                mDynamicObjectType = typeof(DynamicObject),
+                mLookDescription = "A door to somewhere else",
+                mCanStaticObjectBeMovedThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

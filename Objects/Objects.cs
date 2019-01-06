@@ -16,6 +16,7 @@ namespace GridExplorerBot
             Lock,
             SpiderWeb,
             HoneyPot,
+            Door,
         }
     }
 
