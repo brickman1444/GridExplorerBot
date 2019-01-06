@@ -25,32 +25,31 @@ namespace GridExplorerBot
         public static string Pen = "🖋️";
         public static string Elephant = "🐘";
 
-        static Dictionary<Objects.ID, string[]> idToCharsMap = new Dictionary<Objects.ID, string[]>(
-            new KeyValuePair<Objects.ID, string[]>[] {
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.PlayerCharacter, new string[]{Player.Default, Player.Confused} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Wall, new string[]{"⬛"} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Empty, new string[]{"⬜"} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Elephant, new string[]{Elephant} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Pen, new string[]{Pen} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Lock, new string[]{Environment.Locked, Environment.Unlocked, Environment.LockedWithKey, Environment.LockedWithPen} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.SpiderWeb, new string[]{Environment.SpiderWeb} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.HoneyPot, new string[]{Environment.HoneyPot} ), });
+        static Dictionary<Objects.ID, string[]> idToCharsMap = new Dictionary<Objects.ID, string[]>()
+        {
+            [Objects.ID.PlayerCharacter] = new string[]{Player.Default, Player.Confused},
+            [Objects.ID.Wall] = new string[]{"⬛"},
+            [Objects.ID.Empty] = new string[]{"⬜"},
+            [Objects.ID.Elephant] = new string[]{Elephant},
+            [Objects.ID.Pen] = new string[]{Pen},
+            [Objects.ID.Lock] = new string[]{Environment.Locked, Environment.Unlocked, Environment.LockedWithKey, Environment.LockedWithPen},
+            [Objects.ID.SpiderWeb] = new string[]{Environment.SpiderWeb},
+            [Objects.ID.HoneyPot] = new string[]{Environment.HoneyPot},
+        };
 
-        static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
-            new KeyValuePair<Objects.ID, Type>[] {
-                new KeyValuePair<Objects.ID, Type>( Objects.ID.PlayerCharacter, typeof(PlayerCharacter) ),
-                new KeyValuePair<Objects.ID, Type>( Objects.ID.Elephant, typeof(Elephant) ),
-                new KeyValuePair<Objects.ID, Type>( Objects.ID.Pen, typeof(InventoryObject) ),
-                new KeyValuePair<Objects.ID, Type>( Objects.ID.Lock, typeof(Lock) ),
-            }
-        );
+        static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>()
+        {
+            [Objects.ID.PlayerCharacter] = typeof(PlayerCharacter),
+            [Objects.ID.Elephant] = typeof(Elephant),
+            [Objects.ID.Pen] = typeof(InventoryObject),
+            [Objects.ID.Lock] = typeof(Lock),
+        };
 
-        static Dictionary<string, Objects.ID> tokenToIDMap = new Dictionary<string, Objects.ID>(
-            new KeyValuePair<string, Objects.ID>[] {
-                new KeyValuePair<string, Objects.ID>( "pen", Objects.ID.Pen ),
-                new KeyValuePair<string, Objects.ID>( "lock", Objects.ID.Lock ),
-            }
-        );
+        static Dictionary<string, Objects.ID> tokenToIDMap = new Dictionary<string, Objects.ID>()
+        {
+            ["pen"] = Objects.ID.Pen,
+            ["lock"] = Objects.ID.Lock,
+        };
 
         public static Objects.ID GetID(string inputText)
         {
@@ -70,12 +69,18 @@ namespace GridExplorerBot
                 return tokenToIDMap[inputText];
             }
 
+            Debug.Fail("Couldn't find id for %s", inputText);
+
             return Objects.ID.Unknown;
         }
 
         public static string GetEmoji(Objects.ID id, int index = 0)
         {
+            Debug.Assert(idToCharsMap.ContainsKey(id));
+
             string[] displayChars = idToCharsMap.GetValueOrDefault(id, new string[] { "⬜" });
+
+            Debug.Assert(index < displayChars.Length);
 
             return displayChars[index];
         }
