@@ -30,7 +30,7 @@ namespace GridExplorerBot
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
                    new DynamicObjectSetup[] {
                        new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
-                       new DynamicObjectSetup(Emoji.Elephant, new Point(1,1)),
+                       new DynamicObjectSetup(Emoji.Animals.Elephant, new Point(1,1)),
                        new DynamicObjectSetup(Emoji.Pen, new Point(4,4)),
                        new LockSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ),
@@ -45,9 +45,10 @@ namespace GridExplorerBot
                     "⬛⬜🕸️🕸️⬜⬜🍯⬜⬛",
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
                    new DynamicObjectSetup[] {
-                       new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
+                       new DynamicObjectSetup(Emoji.Player.Default, new Point(4,7)),
                        new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,8)),
                        new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,0)),
+                       new DynamicObjectSetup(Emoji.Animals.Spider, new Point(4,3)),
                        } ),
         };
     }

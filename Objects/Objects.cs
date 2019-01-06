@@ -17,6 +17,7 @@ namespace GridExplorerBot
             SpiderWeb,
             HoneyPot,
             Door,
+            Spider,
         }
     }
 
@@ -32,7 +33,7 @@ namespace GridExplorerBot
 
         public virtual bool CanBePickedUp() { return false; }
         public virtual bool CanBeMovedThrough() { return false; }
-        
+
         public virtual void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits
@@ -47,7 +48,7 @@ namespace GridExplorerBot
             mPosition.Load(stream);
         }
 
-        public virtual string Simulate(string inCommand, Game room)
+        public virtual string Simulate(string inCommand, Game game)
         {
             return "";
         }
@@ -55,6 +56,25 @@ namespace GridExplorerBot
         public virtual string Render()
         {
             return Emoji.GetEmoji(mType);
+        }
+
+        protected void MoveVerticallyToBlock(DynamicObject other, Room room)
+        {
+            Point prospectivePosition = mPosition;
+
+            if (other.mPosition.mRow < mPosition.mRow)
+            {
+                prospectivePosition.mRow--;
+            }
+            else if (other.mPosition.mRow > mPosition.mRow)
+            {
+                prospectivePosition.mRow++;
+            }
+
+            if (room.CanSpaceBeMovedTo(prospectivePosition))
+            {
+                mPosition = prospectivePosition;
+            }
         }
     }
 }

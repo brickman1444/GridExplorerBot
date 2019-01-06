@@ -39,7 +39,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Elephant] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Elephant},
+                mDisplayEmoji = new string[]{Emoji.Animals.Elephant},
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(Elephant),
                 mLookDescription = "A friendly elephant. They say hello!",
@@ -83,6 +83,14 @@ namespace GridExplorerBot
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(DynamicObject),
                 mLookDescription = "A door to somewhere else",
+                mCanStaticObjectBeMovedThrough = false,
+            },
+            [Objects.ID.Spider] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Animals.Spider},
+                mInputTokens = new string[]{},
+                mDynamicObjectType = typeof(Spider),
+                mLookDescription = "A giant hungry spider",
                 mCanStaticObjectBeMovedThrough = false,
             },
         };
