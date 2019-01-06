@@ -270,6 +270,20 @@ namespace GridExplorerBot
             return ObjectTraits.GetObjectTraits(staticObjectAtPosition).mCanStaticObjectBeMovedThrough;
         }
 
+        public bool CanSpaceBeThrownThrough(Point position)
+        {
+            DynamicObject dynamicObject = FindFirstDynamicObject(position);
+
+            if (dynamicObject != null && !dynamicObject.CanBeThrownThrough())
+            {
+                return false;
+            }
+
+            Objects.ID staticObjectAtPosition = GetStaticObject(position);
+
+            return ObjectTraits.GetObjectTraits(staticObjectAtPosition).mCanStaticObjectBeThrownThrough;
+        }
+
         public static Direction GetDirection(string directionString)
         {
             if (directionString == "north" || directionString == "up")

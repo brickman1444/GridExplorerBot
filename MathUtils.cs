@@ -18,6 +18,11 @@ namespace GridExplorerBot
             return new Point(a.mRow + b.mRow, a.mColumn + b.mColumn);
         }
 
+        public static Point operator *(Point p, int i)
+        {
+            return new Point(p.mRow * i, p.mColumn * i);
+        }
+
         public static bool operator==(Point a, Point b)
         {
             return a.mRow == b.mRow && a.mColumn == b.mColumn;

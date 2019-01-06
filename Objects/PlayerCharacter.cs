@@ -17,7 +17,8 @@ namespace GridExplorerBot
 
         static Regex moveRegex = new Regex("^(move|go|walk)\\s(?<direction>[a-z]+?)$");
         static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
-        static Regex dropRegex = new Regex("^drop\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
+        static Regex dropRegex = new Regex("^(drop|put down|place)\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
+        static Regex throwRegex = new Regex("^(toss|throw)\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
         static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
         static Regex inspectRegex = new Regex("^(inspect|look)\\s(?<direction>[a-z]+?)$");
         static Regex waitRegex = new Regex("^(|wait)$");
@@ -47,6 +48,11 @@ namespace GridExplorerBot
             {
                 Match match = dropRegex.Match(command);
                 outText = HandleDropCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
+            }
+            else if (throwRegex.IsMatch(command))
+            {
+                Match match = throwRegex.Match(command);
+                outText = HandleThrowCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
             }
             else if (useRegex.IsMatch(command))
             {
@@ -177,7 +183,7 @@ namespace GridExplorerBot
 
             if (!game.mRoom.CanSpaceBeMovedTo(prospectiveDropPosition))
             {
-                return "Space isn't open";
+                return "Space to the " + direction + " isn't open";
             }
 
             game.mInventory.RemoveItem(objectTypeToDrop);
@@ -187,6 +193,62 @@ namespace GridExplorerBot
             game.mRoom.AddNewItem(dynamicObject);
 
             return "You dropped " + objectString;
+        }
+
+        string HandleThrowCommand(string objectString, string directionString, Game game)
+        {
+            Objects.ID objectTypeToThrow = Emoji.GetID(objectString);
+
+            if (objectTypeToThrow == Objects.ID.Unknown)
+            {
+                return "";
+            }
+
+            int balance = game.mInventory.GetBalance(objectTypeToThrow);
+
+            if (balance < 1)
+            {
+                return "You don't have " + objectString;
+            }
+
+            Direction direction = Room.GetDirection(directionString);
+
+            if (direction == Direction.Unknown)
+            {
+                return "Invalid direction";
+            }
+
+            Point throwVector = MathUtils.GetVector(direction);
+
+            Point? furthestLandingPoint = null;
+
+            for (int distanceThrown = 1; distanceThrown <= 3; distanceThrown++)
+            {
+                Point testPoint = mPosition + throwVector * distanceThrown;
+
+                if (game.mRoom.CanSpaceBeMovedTo(testPoint))
+                {
+                    furthestLandingPoint = testPoint;
+                }
+
+                if (!game.mRoom.CanSpaceBeThrownThrough(testPoint))
+                {
+                    break;
+                }
+            }
+
+            if (furthestLandingPoint == null)
+            {
+                return "No space to throw to the " + direction;
+            }
+
+            game.mInventory.RemoveItem(objectTypeToThrow);
+            DynamicObject dynamicObject = Emoji.CreateObject(objectTypeToThrow);
+            dynamicObject.mPosition = furthestLandingPoint.Value;
+            dynamicObject.mType = objectTypeToThrow;
+            game.mRoom.AddNewItem(dynamicObject);
+
+            return "You threw " + objectString;
         }
 
         string HandleUseCommand(string actorString, string targetString, Game game)

@@ -37,6 +37,11 @@ namespace GridExplorerBot
         public virtual bool CanBePickedUp() { return false; }
         public virtual bool CanBeMovedThrough() { return false; }
 
+        public virtual bool CanBeThrownThrough()
+        {
+            return ObjectTraits.GetObjectTraits(mType).mCanStaticObjectBeThrownThrough;
+        }
+
         public virtual void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits

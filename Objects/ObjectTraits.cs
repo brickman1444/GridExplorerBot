@@ -10,6 +10,7 @@ namespace GridExplorerBot
         public System.Type mDynamicObjectType = null;
         public string mLookDescription = "";
         public bool mCanStaticObjectBeMovedThrough = false;
+        public bool mCanStaticObjectBeThrownThrough = true;
 
         public static Dictionary<Objects.ID, ObjectTraits> idToTraitsMap = new Dictionary<Objects.ID, ObjectTraits>()
         {
@@ -20,6 +21,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(PlayerCharacter),
                 mLookDescription = "The loyal player character.",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
             [Objects.ID.Wall] = new ObjectTraits()
             {
@@ -28,6 +30,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = null,
                 mLookDescription = "A sturdy wall.",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
             [Objects.ID.Empty] = new ObjectTraits()
             {
@@ -36,6 +39,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = null,
                 mLookDescription = "There's nothing there.",
                 mCanStaticObjectBeMovedThrough = true,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.Elephant] = new ObjectTraits()
             {
@@ -44,6 +48,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(Elephant),
                 mLookDescription = "A friendly elephant. They say hello!",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
             [Objects.ID.Pen] = new ObjectTraits()
             {
@@ -52,6 +57,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(InventoryObject),
                 mLookDescription = "A simple pen.",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.Lock] = new ObjectTraits()
             {
@@ -60,6 +66,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(Lock),
                 mLookDescription = "A lock",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
             [Objects.ID.SpiderWeb] = new ObjectTraits()
             {
@@ -68,6 +75,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = null,
                 mLookDescription = "A web to catch bugs",
                 mCanStaticObjectBeMovedThrough = true,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.HoneyPot] = new ObjectTraits()
             {
@@ -76,6 +84,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = null,
                 mLookDescription = "A honeypot full of bees",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.Door] = new ObjectTraits()
             {
@@ -84,6 +93,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(DynamicObject),
                 mLookDescription = "A door to somewhere else",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
             [Objects.ID.Spider] = new ObjectTraits()
             {
@@ -92,6 +102,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(Spider),
                 mLookDescription = "A giant hungry spider",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.Bee] = new ObjectTraits()
             {
@@ -100,6 +111,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(Bee),
                 mLookDescription = "A giant bee, busy at work",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
             [Objects.ID.Rose] = new ObjectTraits()
             {
@@ -108,6 +120,7 @@ namespace GridExplorerBot
                 mDynamicObjectType = typeof(InventoryObject),
                 mLookDescription = "A sweet smelling rose",
                 mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
         };
 
