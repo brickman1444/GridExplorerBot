@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Linq;
 
 namespace GridExplorerBot
 {
@@ -8,7 +9,7 @@ namespace GridExplorerBot
     {
         Regex mRegex = null;
         Match mMatch = null;
-        public string mSimpleText = "";
+        string mSimpleText = "";
 
         static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
         {
@@ -41,6 +42,11 @@ namespace GridExplorerBot
         {
             return mMatch.Groups[parameterName].Value;
         }
+
+        public string GetCompactSimpleText()
+        {
+            return mSimpleText;
+        }
     }
 
     public class PlayerCharacter : DynamicObject
@@ -54,13 +60,24 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Default;
 
-        static Regex moveRegex = new Regex("^(move|go|walk)\\s(?<direction>[a-z]+?)$");
-        static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
+        static Command moveCommand = new Command("(move|go|walk) <direction>");
+        static Command pickUpCommand = new Command("(pick up|take|grab) <object>");
         static Command dropCommand = new Command("(drop|put down|place) <object> <direction>");
-        static Regex throwRegex = new Regex("^(toss|throw)\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
-        static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
-        static Regex inspectRegex = new Regex("^(inspect|look)\\s(?<direction>[a-z]+?)$");
-        static Regex waitRegex = new Regex("^(|wait)$");
+        static Command throwCommand = new Command("(toss|throw) <object> <direction>");
+        static Command useCommand = new Command("use <actor> on <target>");
+        static Command inspectCommand = new Command("(inspect|look) <direction>");
+        static Command waitCommand = new Command("(wait|)");
+
+        static Command[] commands = new Command[]
+        {
+            moveCommand,
+            pickUpCommand,
+            dropCommand,
+            throwCommand,
+            useCommand,
+            inspectCommand,
+            waitCommand,
+        };
 
         public override string Simulate(string command, Game game)
         {
@@ -68,39 +85,34 @@ namespace GridExplorerBot
 
             string outText = "";
 
-            if (waitRegex.IsMatch(command))
+            if (waitCommand.IsMatch(command))
             {
                 outText = "You wait calmly";
                 mStatus = Status.Sleeping;
             }
-            else if (moveRegex.IsMatch(command))
+            else if (moveCommand.IsMatch(command))
             {
-                Match match = moveRegex.Match(command);
-                outText = HandleMoveCommand(match.Groups["direction"].Value, game.mRoom);
+                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), game.mRoom);
             }
-            else if (pickUpRegex.IsMatch(command))
+            else if (pickUpCommand.IsMatch(command))
             {
-                Match match = pickUpRegex.Match(command);
-                outText = HandleTakeCommand(match.Groups["object"].Value, game);
+                outText = HandleTakeCommand(pickUpCommand.GetParameter("object"), game);
             }
             else if (dropCommand.IsMatch(command))
             {
                 outText = HandleDropCommand(dropCommand.GetParameter("object"), dropCommand.GetParameter("direction"), game);
             }
-            else if (throwRegex.IsMatch(command))
+            else if (throwCommand.IsMatch(command))
             {
-                Match match = throwRegex.Match(command);
-                outText = HandleThrowCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
+                outText = HandleThrowCommand(throwCommand.GetParameter("object"), throwCommand.GetParameter("direction"), game);
             }
-            else if (useRegex.IsMatch(command))
+            else if (useCommand.IsMatch(command))
             {
-                Match match = useRegex.Match(command);
-                outText = HandleUseCommand(match.Groups["actor"].Value, match.Groups["target"].Value, game);
+                outText = HandleUseCommand(useCommand.GetParameter("actor"), useCommand.GetParameter("target"), game);
             }
-            else if (inspectRegex.IsMatch(command))
+            else if (inspectCommand.IsMatch(command))
             {
-                Match match = inspectRegex.Match(command);
-                outText = HandleInspectCommand(match.Groups["direction"].Value, game);
+                outText = HandleInspectCommand(inspectCommand.GetParameter("direction"), game);
             }
             else
             {
@@ -366,6 +378,14 @@ namespace GridExplorerBot
             {
                 return Descriptions.GetDescription(game.mRoom.GetStaticObject(inspectPosition));
             }
+        }
+
+        public static string GetCommandsListText()
+        {
+            var commandTexts = from command in commands
+                               select command.GetCompactSimpleText();
+
+            return string.Join('\n', commandTexts);
         }
     }
 }

@@ -181,6 +181,17 @@ namespace GridExplorerBot
                     continue;
                 }
 
+                if (userTweet.Text == "list commands" || userTweet.Text == "help")
+                {
+                    string commandsListText = PlayerCharacter.GetCommandsListText();
+
+                    Tweetinvi.Models.ITweet commandListTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(commandsListText, userReplyTweetId);
+
+                    Console.WriteLine("Published new tweet. id: " + commandListTweet.Id);
+
+                    continue;
+                }
+
                 Tweetinvi.Models.ITweet parentGridBotTweet = Tweetinvi.Tweet.GetTweet(userTweet.InReplyToStatusId.Value);
 
                 if (parentGridBotTweet.CreatedAt < Program.oldestSupportedData)
