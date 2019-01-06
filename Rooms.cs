@@ -22,6 +22,15 @@ namespace GridExplorerBot
             mDisplayText = inDisplayText;
             mStartingPosition = inStartingPosition;
         }
+
+        public virtual DynamicObject CreateObject()
+        {
+            Objects.ID id = Emoji.GetID(mDisplayText);
+            DynamicObject dynamicObject = Emoji.CreateObject(id);
+            dynamicObject.mType = id;
+            dynamicObject.mPosition = mStartingPosition;
+            return dynamicObject;
+        }
     }
 
     public class Room
@@ -54,13 +63,9 @@ namespace GridExplorerBot
                 lineIndex++;
             }
 
-            foreach (var setup in dynamicObjectSetups)
+            foreach (DynamicObjectSetup setup in dynamicObjectSetups)
             {
-                Objects.ID id = Emoji.GetID(setup.mDisplayText);
-                DynamicObject dynamicObject = Emoji.CreateObject(id);
-                dynamicObject.Setup(setup);
-
-                mDynamicObjects.Add(dynamicObject);
+                mDynamicObjects.Add(setup.CreateObject());
             }
         }
 

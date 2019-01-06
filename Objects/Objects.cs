@@ -32,19 +32,7 @@ namespace GridExplorerBot
 
         public virtual bool CanBePickedUp() { return false; }
         public virtual bool CanBeMovedThrough() { return false; }
-
-        public void Setup(DynamicObjectSetup setup)
-        {
-            mType = Emoji.GetID(setup.mDisplayText);
-            mPosition = setup.mStartingPosition;
-            SetupState(setup);
-        }
-
-        protected virtual void SetupState(DynamicObjectSetup setup)
-        {
-            Debug.Assert(Emoji.GetEmojiIndex(mType, setup.mDisplayText) == 0, "To use a non-default emoji you'll have to override Setup() and save some state");
-        }
-
+        
         public virtual void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits

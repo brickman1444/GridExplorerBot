@@ -1,7 +1,26 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
+    public class LockSetup : DynamicObjectSetup
+    {
+        public LockSetup(string inDisplayText, Point inStartingPosition) : base(inDisplayText, inStartingPosition)
+        {
+        }
+
+        public override DynamicObject CreateObject()
+        {
+            Lock lockObject = base.CreateObject() as Lock;
+            
+            Debug.Assert(lockObject != null);
+
+            lockObject.Setup(this);
+
+            return lockObject;
+        }
+    }
+
     public class Lock : DynamicObject
     {
         public enum Status
@@ -28,7 +47,7 @@ namespace GridExplorerBot
             mStatus = (Status)stream.ReadByte(2);
         }
 
-        protected override void SetupState(DynamicObjectSetup setup)
+        public void Setup(LockSetup setup)
         {
             if (setup.mDisplayText == Emoji.Environment.Locked)
             {
