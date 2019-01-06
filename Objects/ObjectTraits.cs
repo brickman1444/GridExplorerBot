@@ -11,6 +11,7 @@ namespace GridExplorerBot
         public string mLookDescription = "";
         public bool mCanStaticObjectBeMovedThrough = false;
         public bool mCanStaticObjectBeThrownThrough = true;
+        public bool mIsInsect = false;
 
         public static Dictionary<Objects.ID, ObjectTraits> idToTraitsMap = new Dictionary<Objects.ID, ObjectTraits>()
         {
@@ -112,6 +113,7 @@ namespace GridExplorerBot
                 mLookDescription = "A giant bee, busy at work",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+                mIsInsect = true,
             },
             [Objects.ID.Rose] = new ObjectTraits()
             {

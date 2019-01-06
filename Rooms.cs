@@ -36,7 +36,7 @@ namespace GridExplorerBot
     public class Room
     {
         Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows, Game.numRoomColumns];
-        List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
+        public List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
         List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
         List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
         InitialRooms.ID mInitialRoomIndex = InitialRooms.ID.Unknown;

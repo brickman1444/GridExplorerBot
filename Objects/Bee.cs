@@ -8,6 +8,11 @@ namespace GridExplorerBot
 
         public override string Simulate(string inCommand, Game game)
         {
+            if (game.mRoom.GetStaticObject(mPosition) == Objects.ID.SpiderWeb)
+            {
+                return "";
+            }
+
             if (mIsMovingTowardsFlower)
             {
                 DynamicObject flower = game.mRoom.FindFirstDynamicObject(Objects.ID.Rose);
