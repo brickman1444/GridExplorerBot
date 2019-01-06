@@ -4,6 +4,45 @@ using System.Diagnostics;
 
 namespace GridExplorerBot
 {
+    class Command
+    {
+        Regex mRegex = null;
+        Match mMatch = null;
+        public string mSimpleText = "";
+
+        static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
+        {
+            ["<"] = "(?<",
+            [">"] = ">[a-z]+?)",
+        };
+
+        public Command(string simpleText)
+        {
+            mSimpleText = simpleText;
+            string regexText = simpleText;
+
+            foreach ( var pair in regexReplacementMap)
+            {
+                regexText = regexText.Replace(pair.Key, pair.Value);
+            }
+
+            regexText = "^" + regexText + "$";
+
+            mRegex = new Regex(regexText);
+        }
+
+        public bool IsMatch(string inputText)
+        {
+            mMatch = mRegex.Match(inputText);
+            return mMatch.Success;
+        }
+
+        public string GetParameter(string parameterName)
+        {
+            return mMatch.Groups[parameterName].Value;
+        }
+    }
+
     public class PlayerCharacter : DynamicObject
     {
         public enum Status
@@ -17,7 +56,7 @@ namespace GridExplorerBot
 
         static Regex moveRegex = new Regex("^(move|go|walk)\\s(?<direction>[a-z]+?)$");
         static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
-        static Regex dropRegex = new Regex("^(drop|put down|place)\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
+        static Command dropCommand = new Command("(drop|put down|place) <object> <direction>");
         static Regex throwRegex = new Regex("^(toss|throw)\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
         static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
         static Regex inspectRegex = new Regex("^(inspect|look)\\s(?<direction>[a-z]+?)$");
@@ -44,10 +83,9 @@ namespace GridExplorerBot
                 Match match = pickUpRegex.Match(command);
                 outText = HandleTakeCommand(match.Groups["object"].Value, game);
             }
-            else if (dropRegex.IsMatch(command))
+            else if (dropCommand.IsMatch(command))
             {
-                Match match = dropRegex.Match(command);
-                outText = HandleDropCommand(match.Groups["object"].Value, match.Groups["direction"].Value, game);
+                outText = HandleDropCommand(dropCommand.GetParameter("object"), dropCommand.GetParameter("direction"), game);
             }
             else if (throwRegex.IsMatch(command))
             {
