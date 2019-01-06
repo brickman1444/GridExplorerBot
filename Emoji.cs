@@ -18,6 +18,8 @@ namespace GridExplorerBot
             public static string LockedWithKey = "🔐";
             public static string Locked = "🔒";
             public static string Unlocked = "🔓";
+            public static string SpiderWeb = "🕸️";
+            public static string HoneyPot = "🍯";
         }
 
         public static string Pen = "🖋️";
@@ -30,7 +32,9 @@ namespace GridExplorerBot
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Empty, new string[]{"⬜"} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Elephant, new string[]{Elephant} ),
                 new KeyValuePair<Objects.ID, string[]>( Objects.ID.Pen, new string[]{Pen} ),
-                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Lock, new string[]{Environment.Locked, Environment.Unlocked, Environment.LockedWithKey, Environment.LockedWithPen} ), });
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.Lock, new string[]{Environment.Locked, Environment.Unlocked, Environment.LockedWithKey, Environment.LockedWithPen} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.SpiderWeb, new string[]{Environment.SpiderWeb} ),
+                new KeyValuePair<Objects.ID, string[]>( Objects.ID.HoneyPot, new string[]{Environment.HoneyPot} ), });
 
         static Dictionary<Objects.ID, Type> idToTypeMap = new Dictionary<Objects.ID, Type>(
             new KeyValuePair<Objects.ID, Type>[] {

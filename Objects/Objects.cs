@@ -14,6 +14,8 @@ namespace GridExplorerBot
             Elephant,
             Pen,
             Lock,
+            SpiderWeb,
+            HoneyPot,
         }
     }
 
