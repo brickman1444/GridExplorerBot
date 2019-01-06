@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace GridExplorerBot
 {
     public class Bee : DynamicObject
@@ -6,9 +8,37 @@ namespace GridExplorerBot
 
         public override string Simulate(string inCommand, Game game)
         {
-            DynamicObject flower = game.mRoom.FindFirstDynamicObject(Objects.ID.Rose);
+            if (mIsMovingTowardsFlower)
+            {
+                DynamicObject flower = game.mRoom.FindFirstDynamicObject(Objects.ID.Rose);
 
-            MoveTowards(flower.mPosition, game.mRoom);
+                if (flower != null)
+                {
+                    if (MathUtils.ArePointsAdjacent(flower.mPosition, mPosition))
+                    {
+                        mIsMovingTowardsFlower = false;
+                    }
+                    else
+                    {
+                        MoveTowards(flower.mPosition, game.mRoom);
+                    }
+                }
+            }
+            else
+            {
+                Point? honeyPotPosition = game.mRoom.GetFirstStaticObjectPosition(Objects.ID.HoneyPot);
+
+                Debug.Assert(honeyPotPosition != null);
+
+                if (MathUtils.ArePointsAdjacent(honeyPotPosition.Value, mPosition))
+                {
+                    mIsMovingTowardsFlower = true;
+                }
+                else
+                {
+                    MoveTowards(honeyPotPosition.Value, game.mRoom);
+                }
+            }
 
             return "";
         }

@@ -229,6 +229,22 @@ namespace GridExplorerBot
             return mStaticRoomGrid[position.mRow, position.mColumn];
         }
 
+        public Point? GetFirstStaticObjectPosition(Objects.ID type)
+        {
+            for (int row = 0; row < Game.numRoomRows; row++)
+            {
+                for (int column = 0; column < Game.numRoomColumns; column++)
+                {
+                    if (mStaticRoomGrid[row, column] == type)
+                    {
+                        return new Point(row, column);
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public void MarkObjectForDeletion(DynamicObject dynamicObject)
         {
             mDynamicObjectsToBeDeleted.Add(dynamicObject);

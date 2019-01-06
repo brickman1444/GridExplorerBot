@@ -105,7 +105,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Plants.Rose},
                 mInputTokens = new string[]{"rose"},
-                mDynamicObjectType = typeof(DynamicObject),
+                mDynamicObjectType = typeof(InventoryObject),
                 mLookDescription = "A sweet smelling rose",
                 mCanStaticObjectBeMovedThrough = false,
             },
