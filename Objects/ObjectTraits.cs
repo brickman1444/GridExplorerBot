@@ -93,6 +93,22 @@ namespace GridExplorerBot
                 mLookDescription = "A giant hungry spider",
                 mCanStaticObjectBeMovedThrough = false,
             },
+            [Objects.ID.Bee] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Animals.Bee},
+                mInputTokens = new string[]{},
+                mDynamicObjectType = typeof(Bee),
+                mLookDescription = "A giant bee, busy at work",
+                mCanStaticObjectBeMovedThrough = false,
+            },
+            [Objects.ID.Rose] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Plants.Rose},
+                mInputTokens = new string[]{"rose"},
+                mDynamicObjectType = typeof(DynamicObject),
+                mLookDescription = "A sweet smelling rose",
+                mCanStaticObjectBeMovedThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

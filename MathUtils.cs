@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace GridExplorerBot
 {
     public struct Point
@@ -26,6 +28,11 @@ namespace GridExplorerBot
             return !(a == b);
         }
 
+        public bool IsWithinBounds()
+        {
+            return mRow >= 0 && mRow < Game.numRoomRows && mColumn >= 0 && mColumn < Game.numRoomColumns;
+        }
+
         public void Save(BitStreams.BitStream stream)
         {
             byte positionIndex = (byte)(mRow * Game.numRoomColumns + mColumn); // 81 values 7 bits
@@ -49,6 +56,18 @@ namespace GridExplorerBot
             Point deltaVector = GetVector(direction);
 
             return basePoint + deltaVector;
+        }
+
+        public static Direction[] GetDirections()
+        {
+            return new Direction[]{Direction.North, Direction.South, Direction.East, Direction.West};
+        }
+        
+        public static System.Collections.Generic.IEnumerable<Point> GetAdjacentPoints(Point basePoint)
+        {
+            return from direction in GetDirections()
+                   where GetAdjacentPoint(basePoint, direction).IsWithinBounds()
+                   select GetAdjacentPoint(basePoint, direction);
         }
 
         public static Point GetVector(Direction direction)
@@ -106,6 +125,11 @@ namespace GridExplorerBot
             }
 
             return false;
+        }
+
+        public static float GetDistance(Point a, Point b)
+        {
+            return System.MathF.Sqrt(System.MathF.Pow(a.mRow - b.mRow, 2) + System.MathF.Pow(a.mColumn - b.mColumn, 2));
         }
     }
 }

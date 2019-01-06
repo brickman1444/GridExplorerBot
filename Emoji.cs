@@ -33,6 +33,12 @@ namespace GridExplorerBot
         {
             public static string Elephant = "🐘";
             public static string Spider = "🕷️";
+            public static string Bee = "🐝";
+        }
+
+        public static class Plants
+        {
+            public static string Rose = "🌹";
         }
 
         public static Objects.ID GetID(string inputText)

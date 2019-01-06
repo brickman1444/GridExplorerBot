@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GridExplorerBot
 {
@@ -18,6 +19,8 @@ namespace GridExplorerBot
             HoneyPot,
             Door,
             Spider,
+            Bee,
+            Rose,
         }
     }
 
@@ -75,6 +78,28 @@ namespace GridExplorerBot
             {
                 mPosition = prospectivePosition;
             }
+        }
+
+        protected void MoveTowards(Point targetPosition, Room room)
+        {
+            if (MathUtils.ArePointsAdjacent(targetPosition, mPosition))
+            {
+                return;
+            }
+
+            var prospectivePositions = MathUtils.GetAdjacentPoints(mPosition);
+
+            var validPositions = from point in prospectivePositions
+                                 where point.IsWithinBounds() && room.CanSpaceBeMovedTo(point)
+                                 orderby MathUtils.GetDistance(point, targetPosition) ascending
+                                 select point;
+
+            if (!validPositions.Any())
+            {
+                return;
+            }
+
+            mPosition = validPositions.First();
         }
     }
 }
