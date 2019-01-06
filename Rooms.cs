@@ -246,12 +246,7 @@ namespace GridExplorerBot
 
             Objects.ID staticObjectAtPosition = GetStaticObject(position);
 
-            if (staticObjectAtPosition != Objects.ID.Empty)
-            {
-                return false;
-            }
-
-            return true;
+            return ObjectTraits.GetObjectTraits(staticObjectAtPosition).mCanStaticObjectBeMovedThrough;
         }
 
         public static Direction GetDirection(string directionString)

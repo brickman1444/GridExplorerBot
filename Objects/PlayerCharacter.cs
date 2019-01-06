@@ -15,7 +15,7 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Default;
 
-        static Regex moveRegex = new Regex("^(move|go)\\s(?<direction>[a-z]+?)$");
+        static Regex moveRegex = new Regex("^(move|go|walk)\\s(?<direction>[a-z]+?)$");
         static Regex pickUpRegex = new Regex("^(pick up|take|grab)\\s(?<object>[a-z]+?)$");
         static Regex dropRegex = new Regex("^drop\\s(?<object>[a-z]+?)\\s(?<direction>[a-z]+?)$");
         static Regex useRegex = new Regex("^use\\s(?<actor>[a-z]+?)\\son\\s(?<target>[a-z]+?)$");
