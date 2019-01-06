@@ -81,7 +81,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.HoneyPot},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(HoneyPot),
                 mLookDescription = "A honeypot full of bees",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,

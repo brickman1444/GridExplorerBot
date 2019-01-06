@@ -49,8 +49,8 @@ namespace GridExplorerBot
                        new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,8)),
                        new DynamicObjectSetup(Emoji.Environment.Door, new Point(4,0)),
                        new DynamicObjectSetup(Emoji.Animals.Spider, new Point(4,3)),
-                       new DynamicObjectSetup(Emoji.Animals.Bee, new Point(6,6)),
                        new DynamicObjectSetup(Emoji.Plants.Rose, new Point(1,6)),
+                       new DynamicObjectSetup(Emoji.Environment.HoneyPot, new Point(7,6)),
                        } ),
         };
     }

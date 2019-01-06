@@ -187,10 +187,7 @@ namespace GridExplorerBot
             }
 
             game.mInventory.RemoveItem(objectTypeToDrop);
-            DynamicObject dynamicObject = Emoji.CreateObject(objectTypeToDrop);
-            dynamicObject.mPosition = prospectiveDropPosition;
-            dynamicObject.mType = objectTypeToDrop;
-            game.mRoom.AddNewItem(dynamicObject);
+            game.mRoom.SpawnObject(objectTypeToDrop, prospectiveDropPosition);
 
             return "You dropped " + objectString;
         }
@@ -243,10 +240,7 @@ namespace GridExplorerBot
             }
 
             game.mInventory.RemoveItem(objectTypeToThrow);
-            DynamicObject dynamicObject = Emoji.CreateObject(objectTypeToThrow);
-            dynamicObject.mPosition = furthestLandingPoint.Value;
-            dynamicObject.mType = objectTypeToThrow;
-            game.mRoom.AddNewItem(dynamicObject);
+            game.mRoom.SpawnObject(objectTypeToThrow, furthestLandingPoint.Value);
 
             return "You threw " + objectString;
         }

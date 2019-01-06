@@ -185,6 +185,15 @@ namespace GridExplorerBot
             return outText;
         }
 
+        public DynamicObject SpawnObject(Objects.ID type, Point position)
+        {
+            DynamicObject dynamicObject = Emoji.CreateObject(type);
+            dynamicObject.mPosition = position;
+            dynamicObject.mType = type;
+            AddNewItem(dynamicObject);
+            return dynamicObject;
+        }
+
         public DynamicObject FindFirstDynamicObject(Objects.ID id)
         {
             foreach (var dynamicObject in mDynamicObjects)
