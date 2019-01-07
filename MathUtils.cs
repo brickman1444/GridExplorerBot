@@ -37,21 +37,6 @@ namespace GridExplorerBot
         {
             return mRow >= 0 && mRow < Game.numRoomRows && mColumn >= 0 && mColumn < Game.numRoomColumns;
         }
-
-        public void Save(BitStreams.BitStream stream)
-        {
-            byte positionIndex = (byte)(mRow * Game.numRoomColumns + mColumn); // 81 values 7 bits
-
-            stream.WriteByte(positionIndex, 7);
-        }
-
-        public void Load(BitStreams.BitStream stream)
-        {
-            byte positionIndex = stream.ReadByte(7);
-
-            mRow = positionIndex / Game.numRoomColumns;
-            mColumn = positionIndex % Game.numRoomColumns;
-        }
     }
 
     public static class MathUtils

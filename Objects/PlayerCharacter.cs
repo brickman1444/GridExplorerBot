@@ -93,7 +93,7 @@ namespace GridExplorerBot
             }
             else if (moveCommand.IsMatch(command))
             {
-                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), game.mRoom);
+                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), game);
             }
             else if (pickUpCommand.IsMatch(command))
             {
@@ -140,14 +140,14 @@ namespace GridExplorerBot
             return Emoji.Player.Default;
         }
 
-        private string HandleMoveCommand(string directionString, Room room)
+        private string HandleMoveCommand(string directionString, Game game)
         {
             string outText = "";
 
             Direction directionToMove = Room.GetDirection(directionString);
             string prospectiveMessage = "You moved " + directionToMove;
 
-            bool successfulMove = Move(directionToMove, room);
+            bool successfulMove = Move(directionToMove, game);
 
             if (successfulMove)
             {
@@ -161,7 +161,7 @@ namespace GridExplorerBot
             return outText;
         }
 
-        public bool Move(Direction direction, Room room)
+        public bool Move(Direction direction, Game game)
         {
             if (direction == Direction.Unknown)
             {
@@ -170,7 +170,15 @@ namespace GridExplorerBot
 
             Point prospectivePosition = MathUtils.GetAdjacentPoint(mPosition, direction);
 
-            if (room.CanSpaceBeMovedTo(prospectivePosition))
+            Door doorObject = game.mRoom.FindFirstDynamicObject(prospectivePosition) as Door;
+
+            if (doorObject != null)
+            {
+                game.SetTeleport(doorObject.mDestinationRoomID, doorObject.mDestinationSpawnLocation);
+                return false;
+            }
+
+            if (game.mRoom.CanSpaceBeMovedTo(prospectivePosition))
             {
                 mPosition = prospectivePosition;
 

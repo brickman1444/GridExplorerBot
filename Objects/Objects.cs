@@ -49,14 +49,14 @@ namespace GridExplorerBot
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits
 
-            mPosition.Save(stream);
+            stream.Write(mPosition);
         }
 
         public virtual void Load(BitStreams.BitStream stream)
         {
             mType = (Objects.ID)stream.ReadByte(7);
 
-            mPosition.Load(stream);
+            stream.Read(out mPosition);
         }
 
         public virtual string Simulate(string inCommand, Game game)

@@ -40,14 +40,17 @@ namespace GridExplorerBot
         List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
         List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
         InitialRooms.ID mInitialRoomIndex = InitialRooms.ID.Unknown;
+        public string mDescription = "";
 
         public Room()
         {
 
         }
 
-        public Room(ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups)
+        public Room(string description, ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups)
         {
+            mDescription = description;
+
             Debug.Assert(roomLines.Count == Game.numRoomRows);
 
             int lineIndex = 0;
@@ -74,6 +77,8 @@ namespace GridExplorerBot
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(roomIndex));
 
             mInitialRoomIndex = roomIndex;
+
+            mDescription = InitialRooms.initialRooms[roomIndex].mDescription;
         }
 
 
@@ -111,7 +116,7 @@ namespace GridExplorerBot
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
-            stream.WriteByte((byte)mInitialRoomIndex, 6); // 63 6
+            stream.Write(mInitialRoomIndex); // 63 6
 
             stream.WriteByte((byte)mDynamicObjects.Count, 4); // 15 4
 
@@ -127,7 +132,8 @@ namespace GridExplorerBot
 
         public void Load(BitStreams.BitStream stream)
         {
-            InitialRooms.ID roomIndex = (InitialRooms.ID)stream.ReadByte(6);
+            InitialRooms.ID roomIndex;
+            stream.Read(out roomIndex);
             SetInitialRoomIndex(roomIndex);
             LoadStaticGridFromInitialRoom();
 
@@ -328,6 +334,13 @@ namespace GridExplorerBot
             }
 
             return Direction.Unknown;
+        }
+
+        public void TeleportPlayerTo(Point destination)
+        {
+            DynamicObject playerObject = FindFirstDynamicObject(Objects.ID.PlayerCharacter);
+
+            playerObject.mPosition = destination;
         }
     }
 }

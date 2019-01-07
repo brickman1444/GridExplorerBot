@@ -91,7 +91,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Door},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = typeof(DynamicObject),
+                mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,

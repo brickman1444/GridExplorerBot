@@ -19,6 +19,8 @@ namespace GridExplorerBot
         public Room mRoom = null;
         public Inventory mInventory = null;
         string mSaveDataString = "";
+        InitialRooms.ID mTeleportDestinationRoomID = InitialRooms.ID.Unknown;
+        Point? mTeleportDestinationSpawnLocation = null;
 
         // Returns true if the game was successfully parsed
         public bool ParsePreviousText(string inputText)
@@ -40,12 +42,12 @@ namespace GridExplorerBot
             return true;
         }
 
-        public void GenerateFreshGame()
+        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.VampireCastleCourtyard)
         {
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();
             mRoom = new Room();
-            mRoom.SetInitialRoomIndex(InitialRooms.ID.VampireCastleCourtyard);
+            mRoom.SetInitialRoomIndex(initialRoomID);
             mRoom.LoadStaticGridFromInitialRoom();
             mRoom.LoadDynamicObjectsFromInitialRoom();
         }
@@ -62,6 +64,14 @@ namespace GridExplorerBot
         public void Simulate(string inputCommand)
         {
             mLastCommandResponse = mRoom.Simulate(inputCommand, this);
+
+            if (mTeleportDestinationRoomID != InitialRooms.ID.Unknown
+            && mTeleportDestinationSpawnLocation != null)
+            {
+                GenerateFreshGame(mTeleportDestinationRoomID);
+                mRoom.TeleportPlayerTo(mTeleportDestinationSpawnLocation.Value);
+                mLastCommandResponse = mRoom.mDescription;
+            }
         }
 
         public void Save()
@@ -82,6 +92,12 @@ namespace GridExplorerBot
 
             mInventory.Load(stream);
             mRoom.Load(stream);
+        }
+
+        public void SetTeleport(InitialRooms.ID destinationRoomID, Point destinationSpawnLocation)
+        {
+            mTeleportDestinationRoomID = destinationRoomID;
+            mTeleportDestinationSpawnLocation = destinationSpawnLocation;
         }
     }
 }
