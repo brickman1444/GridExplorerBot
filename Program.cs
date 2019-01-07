@@ -38,6 +38,14 @@ namespace GridExplorerBot
 
             Console.WriteLine("Beginning program");
 
+            TwitterUtils.InitializeCredentials();
+
+            /*string fooText = File.OpenText("input.txt").ReadToEnd();
+            WebUtils.WebRequest request = new WebUtils.WebRequest();
+            request.body = fooText;
+            request.httpMethod = "POST";
+            TwitterUtils.HandleAccountActivityRequest(request);*/
+
             while (true)
             {
                 string previousGameText;
