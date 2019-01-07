@@ -114,7 +114,8 @@ namespace GridExplorerBot
             {
                 outText = HandleInspectCommand(inspectCommand.GetParameter("direction"), game);
             }
-            else
+            
+            if (outText == "")
             {
                 outText = "Unknown command";
                 mStatus = Status.Confused;
@@ -185,7 +186,7 @@ namespace GridExplorerBot
 
             if (objectTypeToPickUp == Objects.ID.Unknown)
             {
-                return "";
+                return "You couldn't find that nearby";
             }
 
             DynamicObject objectToPickUp = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, objectTypeToPickUp);
@@ -212,7 +213,7 @@ namespace GridExplorerBot
 
             if (objectTypeToDrop == Objects.ID.Unknown)
             {
-                return "";
+                return "You don't have that";
             }
 
             int balance = game.mInventory.GetBalance(objectTypeToDrop);
@@ -248,7 +249,7 @@ namespace GridExplorerBot
 
             if (objectTypeToThrow == Objects.ID.Unknown)
             {
-                return "";
+                return "You don't have that";
             }
 
             int balance = game.mInventory.GetBalance(objectTypeToThrow);
@@ -301,7 +302,7 @@ namespace GridExplorerBot
 
             if (actorType == Objects.ID.Unknown)
             {
-                return "";
+                return "You don't have that";
             }
 
             int balance = game.mInventory.GetBalance(actorType);
@@ -315,7 +316,7 @@ namespace GridExplorerBot
 
             if (targetType == Objects.ID.Unknown)
             {
-                return "";
+                return "You can't find that";
             }
 
             DynamicObject targetObject = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, targetType);
