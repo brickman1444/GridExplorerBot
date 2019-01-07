@@ -45,7 +45,7 @@ namespace GridExplorerBot
 
         public static byte[] SaveDataDecode(string saveData)
         {
-            Debug.Assert(saveData.Length % 5 != 0, "Save data string length not a multiple of five " + saveData.Length + " [" + saveData + "]");
+            Debug.Assert(saveData.Length % 5 == 0, "Save data string length not a multiple of five " + saveData.Length + " [" + saveData + "]");
 
             return Cromulent.Encoding.Z85.FromZ85String(saveData);
         }
