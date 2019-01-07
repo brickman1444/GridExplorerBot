@@ -13,7 +13,8 @@ namespace GridExplorerBot
 
         public const int saveDataRowIndex = numTotalRows - 1;
 
-        string mLastCommandResponse = "";
+        static string newGameCommand = "New Game";
+        string mLastCommandResponse = newGameCommand;
 
         public Room mRoom = null;
         public Inventory mInventory = null;
@@ -41,7 +42,7 @@ namespace GridExplorerBot
 
         public void GenerateFreshGame()
         {
-            mLastCommandResponse = "";
+            mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();
             mRoom = new Room();
             mRoom.SetInitialRoomIndex(InitialRooms.ID.VampireCastleCourtyard);
