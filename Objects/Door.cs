@@ -36,6 +36,11 @@ namespace GridExplorerBot
             mDestinationSpawnLocation = setup.mDestinationSpawnLocation;
         }
 
+        public override string GetDescriptionText()
+        {
+            return InitialRooms.initialRooms[mDestinationRoomID].mDescription;
+        }
+
         public override void Save(BitStreams.BitStream stream)
         {
             base.Save(stream);

@@ -392,7 +392,7 @@ namespace GridExplorerBot
 
             if (dynamicObject != null)
             {
-                return Descriptions.GetDescription(dynamicObject.mType);
+                return dynamicObject.GetDescriptionText();
             }
             else
             {

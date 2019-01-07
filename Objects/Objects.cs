@@ -45,6 +45,11 @@ namespace GridExplorerBot
             return ObjectTraits.GetObjectTraits(mType).mCanStaticObjectBeThrownThrough;
         }
 
+        public virtual string GetDescriptionText()
+        {
+            return ObjectTraits.GetObjectTraits(mType).mLookDescription;
+        }
+
         public virtual void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits
