@@ -22,6 +22,8 @@ namespace GridExplorerBot
             Bee,
             Rose,
             WiltedRose,
+            Vase,
+            Candle,
         }
     }
 

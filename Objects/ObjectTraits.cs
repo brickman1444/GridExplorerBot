@@ -53,7 +53,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Pen] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Pen},
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Pen},
                 mInputTokens = new string[]{"pen"},
                 mDynamicObjectType = typeof(InventoryObject),
                 mLookDescription = "A simple pen.",
@@ -130,6 +130,24 @@ namespace GridExplorerBot
                 mInputTokens = new string[]{"wilted flower","wilted rose"},
                 mDynamicObjectType = null,
                 mLookDescription = "An old wilted rose",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Vase] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Vase},
+                mInputTokens = new string[]{"vase","amphora"},
+                mDynamicObjectType = null,
+                mLookDescription = "An ancient stone vase",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Candle] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Candle},
+                mInputTokens = new string[]{"candle"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A lit candle",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },

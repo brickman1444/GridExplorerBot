@@ -26,9 +26,14 @@ namespace GridExplorerBot
             public static string Wall = "⬛";
             public static string Empty = "⬜";
             public static string Door = "🚪";
+            public static string Vase = "🏺";
         }
 
-        public static string Pen = "🖋️";
+        public static class InventoryItems
+        {
+            public static string Pen = "🖋️";
+            public static string Candle = "🕯️";
+        }
 
         public static class Animals
         {

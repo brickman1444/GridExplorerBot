@@ -31,16 +31,16 @@ namespace GridExplorerBot
                    new DynamicObjectSetup[] {
                        new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
                        new DynamicObjectSetup(Emoji.Animals.Elephant, new Point(1,1)),
-                       new DynamicObjectSetup(Emoji.Pen, new Point(4,4)),
+                       new DynamicObjectSetup(Emoji.InventoryItems.Pen, new Point(4,4)),
                        new LockSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ),
             [ID.VampireCastleCourtyard] = new Room( new string[] {
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
                     "⬛🥀🥀🕸️🕸️🥀⬜🥀⬛",
                     "⬛⬜⬜🕸️🕸️⬜⬜⬜⬛",
-                    "⬛⬜⬜🕸️🕸️⬜⬜⬜⬛",
+                    "⬛🏺⬜🕸️🕸️⬜⬜⬜⬛",
                     "⬜⬜⬜🕸️🕸️⬜⬜⬜⬜",
-                    "⬛⬜⬜🕸️🕸️⬜⬜⬜⬛",
+                    "⬛🏺⬜🕸️🕸️⬜⬜⬜⬛",
                     "⬛⬜⬜🕸️🕸️⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️🕸️🕸️🍯⬜⬛",
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
@@ -51,6 +51,8 @@ namespace GridExplorerBot
                        new DynamicObjectSetup(Emoji.Animals.Spider, new Point(4,4)),
                        new DynamicObjectSetup(Emoji.Plants.Rose, new Point(1,6)),
                        new DynamicObjectSetup(Emoji.Environment.HoneyPot, new Point(7,6)),
+                       new DynamicObjectSetup(Emoji.InventoryItems.Candle, new Point(3,7)),
+                       new DynamicObjectSetup(Emoji.InventoryItems.Candle, new Point(5,7)),
                        } ),
         };
     }
