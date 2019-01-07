@@ -189,8 +189,9 @@ namespace GridExplorerBot
                 }
 
                 string userTextLower = userTweet.Text.ToLower();
+                string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
 
-                if (userTextLower == "restart" || userTextLower == "reset")
+                if (cleanedUserText == "restart" || cleanedUserText == "reset")
                 {
                     string freshGameOutput = Program.StartFreshGame();
 
@@ -198,7 +199,7 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                if (userTextLower == "list commands" || userTextLower == "help")
+                if (cleanedUserText == "list commands" || cleanedUserText == "help")
                 {
                     string commandsListText = PlayerCharacter.GetCommandsListText();
 
@@ -215,7 +216,9 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                string gameOutput = Program.RunOneTick(parentGridBotTweet.Text, userTweet.Text);
+                string cleanedParentText = System.Net.WebUtility.HtmlDecode(parentGridBotTweet.Text);
+
+                string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText);
 
                 TweetReplyTo(gameOutput, userTweet);
             }
