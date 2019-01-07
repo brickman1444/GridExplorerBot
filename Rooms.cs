@@ -233,6 +233,21 @@ namespace GridExplorerBot
             return null;
         }
 
+        public Point? FindStaticObjectAdjacentTo(Point position, Objects.ID typeToFind)
+        {
+            var adjacentPoints = MathUtils.GetAdjacentPoints(position);
+
+            foreach (Point point in adjacentPoints)
+            {
+                if (GetStaticObject(point) == typeToFind)
+                {
+                    return point;
+                }
+            }
+
+            return null;
+        }
+
         public Objects.ID GetStaticObject(Point position)
         {
             return mStaticRoomGrid[position.mRow, position.mColumn];

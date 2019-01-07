@@ -21,6 +21,7 @@ namespace GridExplorerBot
             Spider,
             Bee,
             Rose,
+            WiltedRose,
         }
     }
 

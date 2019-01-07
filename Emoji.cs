@@ -39,6 +39,7 @@ namespace GridExplorerBot
         public static class Plants
         {
             public static string Rose = "🌹";
+            public static string WiltedRose = "🥀";
         }
 
         public static Objects.ID GetID(string inputText)

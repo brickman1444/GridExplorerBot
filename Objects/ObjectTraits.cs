@@ -124,6 +124,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
+            [Objects.ID.WiltedRose] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Plants.WiltedRose},
+                mInputTokens = new string[]{"wilted flower","wilted rose"},
+                mDynamicObjectType = null,
+                mLookDescription = "An old wilted rose",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

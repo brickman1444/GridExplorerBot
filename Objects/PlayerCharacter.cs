@@ -14,7 +14,7 @@ namespace GridExplorerBot
         static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
         {
             ["<"] = "(?<",
-            [">"] = ">[a-z]+?)",
+            [">"] = ">[a-z]+?.*?)",
         };
 
         public Command(string simpleText)
@@ -187,6 +187,13 @@ namespace GridExplorerBot
             if (objectTypeToPickUp == Objects.ID.Unknown)
             {
                 return "You couldn't find that nearby";
+            }
+
+            Point? staticObjectToPickup = game.mRoom.FindStaticObjectAdjacentTo(mPosition, objectTypeToPickUp);
+
+            if (staticObjectToPickup != null)
+            {
+                return objectString + " can't be picked up";
             }
 
             DynamicObject objectToPickUp = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, objectTypeToPickUp);
