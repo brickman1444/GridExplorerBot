@@ -38,6 +38,21 @@ namespace GridExplorerBot
             var tweet = Tweetinvi.Tweet.PublishTweet(text);
         }
 
+        public static void TweetReplyTo(string text, Tweetinvi.Models.ITweet tweet)
+        {
+            string screenName = tweet.CreatedBy.ScreenName;
+            long parentTweetID = tweet.Id;
+
+            Console.WriteLine("Publishing tweet in reply to : " + screenName + " " + parentTweetID);
+            Console.WriteLine("Text: " + text);
+
+            string textToPublish = string.Format("@{0} {1}", screenName, text);
+
+            Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(textToPublish, parentTweetID);
+
+            Console.WriteLine("Published new tweet: " + newTweet.Id);
+        }
+
         public static void RegisterWebHook()
         {
             var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName, @"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
@@ -173,7 +188,9 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                if (userTweet.Text == "restart" || userTweet.Text == "reset")
+                string userTextLower = userTweet.Text.ToLower();
+
+                if (userTextLower == "restart" || userTextLower == "reset")
                 {
                     string freshGameOutput = Program.StartFreshGame();
 
@@ -181,13 +198,11 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                if (userTweet.Text == "list commands" || userTweet.Text == "help")
+                if (userTextLower == "list commands" || userTextLower == "help")
                 {
                     string commandsListText = PlayerCharacter.GetCommandsListText();
 
-                    Tweetinvi.Models.ITweet commandListTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(commandsListText, userReplyTweetId);
-
-                    Console.WriteLine("Published new tweet. id: " + commandListTweet.Id);
+                    TweetReplyTo(commandsListText, userTweet);
 
                     continue;
                 }
@@ -202,11 +217,7 @@ namespace GridExplorerBot
 
                 string gameOutput = Program.RunOneTick(parentGridBotTweet.Text, userTweet.Text);
 
-                string textToPublish = string.Format("@{0} {1}", userTweet.CreatedBy.ScreenName, gameOutput);
-
-                Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweetInReplyTo(textToPublish, userReplyTweetId);
-
-                Console.WriteLine("Published new tweet. id: " + newTweet.Id);
+                TweetReplyTo(gameOutput, userTweet);
             }
 
             WebRequestResponse response = new WebRequestResponse();

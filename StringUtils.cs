@@ -1,5 +1,6 @@
 using System.IO;
 using System.Collections.Generic;
+using System;
 
 namespace GridExplorerBot
 {
@@ -43,7 +44,18 @@ namespace GridExplorerBot
 
         public static byte[] SaveDataDecode(string saveData)
         {
-            return Cromulent.Encoding.Z85.FromZ85String(saveData);
+            string unescapedString = saveData;
+
+            unescapedString = unescapedString.Replace("&amp;", "&");
+            unescapedString = unescapedString.Replace("&lt;", "<");
+            unescapedString = unescapedString.Replace("&gt;", ">");
+
+            if (unescapedString.Length % 5 != 0)
+            {
+                Console.WriteLine("Save data string length not a multiple of five " + unescapedString.Length + " [" + unescapedString + "]");
+            }
+
+            return Cromulent.Encoding.Z85.FromZ85String(unescapedString);
         }
     }
 }
