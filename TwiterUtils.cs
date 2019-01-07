@@ -213,6 +213,8 @@ namespace GridExplorerBot
                 if (parentGridBotTweet.CreatedAt < Program.oldestSupportedData)
                 {
                     Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + tweetCreateEvent.id_str);
+
+                    TweetReplyTo("This tweet is too old to parse correctly.", userTweet);
                     continue;
                 }
 

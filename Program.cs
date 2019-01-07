@@ -6,7 +6,7 @@ namespace GridExplorerBot
 {
     static class Program
     {
-        public static DateTime oldestSupportedData = new DateTime(1546818892);
+        public static DateTime oldestSupportedData = new DateTime(1546839557);
 
         public static Stream awsLambdaHandler(Stream inputStream)
         {
