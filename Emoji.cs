@@ -12,6 +12,7 @@ namespace GridExplorerBot
             public static string Default = "😀";
             public static string Confused = "😕";
             public static string Sleeping = "😴";
+            public static string Thinking = "🤔";
         }
 
         public static class Environment

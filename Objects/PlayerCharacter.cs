@@ -56,6 +56,7 @@ namespace GridExplorerBot
             Default,
             Confused,
             Sleeping,
+            Thinking,
         }
 
         Status mStatus = Status.Default;
@@ -131,6 +132,7 @@ namespace GridExplorerBot
                 case Status.Default: return Emoji.Player.Default;
                 case Status.Confused: return Emoji.Player.Confused;
                 case Status.Sleeping: return Emoji.Player.Sleeping;
+                case Status.Thinking: return Emoji.Player.Thinking;
             }
 
             Debug.Fail("Unknnown status");
@@ -377,6 +379,8 @@ namespace GridExplorerBot
             Point inspectPosition = MathUtils.GetAdjacentPoint(mPosition, direction);
 
             DynamicObject dynamicObject = game.mRoom.FindFirstDynamicObject(inspectPosition);
+
+            mStatus = Status.Thinking;
 
             if (dynamicObject != null)
             {
