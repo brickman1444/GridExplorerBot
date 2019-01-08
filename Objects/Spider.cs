@@ -10,13 +10,13 @@ namespace GridExplorerBot
             
             if (insectInWeb != null)
             {
-                if (MathUtils.ArePointsAdjacent(insectInWeb.mPosition, mPosition))
+                if (MathUtils.ArePointsAdjacent(insectInWeb.GetPosition(), mPosition))
                 {
                     game.mRoom.MarkObjectForDeletion(insectInWeb);
                 }
                 else
                 {
-                    MoveTowards(insectInWeb.mPosition, game.mRoom);
+                    MoveTowards(insectInWeb.GetPosition(), game.mRoom);
                 }
             }
             else
@@ -35,8 +35,8 @@ namespace GridExplorerBot
         {
             foreach (DynamicObject dynamicObject in room.mDynamicObjects)
             {
-                if (ObjectTraits.GetObjectTraits(dynamicObject.mType).mIsInsect
-                && room.GetStaticObject(dynamicObject.mPosition) == Objects.ID.SpiderWeb)
+                if (ObjectTraits.GetObjectTraits(dynamicObject.GetTypeID()).mIsInsect
+                && room.GetStaticObject(dynamicObject.GetPosition()) == Objects.ID.SpiderWeb)
                 {
                     return dynamicObject;
                 }

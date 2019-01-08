@@ -19,13 +19,13 @@ namespace GridExplorerBot
 
                 if (flower != null)
                 {
-                    if (MathUtils.ArePointsAdjacent(flower.mPosition, mPosition))
+                    if (MathUtils.ArePointsAdjacent(flower.GetPosition(), mPosition))
                     {
                         mIsMovingTowardsFlower = false;
                     }
                     else
                     {
-                        MoveTowards(flower.mPosition, game.mRoom);
+                        MoveTowards(flower.GetPosition(), game.mRoom);
                     }
                 }
             }

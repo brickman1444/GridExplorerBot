@@ -26,10 +26,7 @@ namespace GridExplorerBot
         public virtual DynamicObject CreateObject()
         {
             Objects.ID id = Emoji.GetID(mDisplayText);
-            DynamicObject dynamicObject = Emoji.CreateObject(id);
-            dynamicObject.mType = id;
-            dynamicObject.mPosition = mStartingPosition;
-            return dynamicObject;
+            return DynamicObject.Create(id, mStartingPosition);
         }
     }
 
@@ -189,9 +186,7 @@ namespace GridExplorerBot
 
         public DynamicObject SpawnObject(Objects.ID type, Point position)
         {
-            DynamicObject dynamicObject = Emoji.CreateObject(type);
-            dynamicObject.mPosition = position;
-            dynamicObject.mType = type;
+            DynamicObject dynamicObject = DynamicObject.Create(type, position);
             AddNewItem(dynamicObject);
             return dynamicObject;
         }
@@ -200,7 +195,7 @@ namespace GridExplorerBot
         {
             foreach (var dynamicObject in mDynamicObjects)
             {
-                if (dynamicObject.mType == id)
+                if (dynamicObject.GetTypeID() == id)
                 {
                     return dynamicObject;
                 }
@@ -213,7 +208,7 @@ namespace GridExplorerBot
         {
             foreach (var dynamicObject in mDynamicObjects)
             {
-                if (dynamicObject.mPosition == position)
+                if (dynamicObject.GetPosition() == position)
                 {
                     return dynamicObject;
                 }
@@ -226,7 +221,7 @@ namespace GridExplorerBot
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                if (MathUtils.ArePointsAdjacent(dynamicObject.mPosition, position) && dynamicObject.mType == typeToFind)
+                if (MathUtils.ArePointsAdjacent(dynamicObject.GetPosition(), position) && dynamicObject.GetTypeID() == typeToFind)
                 {
                     return dynamicObject;
                 }
@@ -285,7 +280,7 @@ namespace GridExplorerBot
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)
             {
-                if (dynamicObject.mPosition == position && !dynamicObject.CanBeMovedThrough())
+                if (dynamicObject.GetPosition() == position && !dynamicObject.CanBeMovedThrough())
                 {
                     return false;
                 }
@@ -336,7 +331,7 @@ namespace GridExplorerBot
         {
             DynamicObject playerObject = FindFirstDynamicObject(Objects.ID.PlayerCharacter);
 
-            playerObject.mPosition = destination;
+            playerObject.TeleportTo(destination);
         }
     }
 }

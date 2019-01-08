@@ -75,7 +75,7 @@ namespace GridExplorerBot
 
         public void AddItem(DynamicObject dynamicObject)
         {
-            InventoryEntry existingEntry = GetEntry(dynamicObject.mType);
+            InventoryEntry existingEntry = GetEntry(dynamicObject.GetTypeID());
 
             if (existingEntry != null)
             {
@@ -85,9 +85,9 @@ namespace GridExplorerBot
             {
                 InventoryEntry entry = new InventoryEntry()
                 {
-                    mDisplayEmojiIndex = Emoji.GetEmojiIndex(dynamicObject.mType, dynamicObject.Render()),
+                    mDisplayEmojiIndex = Emoji.GetEmojiIndex(dynamicObject.GetTypeID(), dynamicObject.Render()),
                     mQuantity = 1,
-                    mType = dynamicObject.mType
+                    mType = dynamicObject.GetTypeID(),
                 };
 
                 mEntries.Add(entry);
