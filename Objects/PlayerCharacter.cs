@@ -170,7 +170,7 @@ namespace GridExplorerBot
 
             Point prospectivePosition = MathUtils.GetAdjacentPoint(mPosition, direction);
 
-            Door doorObject = game.mRoom.FindFirstDynamicObject(prospectivePosition) as Door;
+            Door doorObject = game.mRoom.GetFirstObject(prospectivePosition) as Door;
 
             if (doorObject != null)
             {

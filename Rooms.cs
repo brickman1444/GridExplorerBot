@@ -26,7 +26,7 @@ namespace GridExplorerBot
 
         }
 
-        public Room(string description, ICollection<string> roomLines, IEnumerable<GridObjectSetup> dynamicObjectSetups)
+        public Room(string description, ICollection<string> roomLines, IEnumerable<GridObjectSetup> gridObjectSetups)
         {
             mDescription = description;
 
@@ -46,9 +46,19 @@ namespace GridExplorerBot
                 lineIndex++;
             }
 
-            foreach (GridObjectSetup setup in dynamicObjectSetups)
+            foreach (GridObjectSetup setup in gridObjectSetups)
             {
-                mDynamicObjects.Add((DynamicObject)setup.CreateObject());
+                GridObject gridObject = setup.CreateObject();
+
+                if (gridObject as DynamicObject != null)
+                {
+                    mDynamicObjects.Add((DynamicObject)gridObject);
+                }
+                else
+                {
+                    Point position = gridObject.GetPosition();
+                    mStaticRoomGrid[position.mRow, position.mColumn] = (StaticObject)gridObject;
+                }
             }
         }
 

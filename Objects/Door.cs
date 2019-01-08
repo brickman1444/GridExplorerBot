@@ -25,7 +25,7 @@ namespace GridExplorerBot
         }
     }
 
-    public class Door : DynamicObject
+    public class Door : StaticObject
     {
         public InitialRooms.ID mDestinationRoomID = InitialRooms.ID.Unknown;
         public Point mDestinationSpawnLocation = new Point();
@@ -39,22 +39,6 @@ namespace GridExplorerBot
         public override string GetDescriptionText()
         {
             return InitialRooms.initialRooms[mDestinationRoomID].mDescription;
-        }
-
-        public override void Save(BitStreams.BitStream stream)
-        {
-            base.Save(stream);
-
-            stream.Write(mDestinationRoomID);
-            stream.Write(mDestinationSpawnLocation);
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            base.Load(stream);
-
-            stream.Read(out mDestinationRoomID);
-            stream.Read(out mDestinationSpawnLocation);
         }
     }
 }
