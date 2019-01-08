@@ -36,7 +36,7 @@ namespace GridExplorerBot
             foreach (DynamicObject dynamicObject in room.mDynamicObjects)
             {
                 if (ObjectTraits.GetObjectTraits(dynamicObject.GetTypeID()).mIsInsect
-                && room.GetStaticObject(dynamicObject.GetPosition()) == Objects.ID.SpiderWeb)
+                && room.GetStaticObject(dynamicObject.GetPosition()).GetTypeID() == Objects.ID.SpiderWeb)
                 {
                     return dynamicObject;
                 }

@@ -3,13 +3,13 @@ using System.Diagnostics;
 
 namespace GridExplorerBot
 {
-    public class LockSetup : DynamicObjectSetup
+    public class LockSetup : GridObjectSetup
     {
         public LockSetup(string inDisplayText, Point inStartingPosition) : base(inDisplayText, inStartingPosition)
         {
         }
 
-        public override DynamicObject CreateObject()
+        public override GridObject CreateObject()
         {
             Lock lockObject = base.CreateObject() as Lock;
             

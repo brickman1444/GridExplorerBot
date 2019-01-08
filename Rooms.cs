@@ -12,27 +12,9 @@ namespace GridExplorerBot
         South
     }
 
-    public class DynamicObjectSetup
-    {
-        public readonly string mDisplayText;
-        public readonly Point mStartingPosition;
-
-        public DynamicObjectSetup(string inDisplayText, Point inStartingPosition)
-        {
-            mDisplayText = inDisplayText;
-            mStartingPosition = inStartingPosition;
-        }
-
-        public virtual DynamicObject CreateObject()
-        {
-            Objects.ID id = Emoji.GetID(mDisplayText);
-            return DynamicObject.Create(id, mStartingPosition);
-        }
-    }
-
     public class Room
     {
-        Objects.ID[,] mStaticRoomGrid = new Objects.ID[Game.numRoomRows, Game.numRoomColumns];
+        StaticObject[,] mStaticRoomGrid = new StaticObject[Game.numRoomRows, Game.numRoomColumns];
         public List<DynamicObject> mDynamicObjects = new List<DynamicObject>();
         List<DynamicObject> mDynamicObjectsToBeDeleted = new List<DynamicObject>();
         List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
@@ -44,7 +26,7 @@ namespace GridExplorerBot
 
         }
 
-        public Room(string description, ICollection<string> roomLines, IEnumerable<DynamicObjectSetup> dynamicObjectSetups)
+        public Room(string description, ICollection<string> roomLines, IEnumerable<GridObjectSetup> dynamicObjectSetups)
         {
             mDescription = description;
 
@@ -57,15 +39,16 @@ namespace GridExplorerBot
 
                 for (int columnIndex = 0; columnIndex < splitLine.Count; columnIndex++)
                 {
-                    mStaticRoomGrid[lineIndex, columnIndex] = Emoji.GetID(splitLine[columnIndex]);
+                    GridObject staticObject = GridObject.Create(Emoji.GetID(splitLine[columnIndex]), new Point(lineIndex, columnIndex));
+                    mStaticRoomGrid[lineIndex, columnIndex] = (StaticObject)staticObject;
                 }
 
                 lineIndex++;
             }
 
-            foreach (DynamicObjectSetup setup in dynamicObjectSetups)
+            foreach (GridObjectSetup setup in dynamicObjectSetups)
             {
-                mDynamicObjects.Add(setup.CreateObject());
+                mDynamicObjects.Add((DynamicObject)setup.CreateObject());
             }
         }
 
@@ -81,32 +64,21 @@ namespace GridExplorerBot
 
         public string Render()
         {
-            string outString = "";
+            List<string> lines = new List<string>();
 
-            for (int rowIndex = 0; rowIndex < mStaticRoomGrid.GetLength(0); rowIndex++)
+            for (int rowIndex = 0; rowIndex < Game.numRoomRows; rowIndex++)
             {
-                for (int columnIndex = 0; columnIndex < mStaticRoomGrid.GetLength(1); columnIndex++)
+                string line = "";
+                for (int columnIndex = 0; columnIndex < Game.numRoomColumns; columnIndex++)
                 {
-                    DynamicObject dynamicObject = FindFirstDynamicObject(new Point(rowIndex, columnIndex));
+                    GridObject gridObject = GetFirstObject(new Point(rowIndex, columnIndex));
 
-                    if (dynamicObject == null)
-                    {
-                        outString += Emoji.GetEmoji(mStaticRoomGrid[rowIndex, columnIndex], 0);
-                    }
-                    else
-                    {
-                        outString += dynamicObject.Render();
-                    }
+                    line += gridObject.Render();
                 }
-
-                // Add a new line after every line except the end
-                if (rowIndex < mStaticRoomGrid.GetLength(0) - 1)
-                {
-                    outString += '\n';
-                }
+                lines.Add(line);
             }
 
-            return outString;
+            return string.Join('\n', lines);;
         }
 
         public void Save(BitStreams.BitStream stream)
@@ -136,7 +108,7 @@ namespace GridExplorerBot
 
             for (int dynamicObjectIndex = 0; dynamicObjectIndex < dynamicObjectCount; dynamicObjectIndex++)
             {
-                DynamicObject dynamicObject = Emoji.CreateObject(stream);
+                DynamicObject dynamicObject = (DynamicObject)Emoji.CreateObject(stream);
 
                 dynamicObject.Load(stream);
                 mDynamicObjects.Add(dynamicObject);
@@ -186,9 +158,43 @@ namespace GridExplorerBot
 
         public DynamicObject SpawnObject(Objects.ID type, Point position)
         {
-            DynamicObject dynamicObject = DynamicObject.Create(type, position);
+            DynamicObject dynamicObject = (DynamicObject)GridObject.Create(type, position);
             AddNewItem(dynamicObject);
             return dynamicObject;
+        }
+
+        public GridObject GetFirstObject(Point position)
+        {
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.GetPosition() == position)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            return mStaticRoomGrid[position.mRow,position.mColumn];
+        }
+
+        public GridObject GetFirstObject(Objects.ID typeID)
+        {
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.GetTypeID() == typeID)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            foreach (StaticObject staticObject in mStaticRoomGrid)
+            {
+                if (staticObject.GetTypeID() == typeID)
+                {
+                    return staticObject;
+                }
+            }
+
+            return null;
         }
 
         public DynamicObject FindFirstDynamicObject(Objects.ID id)
@@ -217,6 +223,11 @@ namespace GridExplorerBot
             return null;
         }
 
+        public StaticObject GetStaticObject(Point position)
+        {
+            return mStaticRoomGrid[position.mRow,position.mColumn];
+        }
+
         public DynamicObject FindDynamicObjectAdjacentTo(Point position, Objects.ID typeToFind)
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)
@@ -230,36 +241,16 @@ namespace GridExplorerBot
             return null;
         }
 
-        public Point? FindStaticObjectAdjacentTo(Point position, Objects.ID typeToFind)
+        public StaticObject FindStaticObjectAdjacentTo(Point position, Objects.ID typeToFind)
         {
             var adjacentPoints = MathUtils.GetAdjacentPoints(position);
 
             foreach (Point point in adjacentPoints)
             {
-                if (GetStaticObject(point) == typeToFind)
+                StaticObject staticObject = GetStaticObject(point);
+                if (staticObject.GetTypeID() == typeToFind)
                 {
-                    return point;
-                }
-            }
-
-            return null;
-        }
-
-        public Objects.ID GetStaticObject(Point position)
-        {
-            return mStaticRoomGrid[position.mRow, position.mColumn];
-        }
-
-        public Point? GetFirstStaticObjectPosition(Objects.ID type)
-        {
-            for (int row = 0; row < Game.numRoomRows; row++)
-            {
-                for (int column = 0; column < Game.numRoomColumns; column++)
-                {
-                    if (mStaticRoomGrid[row, column] == type)
-                    {
-                        return new Point(row, column);
-                    }
+                    return staticObject;
                 }
             }
 
@@ -278,31 +269,12 @@ namespace GridExplorerBot
 
         public bool CanSpaceBeMovedTo(Point position)
         {
-            foreach (DynamicObject dynamicObject in mDynamicObjects)
-            {
-                if (dynamicObject.GetPosition() == position && !dynamicObject.CanBeMovedThrough())
-                {
-                    return false;
-                }
-            }
-
-            Objects.ID staticObjectAtPosition = GetStaticObject(position);
-
-            return ObjectTraits.GetObjectTraits(staticObjectAtPosition).mCanStaticObjectBeMovedThrough;
+            return GetFirstObject(position).CanBeMovedThrough();
         }
 
         public bool CanSpaceBeThrownThrough(Point position)
         {
-            DynamicObject dynamicObject = FindFirstDynamicObject(position);
-
-            if (dynamicObject != null && !dynamicObject.CanBeThrownThrough())
-            {
-                return false;
-            }
-
-            Objects.ID staticObjectAtPosition = GetStaticObject(position);
-
-            return ObjectTraits.GetObjectTraits(staticObjectAtPosition).mCanStaticObjectBeThrownThrough;
+            return GetFirstObject(position).CanBeThrownThrough();
         }
 
         public static Direction GetDirection(string directionString)

@@ -1,5 +1,23 @@
 namespace GridExplorerBot
 {
+    public class GridObjectSetup
+    {
+        public readonly string mDisplayText;
+        public readonly Point mStartingPosition;
+
+        public GridObjectSetup(string inDisplayText, Point inStartingPosition)
+        {
+            mDisplayText = inDisplayText;
+            mStartingPosition = inStartingPosition;
+        }
+
+        public virtual GridObject CreateObject()
+        {
+            Objects.ID id = Emoji.GetID(mDisplayText);
+            return GridObject.Create(id, mStartingPosition);
+        }
+    }
+
     public abstract class GridObject
     {
         protected Point mPosition = new Point();
@@ -9,13 +27,19 @@ namespace GridExplorerBot
 
         public Objects.ID GetTypeID() { return mType; }
 
-        public abstract string Render();
-
         public abstract void Save(BitStreams.BitStream stream);
 
         public abstract void Load(BitStreams.BitStream stream);
 
-        public abstract string Simulate(string command, Game game);
+        public virtual string Render()
+        {
+            return Emoji.GetEmoji(GetTypeID());
+        }
+
+        public virtual string Simulate(string command, Game game)
+        {
+            return "";
+        }
 
         public ObjectTraits GetObjectTraits()
         {
@@ -24,7 +48,10 @@ namespace GridExplorerBot
 
         public virtual bool CanBePickedUp() { return false; }
 
-        public virtual bool CanBeMovedThrough() { return false; }
+        public virtual bool CanBeMovedThrough()
+        {
+            return GetObjectTraits().mCanStaticObjectBeMovedThrough;
+        }
 
         public virtual bool CanBeThrownThrough()
         {
@@ -34,6 +61,14 @@ namespace GridExplorerBot
         public virtual string GetDescriptionText()
         {
             return GetObjectTraits().mLookDescription;
+        }
+
+        public static GridObject Create(Objects.ID typeID, Point startinPosition)
+        {
+            GridObject dynamicObject = Emoji.CreateObject(typeID);
+            dynamicObject.mType = typeID;
+            dynamicObject.mPosition = startinPosition;
+            return dynamicObject;
         }
     }
 }

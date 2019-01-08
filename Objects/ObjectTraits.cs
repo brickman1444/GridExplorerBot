@@ -28,7 +28,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Wall},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "A sturdy wall.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
@@ -37,7 +37,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Empty},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "There's nothing there.",
                 mCanStaticObjectBeMovedThrough = true,
                 mCanStaticObjectBeThrownThrough = true,
@@ -73,7 +73,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.SpiderWeb},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "A web to catch bugs",
                 mCanStaticObjectBeMovedThrough = true,
                 mCanStaticObjectBeThrownThrough = true,
@@ -128,7 +128,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Plants.WiltedRose},
                 mInputTokens = new string[]{"wilted flower","wilted rose"},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "An old wilted rose",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
@@ -137,7 +137,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Vase},
                 mInputTokens = new string[]{"vase","amphora"},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "An ancient stone vase",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
@@ -155,7 +155,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Globe},
                 mInputTokens = new string[]{},
-                mDynamicObjectType = null,
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "The edge of the world",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,

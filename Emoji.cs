@@ -91,16 +91,16 @@ namespace GridExplorerBot
             return -1;
         }
 
-        public static DynamicObject CreateObject(Objects.ID id)
+        public static GridObject CreateObject(Objects.ID id)
         {
-            Type dynamicObjectType = ObjectTraits.GetObjectTraits(id).mDynamicObjectType;
+            Type objectType = ObjectTraits.GetObjectTraits(id).mDynamicObjectType;
 
-            Debug.Assert(dynamicObjectType == typeof(DynamicObject) || dynamicObjectType.IsSubclassOf(typeof(DynamicObject)));
+            Debug.Assert(objectType.IsSubclassOf(typeof(GridObject)));
 
-            return (DynamicObject)Activator.CreateInstance(dynamicObjectType);
+            return (GridObject)Activator.CreateInstance(objectType);
         }
 
-        public static DynamicObject CreateObject(BitStreams.BitStream stream)
+        public static GridObject CreateObject(BitStreams.BitStream stream)
         {
             // Because there's no interface to get the current offset of the stream,
             // we can't progress forward and then seek back to where we were.

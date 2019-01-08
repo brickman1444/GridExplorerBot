@@ -6,14 +6,6 @@ namespace GridExplorerBot
 {
     public class DynamicObject : GridObject
     {
-        public static DynamicObject Create(Objects.ID typeID, Point startinPosition)
-        {
-            DynamicObject dynamicObject = Emoji.CreateObject(typeID);
-            dynamicObject.mType = typeID;
-            dynamicObject.mPosition = startinPosition;
-            return dynamicObject;
-        }
-
         public override void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mType, 7);  // 127 7 bits
@@ -27,17 +19,7 @@ namespace GridExplorerBot
 
             stream.Read(out mPosition);
         }
-
-        public override string Simulate(string inCommand, Game game)
-        {
-            return "";
-        }
-
-        public override string Render()
-        {
-            return Emoji.GetEmoji(mType);
-        }
-
+        
         public void TeleportTo(Point destination)
         {
             mPosition = destination;

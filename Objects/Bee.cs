@@ -8,7 +8,7 @@ namespace GridExplorerBot
 
         public override string Simulate(string inCommand, Game game)
         {
-            if (game.mRoom.GetStaticObject(mPosition) == Objects.ID.SpiderWeb)
+            if (game.mRoom.GetStaticObject(mPosition).GetTypeID() == Objects.ID.SpiderWeb)
             {
                 return "";
             }
@@ -31,17 +31,17 @@ namespace GridExplorerBot
             }
             else
             {
-                Point? honeyPotPosition = game.mRoom.GetFirstStaticObjectPosition(Objects.ID.HoneyPot);
+                HoneyPot honeyPot = (HoneyPot)game.mRoom.GetFirstObject(Objects.ID.HoneyPot);
 
-                Debug.Assert(honeyPotPosition != null);
+                Debug.Assert(honeyPot != null);
 
-                if (MathUtils.ArePointsAdjacent(honeyPotPosition.Value, mPosition))
+                if (MathUtils.ArePointsAdjacent(honeyPot.GetPosition(), mPosition))
                 {
                     mIsMovingTowardsFlower = true;
                 }
                 else
                 {
-                    MoveTowards(honeyPotPosition.Value, game.mRoom);
+                    MoveTowards(honeyPot.GetPosition(), game.mRoom);
                 }
             }
 

@@ -30,10 +30,10 @@ namespace GridExplorerBot
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛" },
-                   new DynamicObjectSetup[] {
-                       new DynamicObjectSetup(Emoji.Player.Default, new Point(5,5)),
-                       new DynamicObjectSetup(Emoji.Animals.Elephant, new Point(1,1)),
-                       new DynamicObjectSetup(Emoji.InventoryItems.Pen, new Point(4,4)),
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(5,5)),
+                       new GridObjectSetup(Emoji.Animals.Elephant, new Point(1,1)),
+                       new GridObjectSetup(Emoji.InventoryItems.Pen, new Point(4,4)),
                        new LockSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ),
             [ID.VampireCastleCourtyard] = new Room( "Courtyard of Vampire Castle",
@@ -47,15 +47,14 @@ namespace GridExplorerBot
                     "⬛⬜⬜🕸️🕸️⬜⬜⬜⬛",
                     "⬛⬜🕸️🕸️🕸️🕸️🍯⬜⬛",
                     "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
-                   new DynamicObjectSetup[] {
-                       new DynamicObjectSetup(Emoji.Player.Default, new Point(4,7)),
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(4,7)),
                        new DoorSetup(Emoji.Environment.Door, new Point(4,8), InitialRooms.ID.Overworld, new Point(5,4)),
                        new DoorSetup(Emoji.Environment.Door, new Point(4,0), InitialRooms.ID.Overworld, new Point(5,4)),
-                       new DynamicObjectSetup(Emoji.Animals.Spider, new Point(4,4)),
-                       new DynamicObjectSetup(Emoji.Plants.Rose, new Point(1,6)),
-                       new DynamicObjectSetup(Emoji.Environment.HoneyPot, new Point(7,6)),
-                       new DynamicObjectSetup(Emoji.InventoryItems.Candle, new Point(3,7)),
-                       new DynamicObjectSetup(Emoji.InventoryItems.Candle, new Point(5,7)),
+                       new GridObjectSetup(Emoji.Animals.Spider, new Point(4,4)),
+                       new GridObjectSetup(Emoji.Plants.Rose, new Point(1,6)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(3,7)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(5,7)),
                        } ),
             [InitialRooms.ID.Overworld] = new Room( "The World",
                     new string[] {
@@ -68,8 +67,8 @@ namespace GridExplorerBot
                     "🌍⬜⬜⬜⬜⬜⬜⬜🌍",
                     "🌍⬜⬜⬜⬜⬜⬜⬜🌍",
                     "🌍🌍🌍🌍🌍🌍🌍🌍🌍", },
-                   new DynamicObjectSetup[] {
-                       new DynamicObjectSetup(Emoji.Player.Default, new Point(5,4)),
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(5,4)),
                        new DoorSetup(Emoji.Environment.Door, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,7)),
                        } ),
         };

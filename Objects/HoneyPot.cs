@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace GridExplorerBot
 {
-    public class HoneyPot : DynamicObject
+    public class HoneyPot : StaticObject
     {
         public override string Simulate(string inCommand, Game game)
         {

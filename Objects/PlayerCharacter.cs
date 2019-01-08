@@ -199,7 +199,7 @@ namespace GridExplorerBot
                 return "You couldn't find that nearby";
             }
 
-            Point? staticObjectToPickup = game.mRoom.FindStaticObjectAdjacentTo(mPosition, objectTypeToPickUp);
+            StaticObject staticObjectToPickup = game.mRoom.FindStaticObjectAdjacentTo(mPosition, objectTypeToPickUp);
 
             if (staticObjectToPickup != null)
             {
@@ -386,18 +386,11 @@ namespace GridExplorerBot
 
             Point inspectPosition = MathUtils.GetAdjacentPoint(mPosition, direction);
 
-            DynamicObject dynamicObject = game.mRoom.FindFirstDynamicObject(inspectPosition);
+            GridObject inspectObject = game.mRoom.GetFirstObject(inspectPosition);
 
             mStatus = Status.Thinking;
 
-            if (dynamicObject != null)
-            {
-                return dynamicObject.GetDescriptionText();
-            }
-            else
-            {
-                return Descriptions.GetDescription(game.mRoom.GetStaticObject(inspectPosition));
-            }
+            return inspectObject.GetDescriptionText();
         }
 
         public static string GetCommandsListText()

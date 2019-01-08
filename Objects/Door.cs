@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace GridExplorerBot
 {
-    public class DoorSetup : DynamicObjectSetup
+    public class DoorSetup : GridObjectSetup
     {
         public InitialRooms.ID mDestinationRoomID = InitialRooms.ID.Unknown;
         public Point mDestinationSpawnLocation = new Point();
@@ -13,7 +13,7 @@ namespace GridExplorerBot
             mDestinationSpawnLocation = destinationSpawnLocation;
         }
 
-        public override DynamicObject CreateObject()
+        public override GridObject CreateObject()
         {
             Door doorObject = base.CreateObject() as Door;
             
