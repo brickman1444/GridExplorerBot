@@ -151,6 +151,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
+            [Objects.ID.Globe] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Globe},
+                mInputTokens = new string[]{},
+                mDynamicObjectType = null,
+                mLookDescription = "The edge of the world",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

@@ -35,3 +35,4 @@ spider guarding door. Bees travel between a honey pot and a flower. Pick up and 
 * Elephant at circus blocking door. Throw cheese at elephant. Mouse chases cheese and scares elephant.
 * Couch and lamp somewhere. Rubbing the lamp releases a genie that rewards the user with 3 wishes for any items.
 * Church / temple that requires prayers to give the player a reward. 1 like = 1 prayer, 1 retweet / quote tweet = 5 prayers
+* Crypt with funeral urns and ghosts
