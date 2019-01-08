@@ -28,6 +28,7 @@ namespace GridExplorerBot
             public static string Door = "🚪";
             public static string Vase = "🏺";
             public static string Globe = "🌍";
+            public static string SatelliteAntenna = "📡";
         }
 
         public static class InventoryItems
@@ -47,6 +48,7 @@ namespace GridExplorerBot
         {
             public static string Rose = "🌹";
             public static string WiltedRose = "🥀";
+            public static string ChristmasTree = "🎄";
         }
 
         public static class Buildings
