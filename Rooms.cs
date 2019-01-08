@@ -146,6 +146,11 @@ namespace GridExplorerBot
                 }
             }
 
+            foreach (StaticObject staticObject in mStaticRoomGrid)
+            {
+                staticObject.Simulate(inCommand,game);
+            }
+
             foreach (DynamicObject dynamicObject in mDynamicObjectsToBeDeleted)
             {
                 mDynamicObjects.Remove(dynamicObject);
