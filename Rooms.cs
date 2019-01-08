@@ -112,7 +112,7 @@ namespace GridExplorerBot
             return outString;
         }
 
-        public string Save(BitStreams.BitStream stream)
+        public void Save(BitStreams.BitStream stream)
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
@@ -124,10 +124,6 @@ namespace GridExplorerBot
             {
                 dynamicObject.Save(stream);
             }
-
-            string outSaveData = StringUtils.SaveDataEncode(stream.GetStreamData());
-
-            return outSaveData;
         }
 
         public void Load(BitStreams.BitStream stream)

@@ -51,7 +51,7 @@ namespace GridExplorerBot
             return string.Join(' ', renderedEntries);
         }
 
-        public string Save(BitStreams.BitStream stream)
+        public void Save(BitStreams.BitStream stream)
         {
             stream.WriteByte((byte)mEntries.Count, 4); // 10 4
 
@@ -59,10 +59,6 @@ namespace GridExplorerBot
             {
                 entry.Save(stream);
             }
-
-            string outSaveData = StringUtils.SaveDataEncode(stream.GetStreamData());
-
-            return outSaveData;
         }
 
         public void Load(BitStreams.BitStream stream)
