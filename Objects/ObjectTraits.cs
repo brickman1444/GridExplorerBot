@@ -89,7 +89,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Door] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Environment.Door},
+                mDisplayEmoji = new string[]{Emoji.Environment.Door, Emoji.Buildings.Castle},
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",

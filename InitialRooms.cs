@@ -69,7 +69,7 @@ namespace GridExplorerBot
                     "🌍🌍🌍🌍🌍🌍🌍🌍🌍", },
                    new GridObjectSetup[] {
                        new GridObjectSetup(Emoji.Player.Default, new Point(5,4)),
-                       new DoorSetup(Emoji.Environment.Door, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,7)),
+                       new DoorSetup(Emoji.Buildings.Castle, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,7), "Vampire Castle"),
                        } ),
         };
     }

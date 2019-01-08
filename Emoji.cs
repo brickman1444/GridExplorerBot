@@ -49,6 +49,11 @@ namespace GridExplorerBot
             public static string WiltedRose = "🥀";
         }
 
+        public static class Buildings
+        {
+            public static string Castle = "🏰";
+        }
+
         public static Objects.ID GetID(string inputText)
         {
             foreach (KeyValuePair<Objects.ID, ObjectTraits> pair in ObjectTraits.idToTraitsMap)
