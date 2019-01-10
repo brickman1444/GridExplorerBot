@@ -183,6 +183,24 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
+            [Objects.ID.Vampire] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Vampire.ManLight,
+                                             Emoji.Vampire.ManMediumLight,
+                                             Emoji.Vampire.ManMedium,
+                                             Emoji.Vampire.ManMediumDark,
+                                             Emoji.Vampire.ManDark,
+                                             Emoji.Vampire.WomanLight,
+                                             Emoji.Vampire.WomanMediumLight,
+                                             Emoji.Vampire.WomanMedium,
+                                             Emoji.Vampire.WomanMediumDark,
+                                             Emoji.Vampire.WomanDark},
+                mInputTokens = new string[]{"vampire"},
+                mDynamicObjectType = typeof(Vampire),
+                mLookDescription = "An well-dressed vampire",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

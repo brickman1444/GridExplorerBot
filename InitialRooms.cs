@@ -97,6 +97,7 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(2,2)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,1)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,6)),
+                       new VampireSetup(new Point(2,1)),
                        } ),
         };
     }

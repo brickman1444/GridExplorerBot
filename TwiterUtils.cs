@@ -193,7 +193,7 @@ namespace GridExplorerBot
 
                 if (cleanedUserText == "restart" || cleanedUserText == "reset")
                 {
-                    string freshGameOutput = Program.StartFreshGame();
+                    string freshGameOutput = Program.StartFreshGame(DateTimeOffset.UtcNow);
 
                     Tweet(freshGameOutput);
                     continue;
@@ -220,7 +220,7 @@ namespace GridExplorerBot
 
                 string cleanedParentText = System.Net.WebUtility.HtmlDecode(parentGridBotTweet.Text);
 
-                string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText);
+                string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText, parentGridBotTweet.CreatedAt);
 
                 TweetReplyTo(gameOutput, userTweet);
             }

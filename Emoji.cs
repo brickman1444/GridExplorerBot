@@ -55,6 +55,20 @@ namespace GridExplorerBot
             public static string ChristmasTree = "🎄";
         }
 
+        public static class Vampire
+        {
+            public static string ManLight = "🧛🏻‍♂️";
+            public static string ManMediumLight = "🧛🏼‍♂️";
+            public static string ManMedium = "🧛🏽‍♂️";
+            public static string ManMediumDark = "🧛🏾‍♂️";
+            public static string ManDark = "🧛🏿‍♂️";
+            public static string WomanLight = "🧛🏻‍♀️";
+            public static string WomanMediumLight = "🧛🏼‍♀️";
+            public static string WomanMedium = "🧛🏽‍♀️";
+            public static string WomanMediumDark = "🧛🏾‍♀️";
+            public static string WomanDark = "🧛🏿‍♀️";
+        }
+
         public static class Buildings
         {
             public static string Castle = "🏰";
@@ -83,6 +97,15 @@ namespace GridExplorerBot
             Debug.Assert(index < displayChars.Length);
 
             return displayChars[index];
+        }
+
+        public static string GetRandomEmoji(Objects.ID id)
+        {
+            string[] displayChars = ObjectTraits.GetObjectTraits(id).mDisplayEmoji;
+
+            int displayEmojiIndex = Game.random.Next() % displayChars.Length;
+
+            return displayChars[displayEmojiIndex];
         }
 
         public static int GetEmojiIndex(Objects.ID id, string emoji)

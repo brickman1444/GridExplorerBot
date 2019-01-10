@@ -13,8 +13,10 @@ namespace GridExplorerBot
 
         public const int saveDataRowIndex = numTotalRows - 1;
 
-        static string newGameCommand = "New Game";
+        const string newGameCommand = "New Game";
         string mLastCommandResponse = newGameCommand;
+
+        public static System.Random random = null;
 
         public Room mRoom = null;
         public Inventory mInventory = null;
@@ -98,6 +100,11 @@ namespace GridExplorerBot
         {
             mTeleportDestinationRoomID = destinationRoomID;
             mTeleportDestinationSpawnLocation = destinationSpawnLocation;
+        }
+
+        public static void InitializeRandom(System.DateTimeOffset seedTime)
+        {
+            random = new System.Random((int)seedTime.ToUnixTimeSeconds());
         }
     }
 }

@@ -24,6 +24,7 @@ namespace GridExplorerBot
             Globe,
             GemStone,
             Coffin,
+            Vampire,
         }
     }
 }

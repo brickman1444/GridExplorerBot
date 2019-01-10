@@ -6,7 +6,7 @@ namespace GridExplorerBot
 {
     static class Program
     {
-        public static DateTime oldestSupportedData = DateTimeOffset.FromUnixTimeSeconds(1546926620).UtcDateTime;
+        public static DateTimeOffset oldestSupportedData = DateTimeOffset.FromUnixTimeSeconds(1546926620);
 
         public static Stream awsLambdaHandler(Stream inputStream)
         {
@@ -56,7 +56,7 @@ namespace GridExplorerBot
 
                 string inputText = Console.ReadLine();
 
-                string gameOutput = RunOneTick(previousGameText, inputText);
+                string gameOutput = RunOneTick(previousGameText, inputText, DateTimeOffset.UtcNow);
 
                 using (StreamWriter file = File.CreateText("output.txt"))
                 {
@@ -65,9 +65,11 @@ namespace GridExplorerBot
             }
         }
 
-        public static string RunOneTick(string previousGameText, string command)
+        public static string RunOneTick(string previousGameText, string command, DateTimeOffset seedTime)
         {
             Game theGame = new Game();
+
+            Game.InitializeRandom(seedTime);
 
             bool successfullyParsed = theGame.ParsePreviousText(previousGameText);
 
@@ -83,9 +85,11 @@ namespace GridExplorerBot
             return theGame.Render();
         }
 
-        public static string StartFreshGame()
+        public static string StartFreshGame(DateTimeOffset seedTime)
         {
             Game game = new Game();
+
+            Game.InitializeRandom(seedTime);
 
             game.GenerateFreshGame();
 
