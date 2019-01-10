@@ -9,6 +9,7 @@ namespace GridExplorerBot
             Unknown,
             Circus,
             VampireCastleCourtyard,
+            VampireCastleEntryway,
             Overworld,
         };
 
@@ -72,6 +73,30 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Plants.Rose, new Point(1,6)),
                        new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(3,7)),
                        new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(5,7)),
+                       } ),
+            [ID.VampireCastleEntryway] = new Room( "Vampire Castle Entryway",
+                    new string[] {
+                    "⬛⬛⬛⬛⬜⬛⬛⬛⬛",
+                    "⬛⬜⬜⬛⬜⬜⬜⬜⬛",
+                    "⬛⬜⬜⬛⬜⬜⬜⬜⬛",
+                    "⬛⬜⬜⬛⬜⬜⬜⬜⬛",
+                    "⬛⬜⬜⬜⬜⬜⬜⬜⬜",
+                    "⬛⬛⬜⬛⬛⬜⬛⬛⬛",
+                    "⬛⬜⬜⬛⬜⬜⬜⬜⬛",
+                    "⬛⬜⬜⬛⬜⬜⬜⬜⬛",
+                    "⬛⬛⬛⬛⬜⬛⬛⬛⬛", },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(4,7)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(4,8), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(0,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(8,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new DoorSetup(Emoji.Environment.Hole, new Point(2,6), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new DoorSetup(Emoji.Environment.Stairs, new Point(7,7), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new GridObjectSetup(Emoji.InventoryItems.GemStone, new Point(7,1)),
+                       new LockSetup(Emoji.Environment.LockedWithKey, new Point(5,5)),
+                       new GridObjectSetup(Emoji.Environment.Coffin, new Point(2,2)),
+                       new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,1)),
+                       new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,6)),
                        } ),
         };
     }

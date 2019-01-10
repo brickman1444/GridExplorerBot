@@ -89,7 +89,12 @@ namespace GridExplorerBot
             },
             [Objects.ID.Door] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Environment.Door, Emoji.Buildings.Castle, Emoji.Plants.ChristmasTree, Emoji.Environment.SatelliteAntenna},
+                mDisplayEmoji = new string[]{Emoji.Environment.Door,
+                                             Emoji.Buildings.Castle, 
+                                             Emoji.Plants.ChristmasTree, 
+                                             Emoji.Environment.SatelliteAntenna,
+                                             Emoji.Environment.Hole,
+                                             Emoji.Environment.Stairs},
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
@@ -159,6 +164,24 @@ namespace GridExplorerBot
                 mLookDescription = "The edge of the world",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.GemStone] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.GemStone},
+                mInputTokens = new string[]{"gem stone", "diamond"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A sparkling gem stone",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Coffin] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Coffin},
+                mInputTokens = new string[]{"coffin"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "An well-crafted coffin",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
         };
 

@@ -22,6 +22,8 @@ namespace GridExplorerBot
             Vase,
             Candle,
             Globe,
+            GemStone,
+            Coffin,
         }
     }
 }

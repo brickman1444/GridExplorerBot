@@ -29,12 +29,16 @@ namespace GridExplorerBot
             public static string Vase = "🏺";
             public static string Globe = "🌍";
             public static string SatelliteAntenna = "📡";
+            public static string Hole = "🕳️";
+            public static string Stairs = "📶";
+            public static string Coffin = "⚰️";
         }
 
         public static class InventoryItems
         {
             public static string Pen = "🖋️";
             public static string Candle = "🕯️";
+            public static string GemStone = "💎";
         }
 
         public static class Animals
