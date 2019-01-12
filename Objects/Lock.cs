@@ -63,22 +63,27 @@ namespace GridExplorerBot
 
         public override string Render()
         {
-            string emoji = Emoji.Environment.Locked;
-
-            switch (mStatus)
-            {
-                case Status.Locked: emoji = Emoji.Environment.Locked; break;
-                case Status.Unlocked: emoji = Emoji.Environment.Unlocked; break;
-                case Status.LockedWithKey: emoji = Emoji.Environment.LockedWithKey; break;
-                case Status.LockedWithPen: emoji = Emoji.Environment.LockedWithPen; break;
-            }
-
-            return emoji;
+            return Emoji.Environment.Door;
         }
 
         public override bool CanBeMovedThrough()
         {
             return mStatus == Status.Unlocked;
+        }
+
+        public override string GetDescriptionText()
+        {
+            string outText = "A door.";
+
+            switch (mStatus)
+            {
+                case Status.Locked: outText = "A locked door."; break;
+                case Status.Unlocked: outText = "An unlocked door"; break;
+                case Status.LockedWithKey: outText = "A door. It's locked " + Emoji.Environment.LockedWithKey; break;
+                case Status.LockedWithPen: outText = "A door. It's locked " + Emoji.Environment.LockedWithPen; break;
+            }
+
+            return outText;
         }
 
         public bool CanBeUnlockedWithPen()

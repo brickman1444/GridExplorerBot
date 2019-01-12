@@ -94,6 +94,8 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Environment.Stairs, new Point(7,7), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
                        new GridObjectSetup(Emoji.InventoryItems.GemStone, new Point(7,1)),
                        new LockSetup(Emoji.Environment.LockedWithKey, new Point(5,5)),
+                       new LockSetup(Emoji.Environment.Unlocked, new Point(4,3)),
+                       new LockSetup(Emoji.Environment.Unlocked, new Point(5,2)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(2,2)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,1)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,6)),
