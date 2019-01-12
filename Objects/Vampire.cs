@@ -35,18 +35,11 @@ namespace GridExplorerBot
             return Emoji.GetEmoji(mType, mDisplayEmojiIndex);
         }
 
-        public override void Save(BitStreams.BitStream stream)
+        public override void Stream(SaveStream stream)
         {
-            base.Save(stream);
+            base.Stream(stream);
 
-            stream.WriteByte((byte)mDisplayEmojiIndex, 4); // 10 4
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            base.Load(stream);
-
-            mDisplayEmojiIndex = stream.ReadByte(4);
+            stream.Stream(ref mDisplayEmojiIndex, SaveUtils.GetNumBitsToStoreValue(StringUtils.GetNumPersonEmojiVariations()));
         }
     }
 }

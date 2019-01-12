@@ -6,18 +6,10 @@ namespace GridExplorerBot
 {
     public class DynamicObject : GridObject
     {
-        public override void Save(BitStreams.BitStream stream)
+        public override void Stream(SaveStream stream)
         {
-            stream.WriteByte((byte)mType, 7);  // 127 7 bits
-
-            stream.Write(mPosition);
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            mType = (Objects.ID)stream.ReadByte(7);
-
-            stream.Read(out mPosition);
+            stream.Stream(ref mType);
+            stream.Stream(ref mPosition);
         }
         
         public void TeleportTo(Point destination)

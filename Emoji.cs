@@ -125,17 +125,11 @@ namespace GridExplorerBot
             return (GridObject)Activator.CreateInstance(objectType);
         }
 
-        public static GridObject CreateObject(BitStreams.BitStream stream)
+        public static GridObject CreateObject(ReadStream stream)
         {
-            // Because there's no interface to get the current offset of the stream,
-            // we can't progress forward and then seek back to where we were.
-            Objects.ID id = (Objects.ID)stream.ReadByte(7);
-
-            // HACK
-            for (int returnedBit = 0; returnedBit < 7; returnedBit++)
-            {
-                stream.ReturnBit();
-            }
+            Objects.ID id = Objects.ID.Unknown;
+            stream.Stream(ref id);
+            stream.BackUp(SaveUtils.GetNumBits(id));
 
             return CreateObject(id);
         }

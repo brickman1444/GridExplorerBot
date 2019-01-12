@@ -27,9 +27,7 @@ namespace GridExplorerBot
 
         public Objects.ID GetTypeID() { return mType; }
 
-        public abstract void Save(BitStreams.BitStream stream);
-
-        public abstract void Load(BitStreams.BitStream stream);
+        public abstract void Stream(SaveStream stream);
 
         public virtual string Render()
         {

@@ -48,18 +48,11 @@ namespace GridExplorerBot
             return "";
         }
 
-        public override void Save(BitStreams.BitStream stream)
+        public override void Stream(SaveStream stream)
         {
-            base.Save(stream);
+            base.Stream(stream);
 
-            stream.WriteBit((BitStreams.Bit)mIsMovingTowardsFlower);
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            base.Load(stream);
-
-            mIsMovingTowardsFlower = stream.ReadBit().AsBool();
+            stream.Stream(ref mIsMovingTowardsFlower);
         }
     }
 }

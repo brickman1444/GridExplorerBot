@@ -21,6 +21,8 @@ namespace GridExplorerBot
         InitialRooms.ID mInitialRoomIndex = InitialRooms.ID.Unknown;
         public string mDescription = "";
 
+        const int maxNumDynamicObjects = 15;
+
         public Room()
         {
 
@@ -91,38 +93,44 @@ namespace GridExplorerBot
             return string.Join('\n', lines);;
         }
 
-        public void Save(BitStreams.BitStream stream)
+        public void Stream(SaveStream stream)
         {
-            Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
-
-            stream.Write(mInitialRoomIndex); // 63 6
-
-            stream.WriteByte((byte)mDynamicObjects.Count, 4); // 15 4
-
-            foreach (DynamicObject dynamicObject in mDynamicObjects)
+            if (stream.IsWriting())
             {
-                dynamicObject.Save(stream);
+                Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
+                stream.Stream(ref mInitialRoomIndex);
             }
-        }
-
-        public void Load(BitStreams.BitStream stream)
-        {
-            InitialRooms.ID roomIndex;
-            stream.Read(out roomIndex);
-            SetInitialRoomIndex(roomIndex);
-            LoadStaticGridFromInitialRoom();
-
-            int dynamicObjectCount = stream.ReadByte(4);
-
-            mDynamicObjects.Clear();
-
-            for (int dynamicObjectIndex = 0; dynamicObjectIndex < dynamicObjectCount; dynamicObjectIndex++)
+            else
             {
-                DynamicObject dynamicObject = (DynamicObject)Emoji.CreateObject(stream);
-
-                dynamicObject.Load(stream);
-                mDynamicObjects.Add(dynamicObject);
+                InitialRooms.ID roomIndex = InitialRooms.ID.Unknown;
+                stream.Stream(ref roomIndex);
+                SetInitialRoomIndex(roomIndex);
+                LoadStaticGridFromInitialRoom();
             }
+
+            int dynamicObjectCount = mDynamicObjects.Count;
+            stream.Stream(ref dynamicObjectCount, SaveUtils.GetNumBitsToStoreValue(maxNumDynamicObjects));
+
+            if (stream.IsWriting())
+            {
+                foreach (DynamicObject dynamicObject in mDynamicObjects)
+                {
+                    dynamicObject.Stream(stream);
+                }
+            }
+            else
+            {
+                mDynamicObjects.Clear();
+
+                for (int dynamicObjectIndex = 0; dynamicObjectIndex < dynamicObjectCount; dynamicObjectIndex++)
+                {
+                    DynamicObject dynamicObject = (DynamicObject)Emoji.CreateObject(stream as ReadStream);
+
+                    dynamicObject.Stream(stream);
+                    mDynamicObjects.Add(dynamicObject);
+                }
+            }
+
         }
 
         public void LoadStaticGridFromInitialRoom()

@@ -44,18 +44,11 @@ namespace GridExplorerBot
             return prospectivePoint;
         }
 
-        public override void Save(BitStreams.BitStream stream)
+        public override void Stream(SaveStream stream)
         {
-            base.Save(stream);
+            base.Stream(stream);
 
-            stream.WriteBit((BitStreams.Bit)mIsWalkingRight);
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            base.Load(stream);
-
-            mIsWalkingRight = stream.ReadBit().AsBool();
+            stream.Stream(ref mIsWalkingRight);
         }
     }
 }

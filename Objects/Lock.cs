@@ -31,20 +31,14 @@ namespace GridExplorerBot
             LockedWithKey
         }
 
-        Status mStatus = Status.Locked;
+        Status mStatus { get => (Status)_mStatus; set => _mStatus = (int)value; }
+        int _mStatus = 0;
 
-        public override void Save(BitStreams.BitStream stream)
+        public override void Stream(SaveStream stream)
         {
-            base.Save(stream);
+            base.Stream(stream);
 
-            stream.WriteByte((byte)mStatus, 2);
-        }
-
-        public override void Load(BitStreams.BitStream stream)
-        {
-            base.Load(stream);
-
-            mStatus = (Status)stream.ReadByte(2);
+            stream.Stream(ref _mStatus, 2);
         }
 
         public void Setup(LockSetup setup)

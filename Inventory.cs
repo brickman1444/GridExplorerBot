@@ -15,20 +15,17 @@ namespace GridExplorerBot
             return outText;
         }
 
-        public void Save(BitStreams.BitStream stream)
+        public void Stream(SaveStream stream)
         {
-            stream.Write(mType);
-        }
-
-        public void Load(BitStreams.BitStream stream)
-        {
-            stream.Read(out mType);
+            stream.Stream(ref mType);
         }
     }
 
     public class Inventory
     {
         List<InventoryEntry> mEntries = new List<InventoryEntry>();
+
+        const int maxInventorySize = 10;
 
         public string Render()
         {
@@ -42,25 +39,26 @@ namespace GridExplorerBot
             return string.Join(' ', renderedEntries);
         }
 
-        public void Save(BitStreams.BitStream stream)
+        public void Stream(SaveStream stream)
         {
-            stream.WriteByte((byte)mEntries.Count, 4); // 10 4
+            int numEntries = mEntries.Count;
+            stream.Stream(ref numEntries, SaveUtils.GetNumBitsToStoreValue(maxInventorySize));
 
-            foreach (InventoryEntry entry in mEntries)
+            if (stream.IsWriting())
             {
-                entry.Save(stream);
+                foreach (InventoryEntry entry in mEntries)
+                {
+                    entry.Stream(stream);
+                }
             }
-        }
-
-        public void Load(BitStreams.BitStream stream)
-        {
-            byte numEntries = stream.ReadByte(4);
-
-            for (int entryIndex = 0; entryIndex < numEntries; entryIndex++)
+            else
             {
-                InventoryEntry entry = new InventoryEntry();
-                entry.Load(stream);
-                mEntries.Add(entry);
+                for (int entryIndex = 0; entryIndex < numEntries; entryIndex++)
+                {
+                    InventoryEntry entry = new InventoryEntry();
+                    entry.Stream(stream);
+                    mEntries.Add(entry);
+                }
             }
         }
 

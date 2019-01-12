@@ -79,10 +79,9 @@ namespace GridExplorerBot
         public void Save()
         {
             // arbitrary estimated size
-            BitStreams.BitStream stream = new BitStreams.BitStream(new byte[36]);
+            WriteStream stream = new WriteStream(36);
 
-            mInventory.Save(stream);
-            mRoom.Save(stream);
+            Stream(stream);
 
             mSaveDataString = StringUtils.SaveDataEncode(stream.GetStreamData());
         }
@@ -90,10 +89,15 @@ namespace GridExplorerBot
         public void Load(string saveData)
         {
             byte[] bytes = StringUtils.SaveDataDecode(saveData);
-            BitStreams.BitStream stream = new BitStreams.BitStream( bytes );
+            ReadStream stream = new ReadStream(bytes);
 
-            mInventory.Load(stream);
-            mRoom.Load(stream);
+            Stream(stream);
+        }
+
+        private void Stream(SaveStream stream)
+        {
+            mInventory.Stream(stream);
+            mRoom.Stream(stream);
         }
 
         public void SetTeleport(InitialRooms.ID destinationRoomID, Point destinationSpawnLocation)

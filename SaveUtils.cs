@@ -1,40 +1,23 @@
+using System.Diagnostics;
+
 namespace GridExplorerBot
 {
     public static class SaveUtils
     {
-        public static void Write(this BitStreams.BitStream stream, InitialRooms.ID initialRoomID)
+        public static int GetNumBitsToStoreValue(int value)
         {
-            stream.WriteByte((byte)initialRoomID, 6); // 63 6
+            Debug.Assert(value >= 0);
+            return (int)System.MathF.Log(value, 2) + 1; 
         }
 
-        public static void Read(this BitStreams.BitStream stream, out InitialRooms.ID initialRoomID)
+        public static int GetNumBits(InitialRooms.ID id)
         {
-            initialRoomID = (InitialRooms.ID)stream.ReadByte(6);
+            return GetNumBitsToStoreValue(63);
         }
 
-        public static void Write(this BitStreams.BitStream stream, Objects.ID type)
+        public static int GetNumBits(Objects.ID id)
         {
-            stream.WriteByte((byte)type, 7); // 127 7 bits
-        }
-
-        public static void Read(this BitStreams.BitStream stream, out Objects.ID type)
-        {
-            type = (Objects.ID)stream.ReadByte(7);
-        }
-
-        public static void Write(this BitStreams.BitStream stream, Point point)
-        {
-            byte positionIndex = (byte)(point.mRow * Game.numRoomColumns + point.mColumn); // 81 values 7 bits
-
-            stream.WriteByte(positionIndex, 7);
-        }
-
-        public static void Read(this BitStreams.BitStream stream, out Point point)
-        {
-            byte positionIndex = stream.ReadByte(7);
-
-            point.mRow = positionIndex / Game.numRoomColumns;
-            point.mColumn = positionIndex % Game.numRoomColumns;
+            return GetNumBitsToStoreValue(127);
         }
     }
 }

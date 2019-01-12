@@ -70,5 +70,10 @@ namespace GridExplorerBot
 
             return outStrings;
         }
+
+        public static int GetNumPersonEmojiVariations()
+        {
+            return 10;
+        }
     }
 }
