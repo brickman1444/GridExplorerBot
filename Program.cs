@@ -46,9 +46,23 @@ namespace GridExplorerBot
             request.httpMethod = "POST";
             TwitterUtils.HandleAccountActivityRequest(request);*/
 
+            string previousGameText;
+            using (StreamReader file = File.OpenText("output.txt"))
+            {
+                previousGameText = file.ReadToEnd();
+            }
+            
+            if (previousGameText == "")
+            {
+                string newGameOutput = StartFreshGame(DateTimeOffset.UtcNow);
+                using (StreamWriter file = File.CreateText("output.txt"))
+                {
+                    file.Write(newGameOutput);
+                }
+            }
+
             while (true)
             {
-                string previousGameText;
                 using (StreamReader file = File.OpenText("output.txt"))
                 {
                     previousGameText = file.ReadToEnd();
@@ -56,7 +70,15 @@ namespace GridExplorerBot
 
                 string inputText = Console.ReadLine();
 
-                string gameOutput = RunOneTick(previousGameText, inputText, DateTimeOffset.UtcNow);
+                string gameOutput = "";
+                if (inputText == "reset")
+                {
+                    gameOutput = StartFreshGame(DateTimeOffset.UtcNow);
+                }
+                else
+                {
+                    gameOutput = RunOneTick(previousGameText, inputText, DateTimeOffset.UtcNow); 
+                }                
 
                 using (StreamWriter file = File.CreateText("output.txt"))
                 {
