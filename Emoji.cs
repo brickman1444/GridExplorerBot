@@ -55,18 +55,9 @@ namespace GridExplorerBot
             public static string ChristmasTree = "🎄";
         }
 
-        public static class Vampire
+        public static class People
         {
-            public static string ManLight = "🧛🏻‍♂️";
-            public static string ManMediumLight = "🧛🏼‍♂️";
-            public static string ManMedium = "🧛🏽‍♂️";
-            public static string ManMediumDark = "🧛🏾‍♂️";
-            public static string ManDark = "🧛🏿‍♂️";
-            public static string WomanLight = "🧛🏻‍♀️";
-            public static string WomanMediumLight = "🧛🏼‍♀️";
-            public static string WomanMedium = "🧛🏽‍♀️";
-            public static string WomanMediumDark = "🧛🏾‍♀️";
-            public static string WomanDark = "🧛🏿‍♀️";
+            public static string Vampire = "🧛";
         }
 
         public static class Buildings

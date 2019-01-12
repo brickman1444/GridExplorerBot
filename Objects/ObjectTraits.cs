@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace GridExplorerBot
 {
@@ -185,16 +186,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Vampire] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Vampire.ManLight,
-                                             Emoji.Vampire.ManMediumLight,
-                                             Emoji.Vampire.ManMedium,
-                                             Emoji.Vampire.ManMediumDark,
-                                             Emoji.Vampire.ManDark,
-                                             Emoji.Vampire.WomanLight,
-                                             Emoji.Vampire.WomanMediumLight,
-                                             Emoji.Vampire.WomanMedium,
-                                             Emoji.Vampire.WomanMediumDark,
-                                             Emoji.Vampire.WomanDark},
+                mDisplayEmoji = StringUtils.GetAllGenderAndSkinToneVariants(Emoji.People.Vampire).ToArray(),
                 mInputTokens = new string[]{"vampire"},
                 mDynamicObjectType = typeof(Vampire),
                 mLookDescription = "An well-dressed vampire",

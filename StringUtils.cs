@@ -49,5 +49,26 @@ namespace GridExplorerBot
 
             return Cromulent.Encoding.Z85.FromZ85String(saveData);
         }
+
+        public static IEnumerable<string> GetAllGenderAndSkinToneVariants(string baseEmoji)
+        {
+            // Append all variants of skin tone and gender characters
+
+            string[] skinTones = {"🏻","🏼","🏽","🏾","🏿"};
+            string zeroWidthJoiner = "‍";
+            string[] genders = {"♀️","♂️"};
+
+            List<string> outStrings = new List<string>();
+
+            foreach ( string skinTone in skinTones )
+            {
+                foreach ( string gender in genders )
+                {
+                    outStrings.Add( baseEmoji + skinTone + zeroWidthJoiner + gender );
+                }
+            }
+
+            return outStrings;
+        }
     }
 }
