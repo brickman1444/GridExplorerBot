@@ -55,6 +55,13 @@ namespace GridExplorerBot
             mRoom.LoadDynamicObjectsFromInitialRoom();
         }
 
+        public void ChangeToRoom(InitialRooms.ID initialRoomID)
+        {
+            mRoom.SetInitialRoomIndex(initialRoomID);
+            mRoom.LoadStaticGridFromInitialRoom();
+            mRoom.LoadDynamicObjectsFromInitialRoom();
+        }
+
         public string Render()
         {
             string commandResponse = mLastCommandResponse;
@@ -71,7 +78,7 @@ namespace GridExplorerBot
             if (mTeleportDestinationRoomID != InitialRooms.ID.Unknown
             && mTeleportDestinationSpawnLocation != null)
             {
-                GenerateFreshGame(mTeleportDestinationRoomID);
+                ChangeToRoom(mTeleportDestinationRoomID);
                 mRoom.TeleportPlayerTo(mTeleportDestinationSpawnLocation.Value);
                 mLastCommandResponse = mRoom.mDescription;
             }
