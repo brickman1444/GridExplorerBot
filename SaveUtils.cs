@@ -12,6 +12,16 @@ namespace GridExplorerBot
             initialRoomID = (InitialRooms.ID)stream.ReadByte(6);
         }
 
+        public static void Write(this BitStreams.BitStream stream, Objects.ID type)
+        {
+            stream.WriteByte((byte)type, 7); // 127 7 bits
+        }
+
+        public static void Read(this BitStreams.BitStream stream, out Objects.ID type)
+        {
+            type = (Objects.ID)stream.ReadByte(7);
+        }
+
         public static void Write(this BitStreams.BitStream stream, Point point)
         {
             byte positionIndex = (byte)(point.mRow * Game.numRoomColumns + point.mColumn); // 81 values 7 bits

@@ -233,9 +233,7 @@ namespace GridExplorerBot
                 return "You don't have that";
             }
 
-            int balance = game.mInventory.GetBalance(objectTypeToDrop);
-
-            if (balance < 1)
+            if (!game.mInventory.Contains(objectTypeToDrop))
             {
                 return "You don't have " + objectString;
             }
@@ -269,9 +267,7 @@ namespace GridExplorerBot
                 return "You don't have that";
             }
 
-            int balance = game.mInventory.GetBalance(objectTypeToThrow);
-
-            if (balance < 1)
+            if (game.mInventory.Contains(objectTypeToThrow))
             {
                 return "You don't have " + objectString;
             }
@@ -322,9 +318,7 @@ namespace GridExplorerBot
                 return "You don't have that";
             }
 
-            int balance = game.mInventory.GetBalance(actorType);
-
-            if (balance < 1)
+            if (!game.mInventory.Contains(actorType))
             {
                 return "You don't have " + actorString;
             }

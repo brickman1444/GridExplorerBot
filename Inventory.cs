@@ -5,33 +5,24 @@ namespace GridExplorerBot
     public class InventoryEntry
     {
         public Objects.ID mType = Objects.ID.Unknown;
-        public int mDisplayEmojiIndex = -1;
-        public int mQuantity = 1;
+
+        public virtual bool IsStackable() { return false; }
 
         public string Render()
         {
-            string outText = Emoji.GetEmoji(mType, mDisplayEmojiIndex);
-
-            if (mQuantity > 1)
-            {
-                outText += "x" + mQuantity;
-            }
+            string outText = Emoji.GetEmoji(mType, 0);
 
             return outText;
         }
 
         public void Save(BitStreams.BitStream stream)
         {
-            stream.WriteByte((byte)mType, 7); // 127 7 bits
-            stream.WriteByte((byte)mDisplayEmojiIndex, 3); // 7 3 bits
-            stream.WriteByte((byte)mQuantity, 7); // 7 3 bits
+            stream.Write(mType);
         }
 
         public void Load(BitStreams.BitStream stream)
         {
-            mType = (Objects.ID)stream.ReadByte(7);
-            mDisplayEmojiIndex = stream.ReadByte(3);
-            mQuantity = stream.ReadByte(7);
+            stream.Read(out mType);
         }
     }
 
@@ -77,16 +68,14 @@ namespace GridExplorerBot
         {
             InventoryEntry existingEntry = GetEntry(dynamicObject.GetTypeID());
 
-            if (existingEntry != null)
+            if (existingEntry != null && existingEntry.IsStackable())
             {
-                existingEntry.mQuantity++;
+                //existingEntry.mQuantity++;
             }
             else
             {
                 InventoryEntry entry = new InventoryEntry()
                 {
-                    mDisplayEmojiIndex = Emoji.GetEmojiIndex(dynamicObject.GetTypeID(), dynamicObject.Render()),
-                    mQuantity = 1,
                     mType = dynamicObject.GetTypeID(),
                 };
 
@@ -98,9 +87,9 @@ namespace GridExplorerBot
         {
             InventoryEntry entry = GetEntry(type);
 
-            if (entry.mQuantity > 1)
+            if (entry.IsStackable())
             {
-                entry.mQuantity--;
+                //entry.mQuantity--;
             }
             else
             {
@@ -121,11 +110,11 @@ namespace GridExplorerBot
             return null;
         }
 
-        public int GetBalance(Objects.ID type)
+        public bool Contains(Objects.ID type)
         {
             InventoryEntry entry = GetEntry(type);
 
-            return (entry != null ? entry.mQuantity : 0);
+            return (entry != null);
         }
     }
 }
