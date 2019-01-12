@@ -330,7 +330,7 @@ namespace GridExplorerBot
                 return "You can't find that";
             }
 
-            DynamicObject targetObject = game.mRoom.FindDynamicObjectAdjacentTo(mPosition, targetType);
+            GridObject targetObject = game.mRoom.FindObjectAdjacentTo(mPosition, targetType);
 
             if (targetObject == null)
             {
@@ -352,7 +352,7 @@ namespace GridExplorerBot
             return outText;
         }
 
-        string HandlePenUse(DynamicObject targetObject)
+        string HandlePenUse(GridObject targetObject)
         {
             string outText = "";
 

@@ -251,6 +251,18 @@ namespace GridExplorerBot
             return mStaticRoomGrid[position.mRow,position.mColumn];
         }
 
+        public GridObject FindObjectAdjacentTo(Point position, Objects.ID typeToFind)
+        {
+            DynamicObject dynamicObject = FindDynamicObjectAdjacentTo(position, typeToFind );
+
+            if (dynamicObject != null)
+            {
+                return dynamicObject;
+            }
+
+            return FindStaticObjectAdjacentTo(position, typeToFind);
+        }
+
         public DynamicObject FindDynamicObjectAdjacentTo(Point position, Objects.ID typeToFind)
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)

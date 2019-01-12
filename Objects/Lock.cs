@@ -21,7 +21,7 @@ namespace GridExplorerBot
         }
     }
 
-    public class Lock : DynamicObject
+    public class Lock : StaticObject
     {
         public enum Status
         {
