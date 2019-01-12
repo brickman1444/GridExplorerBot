@@ -57,6 +57,7 @@ namespace GridExplorerBot
             Confused,
             Sleeping,
             Thinking,
+            Frustrated,
         }
 
         Status mStatus = Status.Default;
@@ -133,6 +134,7 @@ namespace GridExplorerBot
                 case Status.Confused: return Emoji.Player.Confused;
                 case Status.Sleeping: return Emoji.Player.Sleeping;
                 case Status.Thinking: return Emoji.Player.Thinking;
+                case Status.Frustrated: return Emoji.Player.SteamOutOfNose;
             }
 
             Debug.Fail("Unknnown status");
@@ -156,6 +158,7 @@ namespace GridExplorerBot
             else
             {
                 outText = "You could not move that direction.";
+                mStatus = Status.Frustrated;
             }
 
             return outText;

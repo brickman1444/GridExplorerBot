@@ -44,7 +44,7 @@ namespace GridExplorerBot
             return true;
         }
 
-        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.VampireCastleEntryway)
+        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.Overworld)
         {
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();

@@ -34,7 +34,7 @@ namespace GridExplorerBot
                    new GridObjectSetup[] {
                        new GridObjectSetup(Emoji.Player.Default, new Point(5,4)),
                        new DoorSetup(Emoji.Buildings.Castle, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,7), "Vampire Castle"),
-                       new DoorSetup(Emoji.Plants.ChristmasTree, new Point(4,2), InitialRooms.ID.Overworld, new Point(4,2), "Magic Forest"),
+                       new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.Overworld, new Point(4,2), "Magic Forest"),
                        new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.Overworld, new Point(4,6), "Research Facility"),
                        } ),
             [ID.Circus] = new Room( "The Circus",

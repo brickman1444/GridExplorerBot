@@ -92,7 +92,7 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Door,
                                              Emoji.Buildings.Castle, 
-                                             Emoji.Plants.ChristmasTree, 
+                                             Emoji.Buildings.NationalPark, 
                                              Emoji.Environment.SatelliteAntenna,
                                              Emoji.Environment.Hole,
                                              Emoji.Environment.Stairs},

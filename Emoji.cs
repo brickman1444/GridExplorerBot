@@ -13,6 +13,7 @@ namespace GridExplorerBot
             public static string Confused = "😕";
             public static string Sleeping = "😴";
             public static string Thinking = "🤔";
+            public static string SteamOutOfNose = "😤";
         }
 
         public static class Environment
@@ -63,6 +64,7 @@ namespace GridExplorerBot
         public static class Buildings
         {
             public static string Castle = "🏰";
+            public static string NationalPark = "🏞️";
         }
 
         public static Objects.ID GetID(string inputText)
