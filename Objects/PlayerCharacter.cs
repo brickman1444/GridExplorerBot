@@ -318,11 +318,13 @@ namespace GridExplorerBot
 
             if (actorType == Objects.ID.Unknown)
             {
+                mStatus = Status.Frustrated;
                 return "You don't have that";
             }
 
             if (!game.mInventory.Contains(actorType))
             {
+                mStatus = Status.Frustrated;
                 return "You don't have " + actorString;
             }
 
@@ -330,6 +332,7 @@ namespace GridExplorerBot
 
             if (targetType == Objects.ID.Unknown)
             {
+                mStatus = Status.Frustrated;
                 return "You can't find that";
             }
 
@@ -337,36 +340,26 @@ namespace GridExplorerBot
 
             if (targetObject == null)
             {
+                mStatus = Status.Frustrated;
                 return "There isn't " + targetString + " nearby";
             }
 
             string outText = "";
 
-            if (actorType == Objects.ID.Pen)
+            if (targetType == Objects.ID.Lock)
             {
-                outText = HandlePenUse(targetObject);
+                Lock lockObject = targetObject as Lock;
+                if (lockObject.CanBeUnlockedBy(actorType))
+                {
+                    lockObject.Unlock();
+                    outText = "You unlocked the door with the " + actorString;
+                }
             }
 
             if (outText == "")
             {
                 outText = "You don't think you can do that.";
-            }
-
-            return outText;
-        }
-
-        string HandlePenUse(GridObject targetObject)
-        {
-            string outText = "";
-
-            if (targetObject is Lock)
-            {
-                Lock targetLock = targetObject as Lock;
-                if (targetLock.CanBeUnlockedWithPen())
-                {
-                    targetLock.Unlock();
-                    outText = "You unlocked the lock";
-                }
+                mStatus = Status.Frustrated;
             }
 
             return outText;

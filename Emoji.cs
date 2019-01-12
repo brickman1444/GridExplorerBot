@@ -33,6 +33,7 @@ namespace GridExplorerBot
             public static string Hole = "🕳️";
             public static string Stairs = "📶";
             public static string Coffin = "⚰️";
+            public static string FuneralUrn = "⚱️";
         }
 
         public static class InventoryItems
@@ -40,6 +41,7 @@ namespace GridExplorerBot
             public static string Pen = "🖋️";
             public static string Candle = "🕯️";
             public static string GemStone = "💎";
+            public static string Key = "🔑";
         }
 
         public static class Animals

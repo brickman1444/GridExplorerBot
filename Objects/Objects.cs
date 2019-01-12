@@ -25,6 +25,8 @@ namespace GridExplorerBot
             GemStone,
             Coffin,
             Vampire,
+            Key,
+            FuneralUrn,
         }
     }
 }

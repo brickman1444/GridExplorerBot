@@ -10,6 +10,7 @@ namespace GridExplorerBot
             Circus,
             VampireCastleCourtyard,
             VampireCastleEntryway,
+            Crypt,
             Overworld,
         };
 
@@ -90,8 +91,8 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Environment.Door, new Point(4,8), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
                        new DoorSetup(Emoji.Environment.Door, new Point(0,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
                        new DoorSetup(Emoji.Environment.Door, new Point(8,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
-                       new DoorSetup(Emoji.Environment.Hole, new Point(2,6), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
-                       new DoorSetup(Emoji.Environment.Stairs, new Point(7,7), InitialRooms.ID.VampireCastleCourtyard, new Point(4,1)),
+                       new DoorSetup(Emoji.Environment.Hole, new Point(2,6), InitialRooms.ID.Crypt, new Point(2,6)),
+                       new DoorSetup(Emoji.Environment.Stairs, new Point(7,7), InitialRooms.ID.Crypt, new Point(7,6)),
                        new GridObjectSetup(Emoji.InventoryItems.GemStone, new Point(7,1)),
                        new LockSetup(Emoji.Environment.LockedWithKey, new Point(5,5)),
                        new LockSetup(Emoji.Environment.Unlocked, new Point(4,3)),
@@ -100,6 +101,26 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,1)),
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(6,6)),
                        new VampireSetup(new Point(2,1)),
+                       } ),
+            [ID.Crypt] = new Room( "The Crypt",
+                    new string[] {
+                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛",
+                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                    "⬛⬜⬜⬜⬜⬜⬜⬜⬛",
+                    "⬛⬜⚱️⬛⚱️⬛⚱️⬜⬛",
+                    "⬛⬜⬛⬛⬛⬛⬛⬜⬛",
+                    "⬛⬜⬜⬛⚱️⬛⚱️⬜⬛",
+                    "⬛⬜⬜⬜⬜⬛⬛⬛⬛",
+                    "⬛⬜⬜⬜⬜⬜⬜📶⬛",
+                    "⬛⬛⬛⬛⬛⬛⬛⬛⬛", },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(2,6)),
+                       new DoorSetup(Emoji.Environment.Stairs, new Point(7,7), InitialRooms.ID.VampireCastleEntryway, new Point(7,6)),
+                       new GridObjectSetup(Emoji.InventoryItems.Key, new Point(5,2)),
+                       new LockSetup(Emoji.Environment.LockedWithKey, new Point(7,5)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(2,3)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(2,5)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(6,3)),
                        } ),
         };
     }

@@ -86,14 +86,20 @@ namespace GridExplorerBot
             return outText;
         }
 
-        public bool CanBeUnlockedWithPen()
+        public bool CanBeUnlockedBy(Objects.ID actorID)
         {
-            return mStatus == Status.LockedWithPen;
-        }
+            if (mStatus == Status.LockedWithKey
+            && actorID == Objects.ID.Key)
+            {
+                return true;
+            }
+            else if (mStatus == Status.LockedWithPen
+            && actorID == Objects.ID.Pen)
+            {
+                return true;
+            }
 
-        public bool CanBeUnlockedWithKey()
-        {
-            return mStatus == Status.LockedWithKey;
+            return false;
         }
 
         public void Unlock()

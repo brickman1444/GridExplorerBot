@@ -39,12 +39,13 @@ namespace GridExplorerBot
             mRoom = new Room();
             mInventory = new Inventory();
 
+
             Load( saveDataLine );
 
             return true;
         }
 
-        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.Overworld)
+        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.VampireCastleEntryway)
         {
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();

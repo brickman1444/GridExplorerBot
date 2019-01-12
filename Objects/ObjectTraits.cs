@@ -64,7 +64,7 @@ namespace GridExplorerBot
             [Objects.ID.Lock] = new ObjectTraits()
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Locked, Emoji.Environment.Unlocked, Emoji.Environment.LockedWithKey, Emoji.Environment.LockedWithPen},
-                mInputTokens = new string[]{"lock"},
+                mInputTokens = new string[]{"lock", "door"},
                 mDynamicObjectType = typeof(Lock),
                 mLookDescription = "A lock",
                 mCanStaticObjectBeMovedThrough = false,
@@ -190,6 +190,24 @@ namespace GridExplorerBot
                 mInputTokens = new string[]{"vampire"},
                 mDynamicObjectType = typeof(Vampire),
                 mLookDescription = "An well-dressed vampire",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Key] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Key},
+                mInputTokens = new string[]{"key"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A key",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.FuneralUrn] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.FuneralUrn},
+                mInputTokens = new string[]{"urn", "funeral urn"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "An old funeral urn",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
