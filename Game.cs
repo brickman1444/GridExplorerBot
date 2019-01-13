@@ -65,6 +65,7 @@ namespace GridExplorerBot
         public string Render()
         {
             string commandResponse = mLastCommandResponse;
+            commandResponse = commandResponse.Substring(0,1).ToUpper() + commandResponse.Substring(1);
             string roomRender = mRoom.Render();
             string inventory = mInventory.Render();
             string saveData = mSaveDataString;
@@ -117,6 +118,21 @@ namespace GridExplorerBot
         public static void InitializeRandom(System.DateTimeOffset seedTime)
         {
             random = new System.Random((int)seedTime.ToUnixTimeSeconds());
+        }
+
+        public static bool MatchesResetCommand(string input)
+        {
+            return PlayerCharacter.MatchesResetCommand(input);
+        }
+
+        public static bool MatchesHelpCommand(string input)
+        {
+            return PlayerCharacter.MatchesHelpCommand(input);
+        }
+
+        public static string GetCommandsList()
+        {
+            return PlayerCharacter.GetCommandsListText();
         }
     }
 }

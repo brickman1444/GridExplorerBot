@@ -191,7 +191,7 @@ namespace GridExplorerBot
                 string userTextLower = userTweet.Text.ToLower();
                 string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
 
-                if (cleanedUserText == "restart" || cleanedUserText == "reset")
+                if (Game.MatchesResetCommand(cleanedUserText))
                 {
                     string freshGameOutput = Program.StartFreshGame(DateTimeOffset.UtcNow);
 
@@ -199,9 +199,9 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                if (cleanedUserText == "list commands" || cleanedUserText == "help")
+                if (Game.MatchesHelpCommand(cleanedUserText))
                 {
-                    string commandsListText = PlayerCharacter.GetCommandsListText();
+                    string commandsListText = Game.GetCommandsList();
 
                     TweetReplyTo(commandsListText, userTweet);
 

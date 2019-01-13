@@ -14,7 +14,7 @@ namespace GridExplorerBot
         static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
         {
             ["<"] = "(?<",
-            [">"] = ">[a-z]+?.*?)",
+            [">"] = ">[a-z0-9]+?.*?)",
         };
 
         public Command(string simpleText)
@@ -62,13 +62,15 @@ namespace GridExplorerBot
 
         Status mStatus = Status.Default;
 
-        static Command moveCommand = new Command("(move|go|walk) <direction>");
+        static Command moveCommand = new Command("(move|go|walk) <direction>(| <distance>)");
         static Command pickUpCommand = new Command("(pick up|take|grab) <object>");
         static Command dropCommand = new Command("(drop|put down|place) <object> <direction>");
         static Command throwCommand = new Command("(toss|throw) <object> <direction>");
         static Command useCommand = new Command("use <actor> on <target>");
         static Command inspectCommand = new Command("(inspect|look) <direction>");
         static Command waitCommand = new Command("(wait|)");
+        static Command resetCommand = new Command("(reset|restart)");
+        static Command helpCommand = new Command("(help|list commands)");
 
         static Command[] commands = new Command[]
         {
@@ -94,7 +96,7 @@ namespace GridExplorerBot
             }
             else if (moveCommand.IsMatch(command))
             {
-                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), game);
+                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), moveCommand.GetParameter("distance"), game);
             }
             else if (pickUpCommand.IsMatch(command))
             {
@@ -142,26 +144,53 @@ namespace GridExplorerBot
             return Emoji.Player.Default;
         }
 
-        private string HandleMoveCommand(string directionString, Game game)
+        private string HandleMoveCommand(string directionString, string distanceString, Game game)
         {
-            string outText = "";
-
             Direction directionToMove = Room.GetDirection(directionString);
-            string prospectiveMessage = "You moved " + directionToMove;
 
-            bool successfulMove = Move(directionToMove, game);
-
-            if (successfulMove)
+            if (directionToMove == Direction.Unknown)
             {
-                outText = prospectiveMessage;
-            }
-            else
-            {
-                outText = "You could not move that direction.";
                 mStatus = Status.Frustrated;
+                return directionString + " isn't a valid direction.";
             }
 
-            return outText;
+            uint requestedDistanceToMove = 0;
+            
+            try
+            {
+                requestedDistanceToMove = uint.Parse(distanceString);
+            }
+            catch
+            {
+
+            }
+
+            if (requestedDistanceToMove == 0)
+            {
+                requestedDistanceToMove = 1;
+            }
+
+            bool wasFirstSpaceSuccessful = Move(directionToMove, game);
+
+            if (!wasFirstSpaceSuccessful)
+            {
+                mStatus = Status.Frustrated;
+                return "You could not move that direction.";
+            }
+
+            uint actualDistanceMoved = 1;
+
+            for (; actualDistanceMoved < requestedDistanceToMove - 1; actualDistanceMoved++)
+            {
+                bool successfulMove = Move(directionToMove, game);
+
+                if (!successfulMove)
+                {
+                    break;
+                }
+            }
+
+            return "You moved " + actualDistanceMoved + " " + directionString;
         }
 
         public bool Move(Direction direction, Game game)
@@ -389,6 +418,16 @@ namespace GridExplorerBot
                                select command.GetCompactSimpleText();
 
             return string.Join('\n', commandTexts);
+        }
+
+        public static bool MatchesResetCommand(string input)
+        {
+            return resetCommand.IsMatch(input);
+        }
+
+        public static bool MatchesHelpCommand(string input)
+        {
+            return helpCommand.IsMatch(input);
         }
     }
 }

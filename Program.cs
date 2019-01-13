@@ -71,9 +71,13 @@ namespace GridExplorerBot
                 string inputText = Console.ReadLine();
 
                 string gameOutput = "";
-                if (inputText == "reset")
+                if (Game.MatchesResetCommand(inputText))
                 {
                     gameOutput = StartFreshGame(DateTimeOffset.UtcNow);
+                }
+                else if (Game.MatchesHelpCommand(inputText))
+                {
+                    gameOutput = Game.GetCommandsList();
                 }
                 else
                 {
