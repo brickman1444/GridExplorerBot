@@ -4,8 +4,8 @@ namespace GridExplorerBot
 {
     public class Game
     {
-        public const int numRoomRows = 9;
-        public const int numRoomColumns = 9;
+        public const int numRoomRows = 8;
+        public const int numRoomColumns = 8;
         public const int numCommandResponseRows = 1;
         public const int numInventoryRows = 1;
         public const int numSaveDataRows = 1;

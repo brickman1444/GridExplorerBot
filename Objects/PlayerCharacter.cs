@@ -270,7 +270,7 @@ namespace GridExplorerBot
                 return "You don't have that";
             }
 
-            if (game.mInventory.Contains(objectTypeToThrow))
+            if (!game.mInventory.Contains(objectTypeToThrow))
             {
                 return "You don't have " + objectString;
             }

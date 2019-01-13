@@ -39,6 +39,8 @@ namespace GridExplorerBot
             {
                 List<string> splitLine = StringUtils.SplitEmojiString(line);
 
+                Debug.Assert(splitLine.Count == Game.numRoomColumns);
+
                 for (int columnIndex = 0; columnIndex < splitLine.Count; columnIndex++)
                 {
                     GridObject staticObject = GridObject.Create(Emoji.GetID(splitLine[columnIndex]), new Point(lineIndex, columnIndex));
