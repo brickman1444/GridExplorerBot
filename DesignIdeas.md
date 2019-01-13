@@ -38,3 +38,29 @@ spider guarding door. Bees travel between a honey pot and a flower. Pick up and 
 * Church / temple that requires prayers to give the player a reward. 1 like = 1 prayer, 1 retweet / quote tweet = 5 prayers
 * Crypt with funeral urns and ghosts
 * VHS to play on TV that changes all rendered output.
+* Spiral notebook with phone numbers. Look at phone to dial numbers.
+
+
+Help People With Problems
+---------------------------
+1. Vampire
+	1. Needs artificial blood from research facility to get unstuck from being a bat
+2. Unicorn
+3. Merperson
+4. Zombie
+	1. Wants artificial brain from research facility
+5. Ghost
+6. Werewolf
+	1. Needs silver to control transformation. Get silver medal from race
+7. Scientist
+8. Cat person
+9. Robot
+10. Alien
+11. Devil
+12. Dragon
+	1. Wants ice cream?
+13. Fairy
+14. Elf
+15. Mage
+16. Snowman
+17. Wind Spirit
