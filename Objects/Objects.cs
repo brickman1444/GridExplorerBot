@@ -27,6 +27,7 @@ namespace GridExplorerBot
             Vampire,
             Key,
             FuneralUrn,
+            DeciduousTree,
         }
     }
 }

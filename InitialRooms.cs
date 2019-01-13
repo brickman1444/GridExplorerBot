@@ -12,6 +12,7 @@ namespace GridExplorerBot
             VampireCastleEntryway,
             Crypt,
             Overworld,
+            MushroomGrove,
         };
 
         public static bool IsValidInitialRoomIndex(ID id)
@@ -34,7 +35,7 @@ namespace GridExplorerBot
                    new GridObjectSetup[] {
                        new GridObjectSetup(Emoji.Player.Default, new Point(5,4)),
                        new DoorSetup(Emoji.Buildings.Castle, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,7), "Vampire Castle"),
-                       new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.Overworld, new Point(4,2), "Magic Forest"),
+                       new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.MushroomGrove, new Point(6,1), "Magic Forest"),
                        new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.Overworld, new Point(4,6), "Research Facility"),
                        } ),
             [ID.Circus] = new Room( "The Circus",
@@ -113,6 +114,21 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Environment.Stairs, new Point(6,6), InitialRooms.ID.VampireCastleEntryway, new Point(6,5)),
                        new GridObjectSetup(Emoji.InventoryItems.Key, new Point(4,2)),
                        new LockSetup(Emoji.Environment.LockedWithKey, new Point(6,5)),
+                       } ),
+            [ID.MushroomGrove] = new Room( "Mushroom Grove",
+                    new string[] {
+                    "🌳🌳🌳🌳🌳🌳🌳🌳",
+                    "🌳⬜⬜⬜⬜⬜⬜⬜",
+                    "🌳⬜⬜⬜⬜⬜⬜🌳",
+                    "🌳⬜⬜⬜⬜⬜⬜🌳",
+                    "🌳⬜⬜⬜⬜⬜⬜🌳",
+                    "🌳⬜⬜⬜⬜⬜⬜🌳",
+                    "🌳⬜⬜⬜⬜⬜⬜🌳",
+                    "🌳⬜🌳🌳🌳🌳🌳🌳", },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(6,1)),
+                       new DoorSetup(Emoji.Plants.Rosette, new Point(7,1), InitialRooms.ID.Overworld, new Point(5,2)),
+                       new DoorSetup(Emoji.Plants.Rosette, new Point(1,7), InitialRooms.ID.Overworld, new Point(5,2)),
                        } ),
         };
     }

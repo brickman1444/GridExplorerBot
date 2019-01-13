@@ -95,7 +95,8 @@ namespace GridExplorerBot
                                              Emoji.Buildings.NationalPark, 
                                              Emoji.Environment.SatelliteAntenna,
                                              Emoji.Environment.Hole,
-                                             Emoji.Environment.Stairs},
+                                             Emoji.Environment.Stairs,
+                                             Emoji.Plants.Rosette},
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
@@ -210,6 +211,15 @@ namespace GridExplorerBot
                 mLookDescription = "An old funeral urn",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.DeciduousTree] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Plants.DeciduousTree},
+                mInputTokens = new string[]{"tree"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "A leafy tree that has grown larger than you'd expect.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
         };
 
