@@ -180,7 +180,7 @@ namespace GridExplorerBot
 
             uint actualDistanceMoved = 1;
 
-            for (; actualDistanceMoved < requestedDistanceToMove - 1; actualDistanceMoved++)
+            for (; actualDistanceMoved < requestedDistanceToMove; actualDistanceMoved++)
             {
                 bool successfulMove = Move(directionToMove, game);
 

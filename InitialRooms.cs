@@ -129,6 +129,12 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Player.Default, new Point(6,1)),
                        new DoorSetup(Emoji.Plants.Rosette, new Point(7,1), InitialRooms.ID.Overworld, new Point(5,2)),
                        new DoorSetup(Emoji.Plants.Rosette, new Point(1,7), InitialRooms.ID.Overworld, new Point(5,2)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(2,2)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(3,2)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(5,6)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(2,5)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(3,3)),
+                       new GridObjectSetup(Emoji.Plants.Mushroom, new Point(5,3)),
                        } ),
         };
     }

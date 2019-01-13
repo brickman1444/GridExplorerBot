@@ -28,6 +28,7 @@ namespace GridExplorerBot
             Key,
             FuneralUrn,
             DeciduousTree,
+            Mushroom,
         }
     }
 }

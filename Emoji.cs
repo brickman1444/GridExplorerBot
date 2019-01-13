@@ -58,6 +58,7 @@ namespace GridExplorerBot
             public static string ChristmasTree = "🎄";
             public static string DeciduousTree = "🌳";
             public static string Rosette = "🏵️";
+            public static string Mushroom = "🍄";
         }
 
         public static class People

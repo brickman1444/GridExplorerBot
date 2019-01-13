@@ -221,6 +221,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },
+            [Objects.ID.Mushroom] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Plants.Mushroom},
+                mInputTokens = new string[]{"mushroom"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "An enticing spotted mushroom. Your mouth starts to water.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)
