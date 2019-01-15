@@ -51,7 +51,7 @@ Help People With Problems
 	1. Wants artificial brain from research facility
 5. Ghost
 6. Werewolf
-	1. Needs silver to control transformation. Get silver medal from race
+	1. Needs silver to control transformation. Get silver medal from car race at the stadium.
 7. Scientist
 8. Cat person
 9. Robot
@@ -62,5 +62,6 @@ Help People With Problems
 13. Fairy
 14. Elf
 15. Mage
+	1. Wants magic mushrooms
 16. Snowman
 17. Wind Spirit

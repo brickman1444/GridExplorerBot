@@ -22,7 +22,7 @@ namespace GridExplorerBot
             mSimpleText = simpleText;
             string regexText = simpleText;
 
-            foreach ( var pair in regexReplacementMap)
+            foreach (var pair in regexReplacementMap)
             {
                 regexText = regexText.Replace(pair.Key, pair.Value);
             }
@@ -60,28 +60,38 @@ namespace GridExplorerBot
             Frustrated,
         }
 
-        Status mStatus = Status.Default;
+        delegate string CommandHandler(Command command, Game game);
 
-        static Command moveCommand = new Command("(move|go|walk) <direction>(| <distance>)");
-        static Command pickUpCommand = new Command("(pick up|take|grab) <object>");
-        static Command dropCommand = new Command("(drop|put down|place) <object> <direction>");
-        static Command throwCommand = new Command("(toss|throw) <object> <direction>");
-        static Command useCommand = new Command("use <actor> on <target>");
-        static Command inspectCommand = new Command("(inspect|look) <direction>");
-        static Command waitCommand = new Command("(wait|)");
+        class CommandPair
+        {
+            public readonly Command mCommand;
+            public readonly CommandHandler mHandler;
+
+            public CommandPair(string command, CommandHandler handler)
+            {
+                mCommand = new Command(command);
+                mHandler = handler;
+            }
+        }
+
         static Command resetCommand = new Command("(reset|restart)");
         static Command helpCommand = new Command("(help|list commands)");
 
-        static Command[] commands = new Command[]
+        Status mStatus = Status.Default;
+        CommandPair[] mCommands = null;
+
+        public PlayerCharacter()
         {
-            moveCommand,
-            pickUpCommand,
-            dropCommand,
-            throwCommand,
-            useCommand,
-            inspectCommand,
-            waitCommand,
-        };
+            mCommands = new CommandPair[]{
+                new CommandPair("(move|go|walk) <direction>(| <distance>)", this.HandleMoveCommand),
+                new CommandPair("(pick up|take|grab) <object>", this.HandleTakeCommand),
+                new CommandPair("(drop|put down|place) <object> <direction>", this.HandleDropCommand),
+                new CommandPair("(toss|throw) <object> <direction>", this.HandleThrowCommand),
+                new CommandPair("use <actor> on <target>", this.HandleUseCommand),
+                new CommandPair("(inspect|look) <direction>", this.HandleInspectCommand),
+                new CommandPair("(wait|)", this.HandleWaitCommand),
+            };
+        }
 
         public override string Simulate(string command, Game game)
         {
@@ -89,36 +99,15 @@ namespace GridExplorerBot
 
             string outText = "";
 
-            if (waitCommand.IsMatch(command))
+            foreach (CommandPair pair in mCommands)
             {
-                outText = "You wait calmly";
-                mStatus = Status.Sleeping;
+                if (pair.mCommand.IsMatch(command))
+                {
+                    outText = pair.mHandler(pair.mCommand, game);
+                    break;
+                }
             }
-            else if (moveCommand.IsMatch(command))
-            {
-                outText = HandleMoveCommand(moveCommand.GetParameter("direction"), moveCommand.GetParameter("distance"), game);
-            }
-            else if (pickUpCommand.IsMatch(command))
-            {
-                outText = HandleTakeCommand(pickUpCommand.GetParameter("object"), game);
-            }
-            else if (dropCommand.IsMatch(command))
-            {
-                outText = HandleDropCommand(dropCommand.GetParameter("object"), dropCommand.GetParameter("direction"), game);
-            }
-            else if (throwCommand.IsMatch(command))
-            {
-                outText = HandleThrowCommand(throwCommand.GetParameter("object"), throwCommand.GetParameter("direction"), game);
-            }
-            else if (useCommand.IsMatch(command))
-            {
-                outText = HandleUseCommand(useCommand.GetParameter("actor"), useCommand.GetParameter("target"), game);
-            }
-            else if (inspectCommand.IsMatch(command))
-            {
-                outText = HandleInspectCommand(inspectCommand.GetParameter("direction"), game);
-            }
-            
+
             if (outText == "")
             {
                 outText = "Unknown command";
@@ -139,13 +128,16 @@ namespace GridExplorerBot
                 case Status.Frustrated: return Emoji.Player.SteamOutOfNose;
             }
 
-            Debug.Fail("Unknnown status");
+            Debug.Fail("Unknown status");
 
             return Emoji.Player.Default;
         }
 
-        private string HandleMoveCommand(string directionString, string distanceString, Game game)
+        private string HandleMoveCommand(Command moveCommand, Game game)
         {
+            string directionString = moveCommand.GetParameter("direction");
+            string distanceString = moveCommand.GetParameter("distance");
+
             Direction directionToMove = Room.GetDirection(directionString);
 
             if (directionToMove == Direction.Unknown)
@@ -155,7 +147,7 @@ namespace GridExplorerBot
             }
 
             uint requestedDistanceToMove = 0;
-            
+
             try
             {
                 requestedDistanceToMove = uint.Parse(distanceString);
@@ -222,8 +214,10 @@ namespace GridExplorerBot
             }
         }
 
-        private string HandleTakeCommand(string objectString, Game game)
+        private string HandleTakeCommand(Command takeCommand, Game game)
         {
+            string objectString = takeCommand.GetParameter("object");
+
             Objects.ID objectTypeToPickUp = Emoji.GetID(objectString);
 
             if (objectTypeToPickUp == Objects.ID.Unknown)
@@ -256,8 +250,11 @@ namespace GridExplorerBot
             return "You picked up " + objectToPickUp.Render();
         }
 
-        private string HandleDropCommand(string objectString, string directionString, Game game)
+        private string HandleDropCommand(Command dropCommand, Game game)
         {
+            string objectString = dropCommand.GetParameter("object");
+            string directionString = dropCommand.GetParameter("direction");
+
             Objects.ID objectTypeToDrop = Emoji.GetID(objectString);
 
             if (objectTypeToDrop == Objects.ID.Unknown)
@@ -290,8 +287,11 @@ namespace GridExplorerBot
             return "You dropped " + objectString;
         }
 
-        string HandleThrowCommand(string objectString, string directionString, Game game)
+        string HandleThrowCommand(Command throwCommand, Game game)
         {
+            string objectString = throwCommand.GetParameter("object");
+            string directionString = throwCommand.GetParameter("direction");
+
             Objects.ID objectTypeToThrow = Emoji.GetID(objectString);
 
             if (objectTypeToThrow == Objects.ID.Unknown)
@@ -341,8 +341,11 @@ namespace GridExplorerBot
             return "You threw " + objectString;
         }
 
-        string HandleUseCommand(string actorString, string targetString, Game game)
+        string HandleUseCommand(Command useCommand, Game game)
         {
+            string actorString = useCommand.GetParameter("actor");
+            string targetString = useCommand.GetParameter("target");
+
             Objects.ID actorType = Emoji.GetID(actorString);
 
             if (actorType == Objects.ID.Unknown)
@@ -394,8 +397,10 @@ namespace GridExplorerBot
             return outText;
         }
 
-        string HandleInspectCommand(string directionString, Game game)
+        string HandleInspectCommand(Command inspectCommand, Game game)
         {
+            string directionString = inspectCommand.GetParameter("direction");
+
             Direction direction = Room.GetDirection(directionString);
 
             if (direction == Direction.Unknown)
@@ -412,10 +417,16 @@ namespace GridExplorerBot
             return inspectObject.GetDescriptionText();
         }
 
-        public static string GetCommandsListText()
+        string HandleWaitCommand(Command waitCommand, Game game)
         {
-            var commandTexts = from command in commands
-                               select command.GetCompactSimpleText();
+            mStatus = Status.Sleeping;
+            return "You wait calmly";
+        }
+
+        public string GetCommandsListText()
+        {
+            var commandTexts = from command in mCommands
+                               select command.mCommand.GetCompactSimpleText();
 
             return string.Join('\n', commandTexts);
         }

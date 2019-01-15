@@ -132,7 +132,8 @@ namespace GridExplorerBot
 
         public static string GetCommandsList()
         {
-            return PlayerCharacter.GetCommandsListText();
+            PlayerCharacter pc = new PlayerCharacter();
+            return pc.GetCommandsListText();
         }
     }
 }
