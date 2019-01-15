@@ -445,7 +445,7 @@ namespace GridExplorerBot
             if (!game.mInventory.Contains(objectType))
             {
                 mStatus = Status.Frustrated;
-                return "You don't have " + objectString;
+                return "You don't have " + objectString + " in your inventory.";
             }
 
             game.mInventory.RemoveItem(objectType);

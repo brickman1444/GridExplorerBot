@@ -91,6 +91,11 @@ namespace GridExplorerBot
             public static string StarryNight = "🌌";
         }
 
+        public static class Food
+        {
+            public static string BloodOrange = "🍊";
+        }
+
         public static Objects.ID GetID(string inputText)
         {
             foreach (KeyValuePair<Objects.ID, ObjectTraits> pair in ObjectTraits.idToTraitsMap)

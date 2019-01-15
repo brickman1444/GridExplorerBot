@@ -29,6 +29,7 @@ namespace GridExplorerBot
             FuneralUrn,
             DeciduousTree,
             Mushroom,
+            BloodOrange,
         }
     }
 }

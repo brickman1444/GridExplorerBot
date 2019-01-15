@@ -241,6 +241,17 @@ namespace GridExplorerBot
                 mIsEdible = true,
                 mCausesHallucinations = true,
             },
+            [Objects.ID.BloodOrange] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Food.BloodOrange},
+                mInputTokens = new string[]{"orange","blood orange"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A juicy blood orange.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mIsHealthyToEat = true,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)
