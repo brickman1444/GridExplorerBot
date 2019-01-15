@@ -62,11 +62,13 @@ namespace GridExplorerBot
             public static string DeciduousTree = "🌳";
             public static string Rosette = "🏵️";
             public static string Mushroom = "🍄";
+            public static string Eggplant = "🍆";
         }
 
         public static class People
         {
             public static string Vampire = "🧛";
+            public static string HappyDemon = "😈";
         }
 
         public static class Buildings
@@ -78,6 +80,15 @@ namespace GridExplorerBot
         public static class Symbols
         {
             public static string Dizzy = "💫";
+            public static string BlueCircle = "🔵";
+            public static string RedCircle = "🔴";
+            public static string PurpleHeart = "💜";
+            public static string Peace = "☮";
+        }
+
+        public static class Sky
+        {
+            public static string StarryNight = "🌌";
         }
 
         public static Objects.ID GetID(string inputText)
@@ -147,6 +158,28 @@ namespace GridExplorerBot
             stream.BackUp(SaveUtils.GetNumBits(id));
 
             return CreateObject(id);
+        }
+
+        public static string[] GetHallucinationEmoji()
+        {
+            return new string[]{
+                Emoji.Plants.Eggplant,
+                Emoji.People.HappyDemon,
+                Emoji.Symbols.BlueCircle,
+                Emoji.Symbols.RedCircle,
+                Emoji.Symbols.PurpleHeart,
+                Emoji.Symbols.Peace,
+                Emoji.Sky.StarryNight,
+            };
+        }
+
+        public static string GetRandomHallucinationEmoji()
+        {
+            string[] emoji = GetHallucinationEmoji();
+
+            int emojiIndex = Game.random.Next() % emoji.Length;
+
+            return emoji[emojiIndex];
         }
     }
 }

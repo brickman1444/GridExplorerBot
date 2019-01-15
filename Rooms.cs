@@ -20,6 +20,7 @@ namespace GridExplorerBot
         List<DynamicObject> mSpawnedDynamicObjects = new List<DynamicObject>();
         InitialRooms.ID mInitialRoomIndex = InitialRooms.ID.Unknown;
         public string mDescription = "";
+        public bool mIsRenderingHallucination = false;
 
         const int maxNumDynamicObjects = 15;
 
@@ -75,7 +76,6 @@ namespace GridExplorerBot
             mDescription = InitialRooms.initialRooms[roomIndex].mDescription;
         }
 
-
         public string Render()
         {
             List<string> lines = new List<string>();
@@ -87,12 +87,31 @@ namespace GridExplorerBot
                 {
                     GridObject gridObject = GetFirstObject(new Point(rowIndex, columnIndex));
 
-                    line += gridObject.Render();
+                    line +=  RenderObject( gridObject );
                 }
                 lines.Add(line);
             }
 
             return string.Join('\n', lines);;
+        }
+
+        private string RenderObject(GridObject gridObject)
+        {
+            if (mIsRenderingHallucination)
+            {
+                if (gridObject.GetTypeID() == Objects.ID.PlayerCharacter)
+                {
+                    return gridObject.Render();
+                }
+                else
+                {
+                    return Emoji.GetRandomHallucinationEmoji();
+                }
+            }
+            else
+            {
+                return gridObject.Render();
+            }
         }
 
         public void Stream(SaveStream stream)

@@ -455,6 +455,7 @@ namespace GridExplorerBot
                 if ( ObjectTraits.GetObjectTraits(objectType).mCausesHallucinations )
                 {
                     mStatus = Status.Tripping;
+                    game.mRoom.mIsRenderingHallucination = true;
                     return Emoji.Symbols.Dizzy + " Whoa " + Emoji.Symbols.Dizzy;
                 }
                 else if (ObjectTraits.GetObjectTraits(objectType).mIsHealthyToEat)
