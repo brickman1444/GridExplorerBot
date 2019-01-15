@@ -13,6 +13,9 @@ namespace GridExplorerBot
         public bool mCanStaticObjectBeMovedThrough = false;
         public bool mCanStaticObjectBeThrownThrough = true;
         public bool mIsInsect = false;
+        public bool mIsEdible = false;
+        public bool mIsHealthyToEat = false;
+        public bool mCausesHallucinations = false;
 
         public static Dictionary<Objects.ID, ObjectTraits> idToTraitsMap = new Dictionary<Objects.ID, ObjectTraits>()
         {
@@ -157,6 +160,8 @@ namespace GridExplorerBot
                 mLookDescription = "A lit candle",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mIsHealthyToEat = false,
             },
             [Objects.ID.Globe] = new ObjectTraits()
             {
@@ -175,6 +180,8 @@ namespace GridExplorerBot
                 mLookDescription = "A sparkling gem stone",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mIsHealthyToEat = false,
             },
             [Objects.ID.Coffin] = new ObjectTraits()
             {
@@ -202,6 +209,8 @@ namespace GridExplorerBot
                 mLookDescription = "A key",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mIsHealthyToEat = false,
             },
             [Objects.ID.FuneralUrn] = new ObjectTraits()
             {
@@ -229,6 +238,8 @@ namespace GridExplorerBot
                 mLookDescription = "An enticing spotted mushroom. Your mouth starts to water.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mCausesHallucinations = true,
             },
         };
 

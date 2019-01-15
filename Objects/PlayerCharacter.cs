@@ -58,6 +58,9 @@ namespace GridExplorerBot
             Sleeping,
             Thinking,
             Frustrated,
+            Tripping,
+            SavoringFood,
+            Vomiting,
         }
 
         delegate string CommandHandler(Command command, Game game);
@@ -90,6 +93,7 @@ namespace GridExplorerBot
                 new CommandPair("use <actor> on <target>", this.HandleUseCommand),
                 new CommandPair("(inspect|look) <direction>", this.HandleInspectCommand),
                 new CommandPair("(wait|)", this.HandleWaitCommand),
+                new CommandPair("eat <object>", this.HandleEatCommand),
             };
         }
 
@@ -126,6 +130,9 @@ namespace GridExplorerBot
                 case Status.Sleeping: return Emoji.Player.Sleeping;
                 case Status.Thinking: return Emoji.Player.Thinking;
                 case Status.Frustrated: return Emoji.Player.SteamOutOfNose;
+                case Status.Tripping: return Emoji.Player.Zany;
+                case Status.SavoringFood: return Emoji.Player.SavoringFood;
+                case Status.Vomiting: return Emoji.Player.Vomiting;
             }
 
             Debug.Fail("Unknown status");
@@ -421,6 +428,58 @@ namespace GridExplorerBot
         {
             mStatus = Status.Sleeping;
             return "You wait calmly";
+        }
+
+        string HandleEatCommand(Command eatCommand, Game game)
+        {
+            string objectString = eatCommand.GetParameter("object");
+
+            Objects.ID objectType = Emoji.GetID(objectString);
+
+            if (objectType == Objects.ID.Unknown)
+            {
+                mStatus = Status.Frustrated;
+                return "You don't have that";
+            }
+
+            if (!game.mInventory.Contains(objectType))
+            {
+                mStatus = Status.Frustrated;
+                return "You don't have " + objectString;
+            }
+
+            game.mInventory.RemoveItem(objectType);
+
+            if ( ObjectTraits.GetObjectTraits(objectType).mIsEdible )
+            {
+                if ( ObjectTraits.GetObjectTraits(objectType).mCausesHallucinations )
+                {
+                    mStatus = Status.Tripping;
+                    return Emoji.Symbols.Dizzy + " Whoa " + Emoji.Symbols.Dizzy;
+                }
+                else if (ObjectTraits.GetObjectTraits(objectType).mIsHealthyToEat)
+                {
+                    mStatus = Status.SavoringFood;
+                    return "That was delicious! You feel a renewed sense of determination.";
+                }
+                else
+                {
+                    Point? spaceToDropObject = game.mRoom.FindOpenSpaceAdjacentTo(mPosition);
+
+                    if (spaceToDropObject != null)
+                    {
+                        game.mRoom.SpawnObject(objectType, spaceToDropObject.Value);
+                    }
+
+                    mStatus = Status.Vomiting;
+                    return "Oh, that was a terrible idea.";
+                }
+            }
+            else
+            {
+                mStatus = Status.Frustrated;
+                return "You can't eat that!";
+            }
         }
 
         public string GetCommandsListText()

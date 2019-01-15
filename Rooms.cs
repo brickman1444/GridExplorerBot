@@ -342,5 +342,20 @@ namespace GridExplorerBot
 
             playerObject.TeleportTo(destination);
         }
+
+        public Point? FindOpenSpaceAdjacentTo(Point point)
+        {
+            var adjacentPoints = MathUtils.GetAdjacentPoints(point);
+
+            foreach (Point adjacentPoint in adjacentPoints)
+            {
+                if (CanSpaceBeMovedTo(adjacentPoint))
+                {
+                    return adjacentPoint;
+                }
+            }
+
+            return null;
+        }
     }
 }

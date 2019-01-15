@@ -14,6 +14,9 @@ namespace GridExplorerBot
             public static string Sleeping = "😴";
             public static string Thinking = "🤔";
             public static string SteamOutOfNose = "😤";
+            public static string Zany = "🤪";
+            public static string SavoringFood = "😋";
+            public static string Vomiting = "🤮";
         }
 
         public static class Environment
@@ -70,6 +73,11 @@ namespace GridExplorerBot
         {
             public static string Castle = "🏰";
             public static string NationalPark = "🏞️";
+        }
+
+        public static class Symbols
+        {
+            public static string Dizzy = "💫";
         }
 
         public static Objects.ID GetID(string inputText)
