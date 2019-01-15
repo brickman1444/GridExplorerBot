@@ -6,7 +6,7 @@ namespace GridExplorerBot
 {
     static class Program
     {
-        public static DateTimeOffset oldestSupportedData = DateTimeOffset.FromUnixTimeSeconds(1546926620);
+        public static DateTimeOffset oldestSupportedData = DateTimeOffset.FromUnixTimeSeconds(1547533221);
 
         public static Stream awsLambdaHandler(Stream inputStream)
         {
