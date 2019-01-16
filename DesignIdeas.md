@@ -44,7 +44,7 @@ spider guarding door. Bees travel between a honey pot and a flower. Pick up and 
 Help People With Problems
 ---------------------------
 1. Vampire
-	1. Needs artificial blood from research facility to get unstuck from being a bat
+	1. Needs artificial blood from research facility to get unstuck from being a bat. Harvest blood orange and then put them in a clamp to press the blood out.
 2. Unicorn
 3. Merperson
 4. Zombie
