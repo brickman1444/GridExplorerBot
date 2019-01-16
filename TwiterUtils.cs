@@ -9,7 +9,8 @@ namespace GridExplorerBot
     static class TwitterUtils
     {
         const string gridExplorerBotScreenName = "gridexplorerbot";
-        const string webHookEnvironmentName = "production";
+        const string webHookEnvironmentName = "production2";
+        static string webHooksEndpoint = "";
 
         public static void InitializeCredentials()
         {
@@ -17,6 +18,7 @@ namespace GridExplorerBot
             string consumerSecret = System.Environment.GetEnvironmentVariable("twitterConsumerSecret");
             string accessToken = System.Environment.GetEnvironmentVariable("twitterAccessToken");
             string accessTokenSecret = System.Environment.GetEnvironmentVariable("twitterAccessTokenSecret");
+            webHooksEndpoint = System.Environment.GetEnvironmentVariable("webHooksEndpoint");
 
             if (consumerKey == null)
             {
@@ -26,6 +28,10 @@ namespace GridExplorerBot
                     consumerSecret = fs.ReadLine();
                     accessToken = fs.ReadLine();
                     accessTokenSecret = fs.ReadLine();
+                }
+                using (StreamReader fs = File.OpenText("localconfig/webHooksEndpoint.txt"))
+                {
+                    webHooksEndpoint = fs.ReadLine();
                 }
             }
 
@@ -55,13 +61,25 @@ namespace GridExplorerBot
 
         public static void RegisterWebHook()
         {
-            var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName, @"https://o1368ky5ac.execute-api.us-east-2.amazonaws.com/default/GridExplorerBotFunction", Auth.Credentials);
+            var task = Webhooks.RegisterWebhookAsync(webHookEnvironmentName, webHooksEndpoint, Auth.Credentials);
+            task.Wait();
+        }
+
+        public static void UnregisterWebHook()
+        {
+            var task = Webhooks.RemoveWebhookAsync(webHookEnvironmentName, webHooksEndpoint, Auth.Credentials);
             task.Wait();
         }
 
         public static void SubscribeToAccountActivity()
         {
             var task = Webhooks.SubscribeToAccountActivityEventsAsync(webHookEnvironmentName, Auth.Credentials);
+            task.Wait();
+        }
+
+        public static void RemoveSubscriptionToAccountActivity()
+        {
+            var task = Webhooks.RemoveAllAccountSubscriptionsAsync(webHookEnvironmentName, Auth.Credentials);
             task.Wait();
         }
 
