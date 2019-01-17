@@ -155,15 +155,9 @@ namespace GridExplorerBot
 
             uint requestedDistanceToMove = 0;
 
-            try
-            {
-                requestedDistanceToMove = uint.Parse(distanceString);
-            }
-            catch
-            {
+            uint.TryParse(distanceString, out requestedDistanceToMove);
 
-            }
-
+            // User could pass in 0 so we need to catch that even if the parsing succeeded
             if (requestedDistanceToMove == 0)
             {
                 requestedDistanceToMove = 1;
