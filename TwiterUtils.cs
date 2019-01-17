@@ -248,7 +248,8 @@ namespace GridExplorerBot
                 }
 
                 string userTextLower = userTweet.Text.ToLower();
-                string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
+                string decodedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
+                string cleanedUserText = StringUtils.RemoveTweetMentions(decodedUserText);
 
                 if (Game.MatchesResetCommand(cleanedUserText))
                 {

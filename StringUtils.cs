@@ -75,5 +75,28 @@ namespace GridExplorerBot
         {
             return 10;
         }
+
+        public static string RemoveTweetMentions(string text)
+        {
+            var stringMatches = System.Text.RegularExpressions.Regex.Match(text, @"^(?<prefix>(?:(?<mention>@[a-zA-Z0-9_]+)\s){0,50})?(?<content>.+)");
+
+            var prefix = stringMatches.Groups["prefix"];
+            var content = stringMatches.Groups["content"];
+
+            string Prefix = prefix.Value;
+            string Content = content.Value;
+
+            var mentionCaptures = stringMatches.Groups["mention"].Captures;
+
+            var mentions = new List<string>();
+            foreach (var mention in mentionCaptures)
+            {
+                mentions.Add(mention.ToString());
+            }
+
+            var Mentions = mentions.ToArray();
+
+            return Content;
+        }
     }
 }
