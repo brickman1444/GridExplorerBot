@@ -221,8 +221,7 @@ namespace GridExplorerBot
 
         class AccountActivityBody
         {
-            public string for_user_id = "";
-            public Newtonsoft.Json.Linq.JObject[] tweet_create_events = { };
+            public Tweetinvi.Models.DTO.ITweetDTO[] tweet_create_events = null;
         }
 
         public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
@@ -231,7 +230,7 @@ namespace GridExplorerBot
 
             Console.WriteLine(request.body);
 
-            AccountActivityBody accountActivity = JsonConvert.DeserializeObject<AccountActivityBody>(request.body);
+            AccountActivityBody accountActivity = request.body.ConvertJsonTo<AccountActivityBody>();
 
             if (accountActivity.tweet_create_events.Length == 0)
             {
@@ -242,9 +241,7 @@ namespace GridExplorerBot
                 return "";
             }
 
-            string tweetsCreatedJSONString = accountActivity.tweet_create_events.ToJson();
-            Tweetinvi.Models.DTO.ITweetDTO[] tweetDTOs = tweetsCreatedJSONString.ConvertJsonTo<Tweetinvi.Models.DTO.ITweetDTO[]>();
-            IEnumerable<Tweetinvi.Models.ITweet> userTweets = Tweetinvi.Tweet.GenerateTweetsFromDTO(tweetDTOs);
+            IEnumerable<Tweetinvi.Models.ITweet> userTweets = Tweetinvi.Tweet.GenerateTweetsFromDTO(accountActivity.tweet_create_events);
 
             foreach (Tweetinvi.Models.ITweet userTweet in userTweets)
             {
