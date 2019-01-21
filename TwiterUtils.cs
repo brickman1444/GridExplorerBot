@@ -251,6 +251,8 @@ namespace GridExplorerBot
                 string decodedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
                 string cleanedUserText = StringUtils.RemoveTweetMentions(decodedUserText);
 
+                Console.WriteLine("Cleaned user text: " + cleanedUserText);
+
                 if (Game.MatchesResetCommand(cleanedUserText))
                 {
                     string freshGameOutput = Program.StartFreshGame(DateTimeOffset.UtcNow);
@@ -267,6 +269,7 @@ namespace GridExplorerBot
                     continue;
                 }
 
+                Console.WriteLine("Fetching parent tweet");
                 Tweetinvi.Models.ITweet parentGridBotTweet = Tweetinvi.Tweet.GetTweet(userTweet.InReplyToStatusId.Value);
 
                 if (parentGridBotTweet.CreatedAt < Program.oldestSupportedData)
@@ -279,6 +282,7 @@ namespace GridExplorerBot
 
                 string cleanedParentText = System.Net.WebUtility.HtmlDecode(parentGridBotTweet.Text);
 
+                Console.WriteLine("Running one tick");
                 string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText, parentGridBotTweet.CreatedAt);
 
                 TweetReplyTo(gameOutput, userTweet);
@@ -292,6 +296,20 @@ namespace GridExplorerBot
         public static void TestChallengeRequest()
         {
             var task = Webhooks.ChallengeWebhookAsync(webHookEnvironmentName, "16034296", Tweetinvi.Auth.Credentials);
+            task.Wait();
+        }
+
+        public static void GetListOfWebhooks()
+        {
+            Tweetinvi.Models.TwitterCredentials tempCredentials = new Tweetinvi.Models.TwitterCredentials(Tweetinvi.Auth.Credentials.ConsumerKey, Tweetinvi.Auth.Credentials.ConsumerSecret);
+            Tweetinvi.Auth.InitializeApplicationOnlyCredentials(tempCredentials, true);
+
+            Tweetinvi.Core.Public.Models.Authentication.ConsumerOnlyCredentials credentials = new Tweetinvi.Core.Public.Models.Authentication.ConsumerOnlyCredentials(tempCredentials.ConsumerKey, tempCredentials.ConsumerSecret)
+            {
+                ApplicationOnlyBearerToken = tempCredentials.ApplicationOnlyBearerToken
+            };
+
+            var task = Webhooks.GetAllWebhookEnvironmentsAsync(credentials);
             task.Wait();
         }
 
