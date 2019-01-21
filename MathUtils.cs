@@ -33,6 +33,22 @@ namespace GridExplorerBot
             return !(a == b);
         }
 
+        public override bool Equals(object o)
+        {
+            Point? p = o as Point?;
+            if (p.HasValue)
+            {
+                return p.Value == this;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Use the index as a hash
+            return mRow * Game.numRoomColumns + mColumn;
+        }
+
         public bool IsWithinBounds()
         {
             return mRow >= 0 && mRow < Game.numRoomRows && mColumn >= 0 && mColumn < Game.numRoomColumns;

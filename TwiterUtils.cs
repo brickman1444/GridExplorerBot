@@ -157,16 +157,16 @@ namespace GridExplorerBot
         class WebRequestResponse
         {
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            bool isBase64Encoded = false;
+            public bool isBase64Encoded = false;
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            int statusCode = 200;
+            public int statusCode = 200;
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            Dictionary<string, string> headers = new Dictionary<string, string>();
+            public Dictionary<string, string> headers = new Dictionary<string, string>();
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            Dictionary<string, string> multiValueHeaders = new Dictionary<string, string>();
+            public Dictionary<string, string> multiValueHeaders = new Dictionary<string, string>();
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
             public ChallengeBody body = new ChallengeBody();
@@ -263,8 +263,6 @@ namespace GridExplorerBot
                 string userTextLower = userTweet.GetSafeDisplayText().ToLower();
                 string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
 
-                continue;
-
                 Console.WriteLine("Cleaned user text: " + cleanedUserText);
 
                 if (Game.MatchesResetCommand(cleanedUserText))
@@ -301,7 +299,7 @@ namespace GridExplorerBot
 
                 TweetReplyTo(gameOutput, userTweet);
             }
-            
+
             return WriteAccountActivityResponse();
         }
 
