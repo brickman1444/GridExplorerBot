@@ -301,9 +301,7 @@ namespace GridExplorerBot
 
                 TweetReplyTo(gameOutput, userTweet);
             }
-
-            WebRequestResponse response = new WebRequestResponse();
-
+            
             return WriteAccountActivityResponse();
         }
 
