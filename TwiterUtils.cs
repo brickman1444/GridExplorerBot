@@ -176,7 +176,7 @@ namespace GridExplorerBot
         {
             Console.WriteLine("Handling Challenge Request");
 
-            WebRequestResponse response = new WebRequestResponse();
+            string hashString = "";
 
             Debug.Assert(consumerSecret.Length != 0);
 
@@ -184,12 +184,24 @@ namespace GridExplorerBot
             byte[] crc_token = System.Text.Encoding.UTF8.GetBytes(request.queryStringParameters["crc_token"]);
             using (System.Security.Cryptography.HMACSHA256 hmac = new System.Security.Cryptography.HMACSHA256(key))
             {
-                response.body.response_token = "sha256=" + System.Convert.ToBase64String(hmac.ComputeHash(crc_token));
+                hashString = System.Convert.ToBase64String(hmac.ComputeHash(crc_token));
             }
 
-            string jsonOut = Newtonsoft.Json.JsonConvert.SerializeObject(response);
+            return WriteChallengeRequestResponse(hashString);
+        }
 
-            return jsonOut;
+        private static string WriteChallengeRequestResponse(string hashString)
+        {
+            string response =
+            "{\n" +
+            "\"isBase64Encoded\": false,\n" +
+            "\"statusCode\": 200,\n" +
+            "\"headers\": {},\n" +
+            "\"multiValueHeaders\": {},\n" +
+            "\"body\": \"{\\\"response_token\\\": \\\"sha256=" + hashString + "\\\"}\"\n" +
+            "}";
+
+            return response;
         }
 
         public static bool IsAccountActivityRequest(WebUtils.WebRequest request)

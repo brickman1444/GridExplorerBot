@@ -9,7 +9,7 @@ namespace GridExplorerBot
         public class WebRequest
         {
             public string httpMethod = "";
-            public Dictionary<string,string> queryStringParameters = new Dictionary<string, string>();
+            public Dictionary<string, string> queryStringParameters = new Dictionary<string, string>();
             public string body = "";
 
             public bool IsGet() { return httpMethod == "GET"; }
@@ -20,22 +20,23 @@ namespace GridExplorerBot
         {
             WebRequest request = new WebRequest();
 
-            JsonTextReader reader = new JsonTextReader(new System.IO.StringReader(jsonText));
-
-            while (reader.Read())
+            using (JsonTextReader reader = new JsonTextReader(new System.IO.StringReader(jsonText)))
             {
-                string currentToken = reader.Value as string;
-                if (currentToken == "httpMethod")
+                while (reader.Read())
                 {
-                    request.httpMethod = reader.ReadAsString();
-                }
-                else if (request.queryStringParameters.Count == 0 && currentToken == "crc_token")
-                {
-                    request.queryStringParameters["crc_token"] = reader.ReadAsString();
-                }
-                else if (currentToken == "body")
-                {
-                    request.body = reader.ReadAsString();
+                    string currentToken = reader.Value as string;
+                    if (currentToken == "httpMethod")
+                    {
+                        request.httpMethod = reader.ReadAsString();
+                    }
+                    else if (request.queryStringParameters.Count == 0 && currentToken == "crc_token")
+                    {
+                        request.queryStringParameters["crc_token"] = reader.ReadAsString();
+                    }
+                    else if (currentToken == "body")
+                    {
+                        request.body = reader.ReadAsString();
+                    }
                 }
             }
 
