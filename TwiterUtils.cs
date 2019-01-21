@@ -3,6 +3,7 @@ using System.IO;
 using Tweetinvi;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
@@ -12,13 +13,14 @@ namespace GridExplorerBot
         const string webHookEnvironmentName = "production2";
         const string webHookID = "1085394130304462848";
         static string webHooksEndpoint = "";
+        static string consumerSecret = "";
 
-        public static void InitializeCredentials()
+        public static void InitializeCredentials(bool initializeTwitterLibrary = true)
         {
             Console.WriteLine("Initializing Credentials");
 
             string consumerKey = System.Environment.GetEnvironmentVariable("twitterConsumerKey");
-            string consumerSecret = System.Environment.GetEnvironmentVariable("twitterConsumerSecret");
+            consumerSecret = System.Environment.GetEnvironmentVariable("twitterConsumerSecret");
             string accessToken = System.Environment.GetEnvironmentVariable("twitterAccessToken");
             string accessTokenSecret = System.Environment.GetEnvironmentVariable("twitterAccessTokenSecret");
             webHooksEndpoint = System.Environment.GetEnvironmentVariable("webHooksEndpoint");
@@ -38,11 +40,14 @@ namespace GridExplorerBot
                 }
             }
 
-            Tweetinvi.Auth.SetUserCredentials(consumerKey, consumerSecret, accessToken, accessTokenSecret);
+            if (initializeTwitterLibrary)
+            {
+                Tweetinvi.Auth.SetUserCredentials(consumerKey, consumerSecret, accessToken, accessTokenSecret);
 
-            RateLimit.RateLimitTrackerMode = RateLimitTrackerMode.TrackOnly;
+                RateLimit.RateLimitTrackerMode = RateLimitTrackerMode.TrackOnly;
 
-            TweetinviEvents.QueryBeforeExecute += RateLimitCheck;
+                TweetinviEvents.QueryBeforeExecute += RateLimitCheck;
+            }
         }
 
         public static void RateLimitCheck(object sender, Tweetinvi.Events.QueryBeforeExecuteEventArgs args)
@@ -173,7 +178,9 @@ namespace GridExplorerBot
 
             WebRequestResponse response = new WebRequestResponse();
 
-            byte[] key = System.Text.Encoding.UTF8.GetBytes(Tweetinvi.Auth.Credentials.ConsumerSecret);
+            Debug.Assert(consumerSecret.Length != 0);
+
+            byte[] key = System.Text.Encoding.UTF8.GetBytes(consumerSecret);
             byte[] crc_token = System.Text.Encoding.UTF8.GetBytes(request.queryStringParameters["crc_token"]);
             using (System.Security.Cryptography.HMACSHA256 hmac = new System.Security.Cryptography.HMACSHA256(key))
             {

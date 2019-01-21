@@ -17,15 +17,15 @@ namespace GridExplorerBot
 
             WebUtils.WebRequest request = WebUtils.GetJsonObject(input);
 
-            TwitterUtils.InitializeCredentials();
-
             string response = "default response";
             if (TwitterUtils.IsChallengeRequest(request))
             {
+                TwitterUtils.InitializeCredentials(false);
                 response = TwitterUtils.HandleChallengeRequest(request);
             }
             else if (TwitterUtils.IsAccountActivityRequest(request))
             {
+                TwitterUtils.InitializeCredentials();
                 response = TwitterUtils.HandleAccountActivityRequest(request);
             }
 

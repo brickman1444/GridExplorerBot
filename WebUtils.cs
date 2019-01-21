@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System;
 
 namespace GridExplorerBot
 {
@@ -17,7 +18,28 @@ namespace GridExplorerBot
 
         public static WebRequest GetJsonObject(string jsonText)
         {
-            return JsonConvert.DeserializeObject<WebRequest>(jsonText);
+            WebRequest request = new WebRequest();
+
+            JsonTextReader reader = new JsonTextReader(new System.IO.StringReader(jsonText));
+
+            while (reader.Read())
+            {
+                string currentToken = reader.Value as string;
+                if (currentToken == "httpMethod")
+                {
+                    request.httpMethod = reader.ReadAsString();
+                }
+                else if (request.queryStringParameters.Count == 0 && currentToken == "crc_token")
+                {
+                    request.queryStringParameters["crc_token"] = reader.ReadAsString();
+                }
+                else if (currentToken == "body")
+                {
+                    request.body = reader.ReadAsString();
+                }
+            }
+
+            return request;
         }
     }
 }
