@@ -10,10 +10,13 @@ namespace GridExplorerBot
     {
         const string gridExplorerBotScreenName = "gridexplorerbot";
         const string webHookEnvironmentName = "production2";
+        const string webHookID = "1085394130304462848";
         static string webHooksEndpoint = "";
 
         public static void InitializeCredentials()
         {
+            Console.WriteLine("Initializing Credentials");
+
             string consumerKey = System.Environment.GetEnvironmentVariable("twitterConsumerKey");
             string consumerSecret = System.Environment.GetEnvironmentVariable("twitterConsumerSecret");
             string accessToken = System.Environment.GetEnvironmentVariable("twitterAccessToken");
@@ -140,6 +143,12 @@ namespace GridExplorerBot
             return true;
         }
 
+        class ChallengeBody
+        {
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+            public string response_token = "";
+        }
+
         class WebRequestResponse
         {
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
@@ -155,13 +164,7 @@ namespace GridExplorerBot
             Dictionary<string, string> multiValueHeaders = new Dictionary<string, string>();
 
             [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            public string body = "";
-        }
-
-        class ChallengeBody
-        {
-            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
-            public string response_token = "";
+            public ChallengeBody body = new ChallengeBody();
         }
 
         public static string HandleChallengeRequest(WebUtils.WebRequest request)
@@ -170,18 +173,12 @@ namespace GridExplorerBot
 
             WebRequestResponse response = new WebRequestResponse();
 
-            ChallengeBody body = new ChallengeBody();
-
-            body.response_token = "sha256=";
-
             byte[] key = System.Text.Encoding.UTF8.GetBytes(Tweetinvi.Auth.Credentials.ConsumerSecret);
             byte[] crc_token = System.Text.Encoding.UTF8.GetBytes(request.queryStringParameters["crc_token"]);
             using (System.Security.Cryptography.HMACSHA256 hmac = new System.Security.Cryptography.HMACSHA256(key))
             {
-                body.response_token += System.Convert.ToBase64String(hmac.ComputeHash(crc_token));
+                response.body.response_token = "sha256=" + System.Convert.ToBase64String(hmac.ComputeHash(crc_token));
             }
-
-            response.body = Newtonsoft.Json.JsonConvert.SerializeObject(body);
 
             string jsonOut = Newtonsoft.Json.JsonConvert.SerializeObject(response);
 
@@ -295,7 +292,7 @@ namespace GridExplorerBot
 
         public static void TestChallengeRequest()
         {
-            var task = Webhooks.ChallengeWebhookAsync(webHookEnvironmentName, "16034296", Tweetinvi.Auth.Credentials);
+            var task = Webhooks.ChallengeWebhookAsync(webHookEnvironmentName, webHookID, Tweetinvi.Auth.Credentials);
             task.Wait();
         }
 
