@@ -263,9 +263,10 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                string userTextLower = userTweet.Text.ToLower();
-                string decodedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
-                string cleanedUserText = StringUtils.RemoveTweetMentions(decodedUserText);
+                string userTextLower = userTweet.GetSafeDisplayText().ToLower();
+                string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
+
+                continue;
 
                 Console.WriteLine("Cleaned user text: " + cleanedUserText);
 
@@ -306,7 +307,26 @@ namespace GridExplorerBot
 
             WebRequestResponse response = new WebRequestResponse();
 
-            return JsonConvert.SerializeObject(response);
+            return WriteAccountActivityResponse();
+        }
+
+        private static string WriteAccountActivityResponse()
+        {
+            string response =
+            "{\n" +
+            "\"isBase64Encoded\": false,\n" +
+            "\"statusCode\": 200,\n" +
+            "\"headers\": {},\n" +
+            "\"multiValueHeaders\": {},\n" +
+            "\"body\": \"\"\n" +
+            "}";
+
+            return response;
+        }
+
+        private static string GetSafeDisplayText(this Tweetinvi.Models.ITweet tweet)
+        {
+            return tweet.Text.Substring(tweet.SafeDisplayTextRange[0]);
         }
 
         public static void TestChallengeRequest()
