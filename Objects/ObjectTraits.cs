@@ -99,7 +99,8 @@ namespace GridExplorerBot
                                              Emoji.Environment.SatelliteAntenna,
                                              Emoji.Environment.Hole,
                                              Emoji.Environment.Stairs,
-                                             Emoji.Plants.Rosette},
+                                             Emoji.Plants.Rosette,
+                                             Emoji.Buildings.DepartmentStore},
                 mInputTokens = new string[]{"door"},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
@@ -251,6 +252,42 @@ namespace GridExplorerBot
                 mCanStaticObjectBeThrownThrough = true,
                 mIsEdible = true,
                 mIsHealthyToEat = true,
+            },
+            [Objects.ID.LabCoat] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Clothing.LabCoat},
+                mInputTokens = new string[]{"lab coat"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A new lab coat, ready for some science.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Handbag] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Handbag},
+                mInputTokens = new string[]{"hand bag", "handbag"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A fashionable hand bag.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.NeckTie] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Clothing.NeckTie},
+                mInputTokens = new string[]{"neck tie", "tie", "neck-tie"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A cunning neck tie.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.Scarf] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Clothing.Scarf},
+                mInputTokens = new string[]{"scarf"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A warm cozy scarf.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
         };
 

@@ -14,6 +14,7 @@ namespace GridExplorerBot
             Overworld,
             MushroomGrove,
             BloodOrangeGrove,
+            DepartmentStore,
         };
 
         public static bool IsValidInitialRoomIndex(ID id)
@@ -38,6 +39,7 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Buildings.Castle, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,6), "Vampire Castle"),
                        new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.MushroomGrove, new Point(6,1), "Magic Forest"),
                        new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.Overworld, new Point(5,6), "Research Facility"),
+                       new DoorSetup(Emoji.Buildings.DepartmentStore, new Point(6,4), InitialRooms.ID.DepartmentStore, new Point(6,4), "Department Store"),
                        } ),
             [ID.Circus] = new Room( "The Circus",
                     new string[] {
@@ -157,6 +159,24 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Food.BloodOrange, new Point(2,5)),
                        new GridObjectSetup(Emoji.Food.BloodOrange, new Point(3,3)),
                        new GridObjectSetup(Emoji.Food.BloodOrange, new Point(5,3)),
+                       } ),
+            [ID.DepartmentStore] = new Room( "Department Store",
+                    new string[] {
+                   "⬛⬛⬛⬛⬛⬛⬛⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬛⬛⬛⬜⬛⬛⬛" },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(6,4)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(7,4), InitialRooms.ID.Overworld, new Point(5,4)),
+                       new GridObjectSetup(Emoji.Clothing.LabCoat, new Point(5,6)),
+                       new GridObjectSetup(Emoji.InventoryItems.Handbag, new Point(5,5)),
+                       new GridObjectSetup(Emoji.Clothing.NeckTie, new Point(5,4)),
+                       new GridObjectSetup(Emoji.Clothing.Scarf, new Point(5,3)),
                        } ),
         };
     }

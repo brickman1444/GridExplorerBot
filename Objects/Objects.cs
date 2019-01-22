@@ -30,6 +30,10 @@ namespace GridExplorerBot
             DeciduousTree,
             Mushroom,
             BloodOrange,
+            LabCoat,
+            Handbag,
+            NeckTie,
+            Scarf,
         }
     }
 }

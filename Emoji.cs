@@ -45,6 +45,14 @@ namespace GridExplorerBot
             public static string Candle = "🕯️";
             public static string GemStone = "💎";
             public static string Key = "🔑";
+            public static string Handbag = "👜";
+        }
+
+        public static class Clothing
+        {
+            public static string LabCoat = "🥼";
+            public static string NeckTie = "👔";
+            public static string Scarf = "🧣";
         }
 
         public static class Animals
@@ -75,6 +83,7 @@ namespace GridExplorerBot
         {
             public static string Castle = "🏰";
             public static string NationalPark = "🏞️";
+            public static string DepartmentStore = "🏬";
         }
 
         public static class Symbols
