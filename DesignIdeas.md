@@ -46,6 +46,7 @@ Help People With Problems
 1. Vampire
 	1. Needs artificial blood from research facility to get unstuck from being a bat. Harvest blood orange and then put them in a clamp to press the blood out.
 2. Unicorn
+	1. trying to win investors at a business meeting
 3. Merperson
 4. Zombie
 	1. Wants artificial brain from research facility

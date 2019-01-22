@@ -274,7 +274,7 @@ namespace GridExplorerBot
             [Objects.ID.NeckTie] = new ObjectTraits()
             {
                 mDisplayEmoji = new string[]{Emoji.Clothing.NeckTie},
-                mInputTokens = new string[]{"neck tie", "tie", "neck-tie"},
+                mInputTokens = new string[]{"neck tie", "tie", "neck-tie", "necktie"},
                 mDynamicObjectType = typeof(InventoryObject),
                 mLookDescription = "A cunning neck tie.",
                 mCanStaticObjectBeMovedThrough = false,
