@@ -107,8 +107,6 @@ namespace GridExplorerBot
                 }
             }
 
-            Debug.Fail("Couldn't find id for %s", inputText);
-
             return Objects.ID.Unknown;
         }
 

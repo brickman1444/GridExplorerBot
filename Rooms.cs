@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace GridExplorerBot
 {
@@ -311,6 +312,38 @@ namespace GridExplorerBot
             }
 
             return null;
+        }
+
+        public GridObject GetNearestObject(Objects.ID typeID, Point targetPosition)
+        {
+            List<GridObject> matchingObjects = new List<GridObject>();
+
+            foreach (DynamicObject dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.GetTypeID() == typeID)
+                {
+                    matchingObjects.Add(dynamicObject);
+                }
+            }
+
+            foreach (StaticObject staticObject in mStaticRoomGrid)
+            {
+                if (staticObject.GetTypeID() == typeID)
+                {
+                    matchingObjects.Add(staticObject);
+                }
+            }
+
+            var sortedObjects = from matchingObject in matchingObjects
+                                orderby MathUtils.GetDistance(matchingObject.GetPosition(), targetPosition) ascending
+                                select matchingObject;
+
+            if (!sortedObjects.Any())
+            {
+                return null;
+            }
+
+            return sortedObjects.First();
         }
 
         public void MarkObjectForDeletion(DynamicObject dynamicObject)

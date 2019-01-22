@@ -31,7 +31,7 @@ namespace GridExplorerBot
             [Objects.ID.Wall] = new ObjectTraits()
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Wall},
-                mInputTokens = new string[]{},
+                mInputTokens = new string[]{"wall"},
                 mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "A sturdy wall.",
                 mCanStaticObjectBeMovedThrough = false,
@@ -100,7 +100,7 @@ namespace GridExplorerBot
                                              Emoji.Environment.Hole,
                                              Emoji.Environment.Stairs,
                                              Emoji.Plants.Rosette},
-                mInputTokens = new string[]{},
+                mInputTokens = new string[]{"door"},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
                 mCanStaticObjectBeMovedThrough = false,
@@ -166,9 +166,9 @@ namespace GridExplorerBot
             [Objects.ID.Globe] = new ObjectTraits()
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.Globe},
-                mInputTokens = new string[]{},
+                mInputTokens = new string[]{"globe", "edge of the world"},
                 mDynamicObjectType = typeof(StaticObject),
-                mLookDescription = "The edge of the world",
+                mLookDescription = "The edge of the world. It's a long way down.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },

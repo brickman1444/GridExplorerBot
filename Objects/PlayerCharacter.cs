@@ -91,8 +91,9 @@ namespace GridExplorerBot
                 new CommandPair("(drop|put down|place) <object> <direction>", this.HandleDropCommand),
                 new CommandPair("(toss|throw) <object> <direction>", this.HandleThrowCommand),
                 new CommandPair("use <actor> on <target>", this.HandleUseCommand),
-                new CommandPair("(inspect|look) <direction>", this.HandleInspectCommand),
-                new CommandPair("(wait|)", this.HandleWaitCommand),
+                new CommandPair("look at <object>", this.LookAtObjectCommand),
+                new CommandPair("(inspect|look) <direction>", this.HandleInspectDirectionCommand),
+                new CommandPair("(wait|sleep|rest|)", this.HandleWaitCommand),
                 new CommandPair("eat <object>", this.HandleEatCommand),
             };
         }
@@ -398,7 +399,7 @@ namespace GridExplorerBot
             return outText;
         }
 
-        string HandleInspectCommand(Command inspectCommand, Game game)
+        string HandleInspectDirectionCommand(Command inspectCommand, Game game)
         {
             string directionString = inspectCommand.GetParameter("direction");
 
@@ -416,6 +417,29 @@ namespace GridExplorerBot
             mStatus = Status.Thinking;
 
             return inspectObject.GetDescriptionText();
+        }
+
+        string LookAtObjectCommand(Command lookAtCommand, Game game)
+        {
+            string objectString = lookAtCommand.GetParameter("object");
+
+            Objects.ID objectType = Emoji.GetID(objectString);
+
+            if (objectType == Objects.ID.Unknown)
+            {
+                mStatus = Status.Frustrated;
+                return "You can't even figure out what that is.";
+            }
+
+            GridObject targetObject = game.mRoom.GetNearestObject(objectType, mPosition);
+
+            if (targetObject == null)
+            {
+                mStatus = Status.Frustrated;
+                return "You don't see that here.";
+            }
+
+            return targetObject.GetDescriptionText();
         }
 
         string HandleWaitCommand(Command waitCommand, Game game)
