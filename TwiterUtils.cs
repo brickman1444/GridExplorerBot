@@ -391,7 +391,7 @@ namespace GridExplorerBot
 
             while (lines.Count != 0)
             {
-                if ( StringExtension.EstimateTweetLength( outTweets[outTweets.Count - 1] + '\n' + lines[0]) <= 280 )
+                if ( StringExtension.EstimateTweetLength( outTweets[outTweets.Count - 1] + '\n' + lines[0]) <= 200 )
                 {
                     outTweets[outTweets.Count - 1] += '\n' + lines[0];
                     lines.RemoveAt(0);
