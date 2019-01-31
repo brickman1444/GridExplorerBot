@@ -13,8 +13,13 @@ namespace GridExplorerBot
 
         static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
         {
+            // Groups with spaces
             ["<"] = "(?<",
             [">"] = ">[a-z0-9]+.*)",
+
+            // Groups without spaces
+            ["{"] = "(?<",
+            ["}"] = ">[a-z0-9]+)",
         };
 
         public Command(string simpleText)
@@ -86,13 +91,13 @@ namespace GridExplorerBot
         public PlayerCharacter()
         {
             mCommands = new CommandPair[]{
-                new CommandPair("(move|go|walk) <direction>(| <distance>)", this.HandleMoveCommand),
+                new CommandPair("(move|go|walk) {direction}(| {distance})", this.HandleMoveCommand),
                 new CommandPair("(pick up|take|grab) <object>", this.HandleTakeCommand),
-                new CommandPair("(drop|put down|place) <object> <direction>", this.HandleDropCommand),
-                new CommandPair("(toss|throw) <object> <direction>", this.HandleThrowCommand),
+                new CommandPair("(drop|put down|place) <object> {direction}", this.HandleDropCommand),
+                new CommandPair("(toss|throw) <object> {direction}", this.HandleThrowCommand),
                 new CommandPair("use <actor> on <target>", this.HandleUseCommand),
                 new CommandPair("look at <object>", this.LookAtObjectCommand),
-                new CommandPair("(inspect|look) <direction>", this.HandleInspectDirectionCommand),
+                new CommandPair("(inspect|look) {direction}", this.HandleInspectDirectionCommand),
                 new CommandPair("(wait|sleep|rest|)", this.HandleWaitCommand),
                 new CommandPair("eat <object>", this.HandleEatCommand),
             };
