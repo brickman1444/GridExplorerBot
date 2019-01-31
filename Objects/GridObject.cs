@@ -61,6 +61,11 @@ namespace GridExplorerBot
             return GetObjectTraits().mLookDescription;
         }
 
+        public virtual void OnRoomCreated(Game game)
+        {
+            // Empty by design
+        }
+
         public static GridObject Create(Objects.ID typeID, Point startinPosition)
         {
             GridObject dynamicObject = Emoji.CreateObject(typeID);

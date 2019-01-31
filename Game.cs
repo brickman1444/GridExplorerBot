@@ -52,16 +52,12 @@ namespace GridExplorerBot
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();
             mRoom = new Room();
-            mRoom.SetInitialRoomIndex(initialRoomID);
-            mRoom.LoadStaticGridFromInitialRoom();
-            mRoom.LoadDynamicObjectsFromInitialRoom();
+            mRoom.CreateFrom(initialRoomID, this);
         }
 
         public void ChangeToRoom(InitialRooms.ID initialRoomID)
         {
-            mRoom.SetInitialRoomIndex(initialRoomID);
-            mRoom.LoadStaticGridFromInitialRoom();
-            mRoom.LoadDynamicObjectsFromInitialRoom();
+            mRoom.CreateFrom(initialRoomID, this);
         }
 
         public string Render()

@@ -36,7 +36,19 @@ namespace GridExplorerBot
             mRelaxedPosition = setup.mRelaxedPosition;
         }
 
+        public override void OnRoomCreated(Game game)
+        {
+            MoveToGuardPosition(game);
+        }
+
         public override string Simulate(string command, Game game)
+        {
+            MoveToGuardPosition(game);
+
+            return "";
+        }
+
+        void MoveToGuardPosition(Game game)
         {
             bool looksLikeScientist = game.mInventory.Contains(Objects.ID.LabCoat);
 
@@ -44,17 +56,15 @@ namespace GridExplorerBot
 
             if (mPosition == prospectivePosition)
             {
-                return "";
+                return;
             }
 
             if (!game.mRoom.CanSpaceBeMovedTo(prospectivePosition))
             {
-                return "";
+                return;
             }
 
             mPosition = prospectivePosition;
-
-            return "";
         }
 
         public override string Render()

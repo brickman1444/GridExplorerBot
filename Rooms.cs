@@ -68,6 +68,23 @@ namespace GridExplorerBot
             }
         }
 
+        public void CreateFrom(InitialRooms.ID roomIndex, Game game)
+        {
+            SetInitialRoomIndex(roomIndex);
+            LoadStaticGridFromInitialRoom();
+            LoadDynamicObjectsFromInitialRoom();
+
+            foreach (GridObject gridObject in mStaticRoomGrid)
+            {
+                gridObject.OnRoomCreated(game);
+            }
+
+            foreach (GridObject gridObject in mDynamicObjects)
+            {
+                gridObject.OnRoomCreated(game);
+            }
+        }
+
         public void SetInitialRoomIndex(InitialRooms.ID roomIndex)
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(roomIndex));
@@ -155,14 +172,14 @@ namespace GridExplorerBot
 
         }
 
-        public void LoadStaticGridFromInitialRoom()
+        void LoadStaticGridFromInitialRoom()
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
             mStaticRoomGrid = InitialRooms.initialRooms[mInitialRoomIndex].mStaticRoomGrid;
         }
 
-        public void LoadDynamicObjectsFromInitialRoom()
+        void LoadDynamicObjectsFromInitialRoom()
         {
             Debug.Assert(InitialRooms.IsValidInitialRoomIndex(mInitialRoomIndex));
 
@@ -211,6 +228,14 @@ namespace GridExplorerBot
         public GridObject GetFirstObject(Point position)
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)
+            {
+                if (dynamicObject.GetPosition() == position)
+                {
+                    return dynamicObject;
+                }
+            }
+
+            foreach (DynamicObject dynamicObject in mSpawnedDynamicObjects)
             {
                 if (dynamicObject.GetPosition() == position)
                 {
