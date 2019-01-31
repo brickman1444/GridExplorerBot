@@ -38,6 +38,7 @@ namespace GridExplorerBot
             Alembic,
             Microscope,
             Clamp,
+            Blood,
         }
     }
 }

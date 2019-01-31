@@ -49,6 +49,7 @@ namespace GridExplorerBot
             public static string GemStone = "💎";
             public static string Key = "🔑";
             public static string Handbag = "👜";
+            public static string Blood = "🅱️";
         }
 
         public static class Clothing

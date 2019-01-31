@@ -64,7 +64,12 @@ namespace GridExplorerBot
 
         public void AddItem(DynamicObject dynamicObject)
         {
-            InventoryEntry existingEntry = GetEntry(dynamicObject.GetTypeID());
+            AddItem(dynamicObject.GetTypeID());
+        }
+
+        public void AddItem(Objects.ID objectType)
+        {
+            InventoryEntry existingEntry = GetEntry(objectType);
 
             if (existingEntry != null && existingEntry.IsStackable())
             {
@@ -74,7 +79,7 @@ namespace GridExplorerBot
             {
                 InventoryEntry entry = new InventoryEntry()
                 {
-                    mType = dynamicObject.GetTypeID(),
+                    mType = objectType,
                 };
 
                 mEntries.Add(entry);

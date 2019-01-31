@@ -100,6 +100,9 @@ namespace GridExplorerBot
                 new CommandPair("(inspect|look) {direction}", this.HandleInspectDirectionCommand),
                 new CommandPair("(wait|sleep|rest|)", this.HandleWaitCommand),
                 new CommandPair("eat <object>", this.HandleEatCommand),
+#if DEBUG
+                new CommandPair("debug give <object>", this.HandleDebugGiveCommand),
+#endif
             };
         }
 
@@ -394,6 +397,16 @@ namespace GridExplorerBot
                     outText = "You unlocked the door with the " + actorString;
                 }
             }
+            else if (targetType == Objects.ID.Clamp)
+            { 
+                Objects.ID crushingResult = ObjectTraits.GetObjectTraits(actorType).mCrushingResultType;
+                if (crushingResult != Objects.ID.Unknown)
+                {
+                    game.mInventory.RemoveItem(actorType);
+                    game.mInventory.AddItem(crushingResult);
+                    outText = "You crushed the " + actorString;
+                }
+            }
 
             if (outText == "")
             {
@@ -504,6 +517,13 @@ namespace GridExplorerBot
                 mStatus = Status.Frustrated;
                 return "You can't eat that!";
             }
+        }
+
+        string HandleDebugGiveCommand(Command debugGiveCommand, Game game)
+        {
+            string objectString = debugGiveCommand.GetParameter("object");
+            game.mInventory.AddItem(Emoji.GetID(objectString));
+            return "";
         }
 
         public string GetCommandsListText()

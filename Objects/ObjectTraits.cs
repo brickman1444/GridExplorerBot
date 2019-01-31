@@ -16,6 +16,7 @@ namespace GridExplorerBot
         public bool mIsEdible = false;
         public bool mIsHealthyToEat = false;
         public bool mCausesHallucinations = false;
+        public Objects.ID mCrushingResultType = Objects.ID.Unknown;
 
         public static Dictionary<Objects.ID, ObjectTraits> idToTraitsMap = new Dictionary<Objects.ID, ObjectTraits>()
         {
@@ -252,6 +253,7 @@ namespace GridExplorerBot
                 mCanStaticObjectBeThrownThrough = true,
                 mIsEdible = true,
                 mIsHealthyToEat = true,
+                mCrushingResultType = Objects.ID.Blood,
             },
             [Objects.ID.LabCoat] = new ObjectTraits()
             {
@@ -321,9 +323,20 @@ namespace GridExplorerBot
                 mDisplayEmoji = new string[]{Emoji.Environment.Clamp},
                 mInputTokens = new string[]{"clamp"},
                 mDynamicObjectType = typeof(StaticObject),
-                mLookDescription = "A clamp. Looks like it could crush something.",
+                mLookDescription = "A clamp. Looks like it could work as a juicer.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Blood] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Blood},
+                mInputTokens = new string[]{"blood"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "Some organic blood harvested from a blood orange.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+                mIsEdible = true,
+                mIsHealthyToEat = false,
             },
         };
 
