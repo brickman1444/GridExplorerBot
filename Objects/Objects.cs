@@ -34,6 +34,7 @@ namespace GridExplorerBot
             Handbag,
             NeckTie,
             Scarf,
+            Guard,
         }
     }
 }

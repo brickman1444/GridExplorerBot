@@ -15,6 +15,7 @@ namespace GridExplorerBot
             MushroomGrove,
             BloodOrangeGrove,
             DepartmentStore,
+            ResearchFacility,
         };
 
         public static bool IsValidInitialRoomIndex(ID id)
@@ -38,7 +39,7 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Player.Default, new Point(5,4)),
                        new DoorSetup(Emoji.Buildings.Castle, new Point(4,4), InitialRooms.ID.VampireCastleCourtyard, new Point(4,6), "Vampire Castle"),
                        new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.MushroomGrove, new Point(6,1), "Magic Forest"),
-                       new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.Overworld, new Point(5,6), "Research Facility"),
+                       new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.ResearchFacility, new Point(6,4), "Research Facility"),
                        new DoorSetup(Emoji.Buildings.DepartmentStore, new Point(6,4), InitialRooms.ID.DepartmentStore, new Point(6,4), "Department Store"),
                        } ),
             [ID.Circus] = new Room( "The Circus",
@@ -177,6 +178,22 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.InventoryItems.Handbag, new Point(5,5)),
                        new GridObjectSetup(Emoji.Clothing.NeckTie, new Point(5,4)),
                        new GridObjectSetup(Emoji.Clothing.Scarf, new Point(5,3)),
+                       } ),
+            [ID.ResearchFacility] = new Room( "Research Facility. A security guard stands by.",
+                    new string[] {
+                   "⬛⬛⬛⬛⬛⬛⬛⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬜⬜⬜⬜⬜⬜⬛",
+                   "⬛⬛⬛⬛⬜⬛⬛⬛",
+                   "⬛⬛⬛⬛⬜⬜⬛⬛",
+                   "⬛⬛⬛⬛⬜⬛⬛⬛",
+                   "⬛⬛⬛⬛⬜⬛⬛⬛" },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(6,4)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(7,4), InitialRooms.ID.Overworld, new Point(5,6)),
+                       new LockSetup(Emoji.Environment.Unlocked, new Point(4,4)),
+                       new GuardSetup(new Point(5,4), new Point(5,5)),
                        } ),
         };
     }

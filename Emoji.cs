@@ -77,6 +77,7 @@ namespace GridExplorerBot
         {
             public static string Vampire = "🧛";
             public static string HappyDemon = "😈";
+            public static string Guard = "💂";
         }
 
         public static class Buildings

@@ -13,6 +13,8 @@ namespace GridExplorerBot
 
         public const int saveDataRowIndex = numTotalRows - 1;
 
+        const InitialRooms.ID defaultInitialRoom = InitialRooms.ID.ResearchFacility;
+
         const string newGameCommand = "New Game";
         string mLastCommandResponse = newGameCommand;
 
@@ -45,7 +47,7 @@ namespace GridExplorerBot
             return true;
         }
 
-        public void GenerateFreshGame(InitialRooms.ID initialRoomID = InitialRooms.ID.Overworld)
+        public void GenerateFreshGame(InitialRooms.ID initialRoomID = defaultInitialRoom)
         {
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();

@@ -289,6 +289,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
+            [Objects.ID.Guard] = new ObjectTraits()
+            {
+                mDisplayEmoji = StringUtils.GetAllGenderAndSkinToneVariants(Emoji.People.Guard).ToArray(),
+                mInputTokens = new string[]{"guard", "security guard", "guardsman"},
+                mDynamicObjectType = typeof(Guard),
+                mLookDescription = "A stoic security guard, serious about their job.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)
