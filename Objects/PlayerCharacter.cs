@@ -93,13 +93,15 @@ namespace GridExplorerBot
             mCommands = new CommandPair[]{
                 new CommandPair("(move|go|walk) {direction}(| {distance})", this.HandleMoveCommand),
                 new CommandPair("(pick up|take|grab) <object>", this.HandleTakeCommand),
-                new CommandPair("(drop|put down|place) <object> {direction}", this.HandleDropCommand),
-                new CommandPair("(toss|throw) <object> {direction}", this.HandleThrowCommand),
+                new CommandPair("(drop|put down) <object> {direction}", this.HandleDropCommand),
+                new CommandPair("(throw) <object> {direction}", this.HandleThrowCommand),
                 new CommandPair("use <actor> on <target>", this.HandleUseCommand),
                 new CommandPair("look at <object>", this.LookAtObjectCommand),
                 new CommandPair("(inspect|look) {direction}", this.HandleInspectDirectionCommand),
                 new CommandPair("(wait|sleep|rest|)", this.HandleWaitCommand),
                 new CommandPair("eat <object>", this.HandleEatCommand),
+                new CommandPair("talk to <person> about <subject>", this.HandleTalkCommand),
+                new CommandPair("talk to <person>", this.HandleTalkCommand),
 #if DEBUG
                 new CommandPair("debug give <object>", this.HandleDebugGiveCommand),
 #endif
@@ -398,7 +400,7 @@ namespace GridExplorerBot
                 }
             }
             else if (targetType == Objects.ID.Clamp)
-            { 
+            {
                 Objects.ID crushingResult = ObjectTraits.GetObjectTraits(actorType).mCrushingResultType;
                 if (crushingResult != Objects.ID.Unknown)
                 {
@@ -486,9 +488,9 @@ namespace GridExplorerBot
 
             game.mInventory.RemoveItem(objectType);
 
-            if ( ObjectTraits.GetObjectTraits(objectType).mIsEdible )
+            if (ObjectTraits.GetObjectTraits(objectType).mIsEdible)
             {
-                if ( ObjectTraits.GetObjectTraits(objectType).mCausesHallucinations )
+                if (ObjectTraits.GetObjectTraits(objectType).mCausesHallucinations)
                 {
                     mStatus = Status.Tripping;
                     game.mRoom.mIsRenderingHallucination = true;
@@ -517,6 +519,40 @@ namespace GridExplorerBot
                 mStatus = Status.Frustrated;
                 return "You can't eat that!";
             }
+        }
+
+        string HandleTalkCommand(Command talkCommand, Game game)
+        {
+            string personString = talkCommand.GetParameter("person");
+            string subjectString = talkCommand.GetParameter("subject");
+
+            Objects.ID personType = Emoji.GetID(personString);
+            if (personType == Objects.ID.Unknown)
+            {
+                mStatus = Status.Frustrated;
+                return "You can't even figure out who you're trying to talk to.";
+            }
+
+            Objects.ID subjectType = Objects.ID.Unknown;
+            // Only try to parse if it's not empty
+            if (subjectString != "")
+            {
+                subjectType = Emoji.GetID(subjectString);
+                if (subjectType == Objects.ID.Unknown)
+                {
+                    mStatus = Status.Frustrated;
+                    return "You can't even figure out what you're trying to talk about.";
+                }
+            }
+
+            GridObject person = game.mRoom.FindObjectAdjacentTo(mPosition, personType);
+            if (person == null)
+            {
+                mStatus = Status.Frustrated;
+                return "They aren't close enough to talk to.";
+            }
+
+            return person.TalkTo(game, subjectType);
         }
 
         string HandleDebugGiveCommand(Command debugGiveCommand, Game game)

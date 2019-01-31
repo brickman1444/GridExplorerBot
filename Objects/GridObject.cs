@@ -66,6 +66,11 @@ namespace GridExplorerBot
             // Empty by design
         }
 
+        public virtual string TalkTo(Game game, Objects.ID subject)
+        {
+            return "They're not very talkative";
+        }
+
         public static GridObject Create(Objects.ID typeID, Point startinPosition)
         {
             GridObject dynamicObject = Emoji.CreateObject(typeID);

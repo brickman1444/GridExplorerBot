@@ -48,9 +48,14 @@ namespace GridExplorerBot
             return "";
         }
 
+        static bool DoesPlayerLookLikeAScientist(Game game)
+        {
+            return game.mInventory.Contains(Objects.ID.LabCoat);
+        }
+
         void MoveToGuardPosition(Game game)
         {
-            bool looksLikeScientist = game.mInventory.Contains(Objects.ID.LabCoat);
+            bool looksLikeScientist = DoesPlayerLookLikeAScientist(game);
 
             Point prospectivePosition = looksLikeScientist ? mRelaxedPosition : mStartingPosition;
 
@@ -79,6 +84,32 @@ namespace GridExplorerBot
             stream.Stream(ref mDisplayEmojiIndex, SaveUtils.GetNumBitsToStoreValue(StringUtils.GetNumPersonEmojiVariations()));
             stream.Stream(ref mStartingPosition);
             stream.Stream(ref mRelaxedPosition);
+        }
+
+        public override string TalkTo(Game game, Objects.ID subject)
+        {
+            if (subject == Objects.ID.Unknown)
+            {
+                if (DoesPlayerLookLikeAScientist(game))
+                {
+                    return "Greetings, scientist. Welcome to the Research Facility.";
+                }
+                else
+                {
+                    return "Only scientists allowed in. You don't even look like a scientist.";
+                }
+            }
+            else
+            {
+                if (subject == Objects.ID.LabCoat)
+                {
+                    return "Yep that's the uniform of all the scientists here.";
+                }
+                else
+                {
+                    return "I don't know anything about that.";
+                }
+            }
         }
     }
 }
