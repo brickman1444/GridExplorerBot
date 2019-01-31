@@ -16,6 +16,7 @@ namespace GridExplorerBot
             BloodOrangeGrove,
             DepartmentStore,
             ResearchFacility,
+            SpiderRoom,
         };
 
         public static bool IsValidInitialRoomIndex(ID id)
@@ -59,6 +60,24 @@ namespace GridExplorerBot
                        new LockSetup(Emoji.Environment.LockedWithPen, new Point(3,4)),
                        } ),
             [ID.VampireCastleCourtyard] = new Room( "Courtyard of Vampire Castle",
+                    new string[] {
+                    "⬛⬛⬛⬛⬛⬛⬛⬛",
+                    "⬛🥀🥀🥀🥀🥀🥀⬛",
+                    "⬛⬜⬜⬜⬜⬜⬜⬛",
+                    "⬛🏺⬜⬜⬜⬜⬜⬛",
+                    "⬜⬜⬜⬜⬜⬜⬜⬜",
+                    "⬛🏺⬜⬜⬜⬜⬜⬛",
+                    "⬛🥀🥀🥀🥀🥀🥀⬛",
+                    "⬛⬛⬛⬛⬛⬛⬛⬛", },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(4,6)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(4,7), InitialRooms.ID.Overworld, new Point(5,4)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(4,0), InitialRooms.ID.VampireCastleEntryway, new Point(3,6)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(3,6)),
+                       new GridObjectSetup(Emoji.InventoryItems.Candle, new Point(5,6)),
+                       new GridObjectSetup(Emoji.Animals.Bat, new Point(2,4)),
+                       } ),
+            [ID.SpiderRoom] = new Room( "Spider Room",
                     new string[] {
                     "⬛⬛⬛⬛⬛⬛⬛⬛",
                     "⬛🥀🥀🕸️🕸️🥀🥀⬛",

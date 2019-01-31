@@ -57,5 +57,21 @@ namespace GridExplorerBot
 
             mPosition = validPositions.First();
         }
+
+        protected void MoveRandomly(Room room)
+        {
+            Point[] possiblePositions = (from point in MathUtils.GetAdjacentPoints(mPosition)
+                                         where room.CanSpaceBeMovedTo(point)
+                                         select point).ToArray();
+
+            if (possiblePositions.Length == 0)
+            {
+                // do nothing
+            }
+            else
+            {
+                mPosition = possiblePositions[Game.random.Next() % possiblePositions.Length];
+            }
+        }
     }
 }

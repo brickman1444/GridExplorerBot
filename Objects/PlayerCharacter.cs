@@ -102,6 +102,7 @@ namespace GridExplorerBot
                 new CommandPair("eat <object>", this.HandleEatCommand),
                 new CommandPair("talk to <person> about <subject>", this.HandleTalkCommand),
                 new CommandPair("talk to <person>", this.HandleTalkCommand),
+                new CommandPair("give <object> to <person>", this.HandleGiveCommand),
 #if DEBUG
                 new CommandPair("debug give <object>", this.HandleDebugGiveCommand),
 #endif
@@ -363,7 +364,7 @@ namespace GridExplorerBot
             if (actorType == Objects.ID.Unknown)
             {
                 mStatus = Status.Frustrated;
-                return "You don't have that";
+                return "You don't have that in your inventory.";
             }
 
             if (!game.mInventory.Contains(actorType))
@@ -552,7 +553,41 @@ namespace GridExplorerBot
                 return "They aren't close enough to talk to.";
             }
 
-            return person.TalkTo(game, subjectType);
+            return person.TalkTo(subjectType, game);
+        }
+
+        string HandleGiveCommand(Command giveCommand, Game game)
+        {
+            string objectString = giveCommand.GetParameter("object");
+            string personString = giveCommand.GetParameter("person");
+
+            Objects.ID objectType = Emoji.GetID(objectString);
+
+            if (objectType == Objects.ID.Unknown)
+            {
+                return "You can't even figure out what you're trying to give.";
+            }
+
+            if (!game.mInventory.Contains(objectType))
+            {
+                return "You don't have " + objectString;
+            }
+
+            Objects.ID personType = Emoji.GetID(personString);
+            if (personType == Objects.ID.Unknown)
+            {
+                mStatus = Status.Frustrated;
+                return "You can't even figure out who you're trying to talk to.";
+            }
+
+            GridObject person = game.mRoom.FindObjectAdjacentTo(mPosition, personType);
+            if (person == null)
+            {
+                mStatus = Status.Frustrated;
+                return "They aren't close enough to talk to.";
+            }
+
+            return person.GiveObject(objectType, game);
         }
 
         string HandleDebugGiveCommand(Command debugGiveCommand, Game game)

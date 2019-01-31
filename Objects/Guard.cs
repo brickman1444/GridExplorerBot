@@ -86,7 +86,7 @@ namespace GridExplorerBot
             stream.Stream(ref mRelaxedPosition);
         }
 
-        public override string TalkTo(Game game, Objects.ID subject)
+        public override string TalkTo(Objects.ID subject, Game game)
         {
             if (subject == Objects.ID.Unknown)
             {

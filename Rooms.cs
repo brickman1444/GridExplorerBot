@@ -225,6 +225,13 @@ namespace GridExplorerBot
             return dynamicObject;
         }
 
+        public DynamicObject SpawnObject(GridObjectSetup setup)
+        {
+            DynamicObject dynamicObject = (DynamicObject)setup.CreateObject();
+            AddNewItem(dynamicObject);
+            return dynamicObject;
+        }
+
         public GridObject GetFirstObject(Point position)
         {
             foreach (DynamicObject dynamicObject in mDynamicObjects)

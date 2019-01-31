@@ -39,6 +39,7 @@ namespace GridExplorerBot
             Microscope,
             Clamp,
             Blood,
+            Bat,
         }
     }
 }

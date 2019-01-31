@@ -66,9 +66,14 @@ namespace GridExplorerBot
             // Empty by design
         }
 
-        public virtual string TalkTo(Game game, Objects.ID subject)
+        public virtual string TalkTo(Objects.ID subject, Game game)
         {
-            return "They're not very talkative";
+            return "They're not very talkative.";
+        }
+
+        public virtual string GiveObject(Objects.ID objectType, Game game)
+        {
+            return "It doesn't seem like they're interested in gifts.";
         }
 
         public static GridObject Create(Objects.ID typeID, Point startinPosition)

@@ -338,6 +338,15 @@ namespace GridExplorerBot
                 mIsEdible = true,
                 mIsHealthyToEat = false,
             },
+            [Objects.ID.Bat] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Animals.Bat},
+                mInputTokens = new string[]{"bat"},
+                mDynamicObjectType = typeof(Bat),
+                mLookDescription = "A bat frantically flying around.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

@@ -64,6 +64,7 @@ namespace GridExplorerBot
             public static string Elephant = "🐘";
             public static string Spider = "🕷️";
             public static string Bee = "🐝";
+            public static string Bat = "🦇";
         }
 
         public static class Plants
