@@ -298,6 +298,33 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },
+            [Objects.ID.Alembic] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Alembic},
+                mInputTokens = new string[]{"alembic"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "A burbling alembic.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Microscope] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Microscope},
+                mInputTokens = new string[]{"microscope"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "A powerful microscope. There's something on the slide.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Clamp] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.Clamp},
+                mInputTokens = new string[]{"clamp"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "A clamp. Looks like it could crush something.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

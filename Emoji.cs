@@ -37,6 +37,9 @@ namespace GridExplorerBot
             public static string Stairs = "📶";
             public static string Coffin = "⚰️";
             public static string FuneralUrn = "⚱️";
+            public static string Alembic = "⚗️";
+            public static string Microscope = "🔬";
+            public static string Clamp = "🗜️";
         }
 
         public static class InventoryItems

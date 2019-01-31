@@ -35,6 +35,9 @@ namespace GridExplorerBot
             NeckTie,
             Scarf,
             Guard,
+            Alembic,
+            Microscope,
+            Clamp,
         }
     }
 }
