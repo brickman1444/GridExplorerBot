@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Tweetinvi;
+using Tweetinvi.Core.Extensions;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -75,7 +76,7 @@ namespace GridExplorerBot
             }
         }
 
-        public static void Tweet(string text)
+        public static Tweetinvi.Models.ITweet Tweet(string text)
         {
             Console.WriteLine("Publishing tweet: " + text);
             Tweetinvi.Models.ITweet newTweet = Tweetinvi.Tweet.PublishTweet(text);
@@ -88,9 +89,11 @@ namespace GridExplorerBot
             {
                 Console.WriteLine("Failed to publish tweet");
             }
+
+            return newTweet;
         }
 
-        public static void TweetReplyTo(string text, Tweetinvi.Models.ITweet tweet)
+        public static Tweetinvi.Models.ITweet TweetReplyTo(string text, Tweetinvi.Models.ITweet tweet)
         {
             string screenName = tweet.CreatedBy.ScreenName;
             long parentTweetID = tweet.Id;
@@ -109,6 +112,28 @@ namespace GridExplorerBot
             else
             {
                 Console.WriteLine("Failed to publish tweet");
+            }
+
+            return newTweet;
+        }
+
+        public static void TweetChain(string longText, Tweetinvi.Models.ITweet previousTweet)
+        {
+            Console.WriteLine("Publishing Tweet Chain");
+            Console.WriteLine("Text: " + longText);
+
+            var tweetTexts = SplitLinesIntoTweets(longText);
+
+            foreach (string text in tweetTexts)
+            {
+                if (previousTweet == null)
+                {
+                    previousTweet = Tweet(text);
+                }
+                else
+                {
+                    previousTweet = TweetReplyTo(text, previousTweet);
+                }
             }
         }
 
@@ -277,7 +302,7 @@ namespace GridExplorerBot
                 {
                     string commandsListText = Game.GetCommandsList();
 
-                    TweetReplyTo(commandsListText, userTweet);
+                    TweetChain(commandsListText, userTweet);
                     continue;
                 }
 
@@ -354,6 +379,31 @@ namespace GridExplorerBot
 
             var task = Webhooks.GetListOfSubscriptionsAsync(webHookEnvironmentName, credentials);
             task.Wait();
+        }
+
+        public static List<string> SplitLinesIntoTweets(string sourceText)
+        {
+            List<string> lines = new List<string>( sourceText.Split('\n') );
+
+            List<string> outTweets = new List<string>();
+            outTweets.Add(lines[0]);
+            lines.RemoveAt(0);
+
+            while (lines.Count != 0)
+            {
+                if ( StringExtension.EstimateTweetLength( outTweets[outTweets.Count - 1] + '\n' + lines[0]) <= 280 )
+                {
+                    outTweets[outTweets.Count - 1] += '\n' + lines[0];
+                    lines.RemoveAt(0);
+                }
+                else
+                {
+                    outTweets.Add(lines[0]);
+                    lines.RemoveAt(0);
+                }
+            }
+
+            return outTweets;
         }
     }
 }

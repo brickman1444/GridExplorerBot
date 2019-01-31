@@ -69,7 +69,12 @@ namespace GridExplorerBot
                 }
                 else if (Game.MatchesHelpCommand(inputText))
                 {
-                    gameOutput = Game.GetCommandsList();
+                    string commandsList = Game.GetCommandsList();
+                    var tweets = TwitterUtils.SplitLinesIntoTweets(commandsList);
+                    foreach (string tweet in tweets)
+                    {
+                        gameOutput += tweet + "\n\n";
+                    }
                 }
                 else
                 {
