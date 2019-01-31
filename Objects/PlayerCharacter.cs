@@ -14,7 +14,7 @@ namespace GridExplorerBot
         static Dictionary<string, string> regexReplacementMap = new Dictionary<string, string>()
         {
             ["<"] = "(?<",
-            [">"] = ">[a-z0-9]+?.*?)",
+            [">"] = ">[a-z0-9]+.*)",
         };
 
         public Command(string simpleText)
