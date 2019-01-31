@@ -13,7 +13,7 @@ namespace GridExplorerBot
 
         public const int saveDataRowIndex = numTotalRows - 1;
 
-        const InitialRooms.ID defaultInitialRoom = InitialRooms.ID.ResearchFacility;
+        const InitialRooms.ID defaultInitialRoom = InitialRooms.ID.Overworld;
 
         const string newGameCommand = "New Game";
         string mLastCommandResponse = newGameCommand;
