@@ -56,7 +56,7 @@ namespace GridExplorerBot
             return GetObjectTraits().mCanStaticObjectBeThrownThrough;
         }
 
-        public virtual string GetDescriptionText()
+        public virtual string GetDescriptionText(Game game)
         {
             return GetObjectTraits().mLookDescription;
         }

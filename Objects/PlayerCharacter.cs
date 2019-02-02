@@ -437,7 +437,7 @@ namespace GridExplorerBot
 
             mStatus = Status.Thinking;
 
-            return inspectObject.GetDescriptionText();
+            return inspectObject.GetDescriptionText(game);
         }
 
         string LookAtObjectCommand(Command lookAtCommand, Game game)
@@ -460,7 +460,7 @@ namespace GridExplorerBot
                 return "You don't see that here.";
             }
 
-            return targetObject.GetDescriptionText();
+            return targetObject.GetDescriptionText(game);
         }
 
         string HandleWaitCommand(Command waitCommand, Game game)

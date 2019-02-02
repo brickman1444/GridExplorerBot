@@ -40,6 +40,7 @@ namespace GridExplorerBot
             public static string Alembic = "⚗️";
             public static string Microscope = "🔬";
             public static string Clamp = "🗜️";
+            public static string MantelpieceClock = "🕰️";
         }
 
         public static class InventoryItems
@@ -104,11 +105,29 @@ namespace GridExplorerBot
         public static class Sky
         {
             public static string StarryNight = "🌌";
+            public static string SunWithFace = "🌞";
+            public static string LastQuarterMoonWithFace = "🌜";
         }
 
         public static class Food
         {
             public static string BloodOrange = "🍊";
+        }
+
+        public static class Time
+        {
+            public static string ZeroOClock = "🕛";
+            public static string OneOClock = "🕐";
+            public static string TwoOClock = "🕑";
+            public static string ThreeOClock = "🕒";
+            public static string FourOClock = "🕓";
+            public static string FiveOClock = "🕔";
+            public static string SixOClock = "🕕";
+            public static string SevenOClock = "🕖";
+            public static string EightOClock = "🕗";
+            public static string NineOClock = "🕘";
+            public static string TenOClock = "🕙";
+            public static string ElevenOClock = "🕚";
         }
 
         public static Objects.ID GetID(string inputText)

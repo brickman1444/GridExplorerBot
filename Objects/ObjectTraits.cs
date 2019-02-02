@@ -347,6 +347,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },
+            [Objects.ID.MantelpieceClock] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.MantelpieceClock},
+                mInputTokens = new string[]{"clock", "mantelpiece clock"},
+                mDynamicObjectType = typeof(MantelpieceClock),
+                mLookDescription = "",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

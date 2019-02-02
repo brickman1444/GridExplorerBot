@@ -40,6 +40,7 @@ namespace GridExplorerBot
             Clamp,
             Blood,
             Bat,
+            MantelpieceClock,
         }
     }
 }

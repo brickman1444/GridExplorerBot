@@ -13,7 +13,7 @@ namespace GridExplorerBot
 
         public const int saveDataRowIndex = numTotalRows - 1;
 
-        const InitialRooms.ID defaultInitialRoom = InitialRooms.ID.Overworld;
+        const InitialRooms.ID defaultInitialRoom = InitialRooms.ID.VampireCastleEntryway;
 
         const string newGameCommand = "New Game";
         string mLastCommandResponse = newGameCommand;
@@ -22,6 +22,7 @@ namespace GridExplorerBot
 
         public Room mRoom = null;
         public Inventory mInventory = null;
+        public GameTime mGameTime = null;
         string mSaveDataString = "";
         InitialRooms.ID mTeleportDestinationRoomID = InitialRooms.ID.Unknown;
         Point? mTeleportDestinationSpawnLocation = null;
@@ -40,7 +41,7 @@ namespace GridExplorerBot
 
             mRoom = new Room();
             mInventory = new Inventory();
-
+            mGameTime = new GameTime();
 
             Load( saveDataLine );
 
@@ -52,6 +53,7 @@ namespace GridExplorerBot
             mLastCommandResponse = newGameCommand;
             mInventory = new Inventory();
             mRoom = new Room();
+            mGameTime = new GameTime();
             mRoom.CreateFrom(initialRoomID, this);
         }
 
@@ -81,6 +83,8 @@ namespace GridExplorerBot
                 mRoom.TeleportPlayerTo(mTeleportDestinationSpawnLocation.Value);
                 mLastCommandResponse = mRoom.mDescription;
             }
+
+            mGameTime.Increment();
         }
 
         public void Save()
@@ -105,6 +109,7 @@ namespace GridExplorerBot
         {
             mInventory.Stream(stream);
             mRoom.Stream(stream);
+            mGameTime.Stream(stream);
         }
 
         public void SetTeleport(InitialRooms.ID destinationRoomID, Point destinationSpawnLocation)

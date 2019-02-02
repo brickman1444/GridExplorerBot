@@ -47,7 +47,7 @@ namespace GridExplorerBot
             return mDisplayEmoji;
         }
 
-        public override string GetDescriptionText()
+        public override string GetDescriptionText(Game game)
         {
             if (mOverrideLookDescription.Length != 0)
             {

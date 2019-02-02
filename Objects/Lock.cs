@@ -71,7 +71,7 @@ namespace GridExplorerBot
             return mStatus == Status.Unlocked;
         }
 
-        public override string GetDescriptionText()
+        public override string GetDescriptionText(Game game)
         {
             string outText = "A door.";
 
