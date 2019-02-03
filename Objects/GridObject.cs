@@ -58,7 +58,7 @@ namespace GridExplorerBot
 
         public virtual string GetDescriptionText(Game game)
         {
-            return GetObjectTraits().mLookDescription;
+            return GetObjectTraits().GetDescription(game);
         }
 
         public virtual void OnRoomCreated(Game game)

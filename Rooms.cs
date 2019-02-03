@@ -105,12 +105,12 @@ namespace GridExplorerBot
                 {
                     GridObject gridObject = GetFirstObject(new Point(rowIndex, columnIndex));
 
-                    line +=  RenderObject( gridObject );
+                    line += RenderObject(gridObject);
                 }
                 lines.Add(line);
             }
 
-            return string.Join('\n', lines);;
+            return string.Join('\n', lines);
         }
 
         private string RenderObject(GridObject gridObject)
@@ -205,7 +205,7 @@ namespace GridExplorerBot
 
             foreach (StaticObject staticObject in mStaticRoomGrid)
             {
-                staticObject.Simulate(inCommand,game);
+                staticObject.Simulate(inCommand, game);
             }
 
             foreach (DynamicObject dynamicObject in mDynamicObjectsToBeDeleted)
@@ -250,7 +250,7 @@ namespace GridExplorerBot
                 }
             }
 
-            return mStaticRoomGrid[position.mRow,position.mColumn];
+            return mStaticRoomGrid[position.mRow, position.mColumn];
         }
 
         public GridObject GetFirstObject(Objects.ID typeID)
@@ -302,12 +302,12 @@ namespace GridExplorerBot
 
         public StaticObject GetStaticObject(Point position)
         {
-            return mStaticRoomGrid[position.mRow,position.mColumn];
+            return mStaticRoomGrid[position.mRow, position.mColumn];
         }
 
         public GridObject FindObjectAdjacentTo(Point position, Objects.ID typeToFind)
         {
-            DynamicObject dynamicObject = FindDynamicObjectAdjacentTo(position, typeToFind );
+            DynamicObject dynamicObject = FindDynamicObjectAdjacentTo(position, typeToFind);
 
             if (dynamicObject != null)
             {

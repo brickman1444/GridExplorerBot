@@ -41,6 +41,7 @@ namespace GridExplorerBot
             Blood,
             Bat,
             MantelpieceClock,
+            Watch,
         }
     }
 }

@@ -51,6 +51,7 @@ namespace GridExplorerBot
             public static string Key = "🔑";
             public static string Handbag = "👜";
             public static string Blood = "🅱️";
+            public static string Watch = "⌚";
         }
 
         public static class Clothing

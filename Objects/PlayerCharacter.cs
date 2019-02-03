@@ -456,11 +456,22 @@ namespace GridExplorerBot
 
             if (targetObject == null)
             {
-                mStatus = Status.Frustrated;
-                return "You don't see that here.";
+                if (game.mInventory.Contains(objectType))
+                {
+                    mStatus = Status.Thinking;
+                    return ObjectTraits.GetObjectTraits(objectType).GetDescription(game);
+                }
+                else
+                {
+                    mStatus = Status.Frustrated;
+                    return "You don't see that here.";
+                }
             }
-
-            return targetObject.GetDescriptionText(game);
+            else
+            {
+                mStatus = Status.Thinking;
+                return targetObject.GetDescriptionText(game);
+            }
         }
 
         string HandleWaitCommand(Command waitCommand, Game game)

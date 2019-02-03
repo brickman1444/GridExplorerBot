@@ -6,10 +6,13 @@ namespace GridExplorerBot
 {
     public class ObjectTraits
     {
+        delegate string DescriptionOverrideFunction(Game game);
+
         public string[] mDisplayEmoji = null;
         public string[] mInputTokens = null;
         public System.Type mDynamicObjectType = null;
-        public string mLookDescription = "";
+        string mLookDescription = "";
+        DescriptionOverrideFunction mDescriptionOverrideFunction = null;
         public bool mCanStaticObjectBeMovedThrough = false;
         public bool mCanStaticObjectBeThrownThrough = true;
         public bool mIsInsect = false;
@@ -351,10 +354,21 @@ namespace GridExplorerBot
             {
                 mDisplayEmoji = new string[]{Emoji.Environment.MantelpieceClock},
                 mInputTokens = new string[]{"clock", "mantelpiece clock"},
-                mDynamicObjectType = typeof(MantelpieceClock),
+                mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "",
+                mDescriptionOverrideFunction = game => { return "An antique mantelpiece clock. It shows " + game.mGameTime.Render(); },
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Watch] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.Watch},
+                mInputTokens = new string[]{"watch", "wrist watch"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "",
+                mDescriptionOverrideFunction = game => { return "An expensive looking watch. It shows " + game.mGameTime.Render(); },
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
             },
         };
 
@@ -363,6 +377,18 @@ namespace GridExplorerBot
             Debug.Assert(idToTraitsMap.ContainsKey(id));
 
             return idToTraitsMap[id];
+        }
+
+        public string GetDescription(Game game)
+        {
+            if (mDescriptionOverrideFunction != null)
+            {
+                return mDescriptionOverrideFunction(game);
+            }
+            else
+            {
+                return mLookDescription;
+            }
         }
     }
 }

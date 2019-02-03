@@ -194,10 +194,11 @@ namespace GridExplorerBot
                    new GridObjectSetup[] {
                        new GridObjectSetup(Emoji.Player.Default, new Point(6,4)),
                        new DoorSetup(Emoji.Environment.Door, new Point(7,4), InitialRooms.ID.Overworld, new Point(5,4)),
-                       new GridObjectSetup(Emoji.Clothing.LabCoat, new Point(5,6)),
+                       new GridObjectSetup(Emoji.Clothing.LabCoat, new Point(6,5)),
                        new GridObjectSetup(Emoji.InventoryItems.Handbag, new Point(5,5)),
-                       new GridObjectSetup(Emoji.Clothing.NeckTie, new Point(5,4)),
+                       new GridObjectSetup(Emoji.Clothing.NeckTie, new Point(6,3)),
                        new GridObjectSetup(Emoji.Clothing.Scarf, new Point(5,3)),
+                       new GridObjectSetup(Emoji.InventoryItems.Watch, new Point(4,3)),
                        } ),
             [ID.ResearchFacility] = new Room( "Research Facility. A security guard stands by.",
                     new string[] {
