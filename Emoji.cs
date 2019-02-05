@@ -31,7 +31,9 @@ namespace GridExplorerBot
             public static string Empty = "⬜";
             public static string Door = "🚪";
             public static string Vase = "🏺";
-            public static string Globe = "🌍";
+            public static string GlobeShowingEuropeAfrica = "🌍";
+            public static string GlobeShowingAsiaAustralia = "🌏";
+            public static string GlobeShowingAmericas = "🌎";
             public static string SatelliteAntenna = "📡";
             public static string Hole = "🕳️";
             public static string Stairs = "📶";

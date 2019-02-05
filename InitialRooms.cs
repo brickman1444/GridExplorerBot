@@ -122,6 +122,7 @@ namespace GridExplorerBot
                        new GridObjectSetup(Emoji.Environment.Coffin, new Point(5,6)),
                        new VampireSetup(new Point(2,1)),
                        new GridObjectSetup(Emoji.Environment.MantelpieceClock, new Point(2,6)),
+                       new GridObjectSetup(Emoji.Environment.GlobeShowingEuropeAfrica, new Point(2,4)),
                        } ),
             [ID.Crypt] = new Room( "The Crypt",
                     new string[] {

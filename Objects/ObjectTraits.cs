@@ -170,10 +170,10 @@ namespace GridExplorerBot
             },
             [Objects.ID.Globe] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Environment.Globe},
-                mInputTokens = new string[]{"globe", "edge of the world"},
-                mDynamicObjectType = typeof(StaticObject),
-                mLookDescription = "The edge of the world. It's a long way down.",
+                mDisplayEmoji = new string[]{Emoji.Environment.GlobeShowingEuropeAfrica, Emoji.Environment.GlobeShowingAsiaAustralia, Emoji.Environment.GlobeShowingAmericas},
+                mInputTokens = new string[]{"globe", "earth", "antique globe", "earth globe"},
+                mDynamicObjectType = typeof(Globe),
+                mLookDescription = "An antique globe showing all corners of the world.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },

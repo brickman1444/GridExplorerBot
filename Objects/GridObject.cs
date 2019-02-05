@@ -76,6 +76,21 @@ namespace GridExplorerBot
             return "It doesn't seem like they're interested in gifts.";
         }
 
+        public class ActionResult
+        {
+            public string mOutput = "";
+            public bool mSuccess = true;
+        }
+        
+        public virtual ActionResult UseWithoutTarget(Game game)
+        {
+            return new ActionResult()
+            {
+                mOutput = "You don't think you can do that.",
+                mSuccess = false,
+            };
+        }
+
         public static GridObject Create(Objects.ID typeID, Point startinPosition)
         {
             GridObject dynamicObject = Emoji.CreateObject(typeID);

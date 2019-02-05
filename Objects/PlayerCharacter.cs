@@ -95,7 +95,8 @@ namespace GridExplorerBot
                 new CommandPair("(pick up|take|grab) <object>", this.HandleTakeCommand),
                 new CommandPair("(drop|put down) <object> {direction}", this.HandleDropCommand),
                 new CommandPair("(throw) <object> {direction}", this.HandleThrowCommand),
-                new CommandPair("use <actor> on <target>", this.HandleUseCommand),
+                new CommandPair("use <actor> on <target>", this.HandleUseOnTargetCommand),
+                new CommandPair("use <actor>", this.HandleUseWithoutTargetCommand),
                 new CommandPair("look at <object>", this.LookAtObjectCommand),
                 new CommandPair("(inspect|look) {direction}", this.HandleInspectDirectionCommand),
                 new CommandPair("(wait|sleep|rest|)", this.HandleWaitCommand),
@@ -354,7 +355,7 @@ namespace GridExplorerBot
             return "You threw " + objectString;
         }
 
-        string HandleUseCommand(Command useCommand, Game game)
+        string HandleUseOnTargetCommand(Command useCommand, Game game)
         {
             string actorString = useCommand.GetParameter("actor");
             string targetString = useCommand.GetParameter("target");
@@ -418,6 +419,36 @@ namespace GridExplorerBot
             }
 
             return outText;
+        }
+
+        string HandleUseWithoutTargetCommand(Command useCommand, Game game)
+        {
+            string actorString = useCommand.GetParameter("actor");
+
+            Objects.ID actorType = Emoji.GetID(actorString);
+
+            if (actorType == Objects.ID.Unknown)
+            {
+                mStatus = Status.Frustrated;
+                return "You don't have that in your inventory.";
+            }
+
+            GridObject actorObject = game.mRoom.FindObjectAdjacentTo(mPosition, actorType);
+
+            if (actorObject == null)
+            {
+                mStatus = Status.Frustrated;
+                return "You couldn't find that nearby.";
+            }
+
+            ActionResult result = actorObject.UseWithoutTarget(game);
+
+            if (!result.mSuccess)
+            {
+                mStatus = Status.Frustrated;
+            }
+
+            return result.mOutput;
         }
 
         string HandleInspectDirectionCommand(Command inspectCommand, Game game)
