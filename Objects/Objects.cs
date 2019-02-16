@@ -42,6 +42,7 @@ namespace GridExplorerBot
             Bat,
             MantelpieceClock,
             Watch,
+            Hourglass,
         }
     }
 }

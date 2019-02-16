@@ -370,6 +370,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
             },
+            [Objects.ID.Hourglass] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.HourglassDone, Emoji.Environment.HourglassNotDone},
+                mInputTokens = new string[]{"hourglass"},
+                mDynamicObjectType = typeof(Hourglass),
+                mLookDescription = "",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            },
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

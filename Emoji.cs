@@ -43,6 +43,8 @@ namespace GridExplorerBot
             public static string Microscope = "🔬";
             public static string Clamp = "🗜️";
             public static string MantelpieceClock = "🕰️";
+            public static string HourglassDone = "⌛";
+            public static string HourglassNotDone = "⏳";
         }
 
         public static class InventoryItems
