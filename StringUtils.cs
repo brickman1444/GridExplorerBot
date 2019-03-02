@@ -67,9 +67,27 @@ namespace GridExplorerBot
             return outStrings;
         }
 
+        public static string GetVariantEmoji(string baseEmoji, NPCIdentityData identityData)
+        {
+            string skinToneSuffix = Emoji.GetSkinTones()[identityData.GetSkinToneIndex()];
+            string genderSuffix = Emoji.GetGenderSuffixes()[identityData.GetGenderIndex()];
+
+            return baseEmoji + skinToneSuffix + genderSuffix;
+        }
+
+        public static int GetNumSkinToneVariations()
+        {
+            return Emoji.GetSkinTones().Length;
+        }
+
+        public static int GetNumGenderVariations()
+        {
+            return Emoji.GetGenderSuffixes().Length;
+        }
+
         public static int GetNumPersonEmojiVariations()
         {
-            return GetAllGenderAndSkinToneVariants("").Count;
+            return GetNumSkinToneVariations() * GetNumGenderVariations();
         }
     }
 }

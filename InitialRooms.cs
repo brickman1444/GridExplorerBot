@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace GridExplorerBot
 {
@@ -24,7 +25,16 @@ namespace GridExplorerBot
             return initialRooms.ContainsKey(id);
         }
 
-        public static Dictionary<InitialRooms.ID,Room> initialRooms = new Dictionary<InitialRooms.ID, Room>()
+        public static void Initialize()
+        {
+            initialRooms = _initialRooms;
+        }
+
+        public static Dictionary<int,NPCIdentityData> identityData = new Dictionary<int, NPCIdentityData>();
+
+        public static Dictionary<InitialRooms.ID,Room> initialRooms = null;
+
+        public static Dictionary<InitialRooms.ID,Room> _initialRooms = new Dictionary<InitialRooms.ID, Room>()
         {
             [InitialRooms.ID.Overworld] = new Room( "The World",
                     new string[] {

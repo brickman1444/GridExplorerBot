@@ -23,6 +23,7 @@ namespace GridExplorerBot
         public Room mRoom = null;
         public Inventory mInventory = null;
         public GameTime mGameTime = null;
+        public static Dictionary<int,NPCIdentityData> mNPCIdentities = null;
         string mSaveDataString = "";
         InitialRooms.ID mTeleportDestinationRoomID = InitialRooms.ID.Unknown;
         Point? mTeleportDestinationSpawnLocation = null;
@@ -42,6 +43,8 @@ namespace GridExplorerBot
             mRoom = new Room();
             mInventory = new Inventory();
             mGameTime = new GameTime();
+            mNPCIdentities = new Dictionary<int, NPCIdentityData>();
+            InitialRooms.Initialize();
 
             Load( saveDataLine );
 
@@ -54,6 +57,8 @@ namespace GridExplorerBot
             mInventory = new Inventory();
             mRoom = new Room();
             mGameTime = new GameTime();
+            mNPCIdentities = InitialRooms.identityData;
+            InitialRooms.Initialize();
             mRoom.CreateFrom(initialRoomID, this);
         }
 
@@ -107,9 +112,39 @@ namespace GridExplorerBot
 
         private void Stream(SaveStream stream)
         {
+            if (!stream.IsWriting())
+            {
+                NPCIdentifier.currentMaxID = 0;
+            }
+
             mInventory.Stream(stream);
             mRoom.Stream(stream);
             mGameTime.Stream(stream);
+
+            int numNPCData = mNPCIdentities.Count;
+            stream.Stream(ref numNPCData, SaveUtils.GetNumBitsToStoreValue(NPCIdentifier.maxNumNPCs));
+
+            if (stream.IsWriting())
+            {
+                foreach (KeyValuePair<int,NPCIdentityData> pair in mNPCIdentities)
+                {
+                    int id = pair.Key;
+                    stream.Stream(ref id, SaveUtils.GetNumBitsToStoreValue(NPCIdentifier.maxNumNPCs - 1));
+                    pair.Value.Stream(stream);
+                }
+            }
+            else
+            {
+                mNPCIdentities.Clear();
+                for (int npcIdentityIndex = 0; npcIdentityIndex < numNPCData; npcIdentityIndex++)
+                {
+                    int id = 0;
+                    NPCIdentityData data = new NPCIdentityData();
+                    stream.Stream(ref id, SaveUtils.GetNumBitsToStoreValue(NPCIdentifier.maxNumNPCs - 1));
+                    data.Stream(stream);
+                    mNPCIdentities[id] = data;
+                }
+            }
         }
 
         public void SetTeleport(InitialRooms.ID destinationRoomID, Point destinationSpawnLocation)

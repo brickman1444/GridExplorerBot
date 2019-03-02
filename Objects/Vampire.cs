@@ -4,7 +4,7 @@ namespace GridExplorerBot
 {
     public class VampireSetup : GridObjectSetup
     {
-        public VampireSetup(Point position) : base(Emoji.GetRandomEmoji(Objects.ID.Vampire), position)
+        public VampireSetup(Point position) : base(Emoji.GetEmoji(Objects.ID.Vampire), position)
         {
 
         }
@@ -15,31 +15,24 @@ namespace GridExplorerBot
             
             Debug.Assert(vampire != null);
 
-            vampire.Setup(this);
-
             return vampire;
         }
     }
 
     public class Vampire : DynamicObject
     {
-        int mDisplayEmojiIndex;
-
-        public void Setup(VampireSetup setup)
-        {
-            mDisplayEmojiIndex = Emoji.GetEmojiIndex(mType, setup.mDisplayText);
-        }
+        private NPCIdentifier mIdentifier = new NPCIdentifier();
 
         public override string Render()
         {
-            return Emoji.GetEmoji(mType, mDisplayEmojiIndex);
+            return mIdentifier.GetEmojiVariant(Emoji.GetEmoji(GetTypeID()));
         }
 
         public override void Stream(SaveStream stream)
         {
             base.Stream(stream);
 
-            stream.Stream(ref mDisplayEmojiIndex, SaveUtils.GetNumBitsToStoreValue(StringUtils.GetNumPersonEmojiVariations()));
+            mIdentifier.Stream(stream);
         }
     }
 }

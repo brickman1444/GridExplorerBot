@@ -199,7 +199,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Vampire] = new ObjectTraits()
             {
-                mDisplayEmoji = StringUtils.GetAllGenderAndSkinToneVariants(Emoji.People.Vampire).ToArray(),
+                mDisplayEmoji = new string[]{Emoji.People.Vampire},
                 mInputTokens = new string[]{"vampire"},
                 mDynamicObjectType = typeof(Vampire),
                 mLookDescription = "An well-dressed vampire",
