@@ -107,6 +107,12 @@ namespace GridExplorerBot
             public static string Peace = "☮";
         }
 
+        public static class CityScape
+        {
+            public static string Sunrise = "🌅";
+            public static string Sunset = "🌇";
+        }
+
         public static class Sky
         {
             public static string StarryNight = "🌌";

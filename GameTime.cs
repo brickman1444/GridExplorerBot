@@ -19,7 +19,7 @@ namespace GridExplorerBot
 
         public bool IsNight()
         {
-            return mTimeInHoursAfterMidnight < 6 || mTimeInHoursAfterMidnight >= 18;
+            return mTimeInHoursAfterMidnight < 5 || mTimeInHoursAfterMidnight >= 20;
         }
 
         public string Render()
@@ -45,13 +45,25 @@ namespace GridExplorerBot
                 default: Debug.Fail("Invalid time"); break;
             }
 
-            if (IsNight())
+            if (mTimeInHoursAfterMidnight < 5)
             {
                 outString += Emoji.Sky.LastQuarterMoonWithFace;
             }
-            else
+            else if (mTimeInHoursAfterMidnight < 7)
+            {
+                outString += Emoji.CityScape.Sunrise;
+            }
+            else if (mTimeInHoursAfterMidnight < 17)
             {
                 outString += Emoji.Sky.SunWithFace;
+            }
+            else if (mTimeInHoursAfterMidnight < 19)
+            {
+                outString += Emoji.CityScape.Sunset;
+            }
+            else
+            {
+                outString += Emoji.Sky.LastQuarterMoonWithFace;
             }
 
             return outString;
