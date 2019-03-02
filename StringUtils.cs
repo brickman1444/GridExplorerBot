@@ -50,21 +50,17 @@ namespace GridExplorerBot
             return Cromulent.Encoding.Z85.FromZ85String(saveData);
         }
 
-        public static IEnumerable<string> GetAllGenderAndSkinToneVariants(string baseEmoji)
+        public static ICollection<string> GetAllGenderAndSkinToneVariants(string baseEmoji)
         {
             // Append all variants of skin tone and gender characters
 
-            string[] skinTones = {"🏻","🏼","🏽","🏾","🏿"};
-            string zeroWidthJoiner = "‍";
-            string[] genders = {"♀️","♂️"};
-
             List<string> outStrings = new List<string>();
 
-            foreach ( string skinTone in skinTones )
+            foreach ( string skinTone in Emoji.GetSkinTones() )
             {
-                foreach ( string gender in genders )
+                foreach ( string genderSuffix in Emoji.GetGenderSuffixes() )
                 {
-                    outStrings.Add( baseEmoji + skinTone + zeroWidthJoiner + gender );
+                    outStrings.Add( baseEmoji + skinTone + genderSuffix );
                 }
             }
 
@@ -73,7 +69,7 @@ namespace GridExplorerBot
 
         public static int GetNumPersonEmojiVariations()
         {
-            return 10;
+            return GetAllGenderAndSkinToneVariants("").Count;
         }
     }
 }

@@ -141,6 +141,26 @@ namespace GridExplorerBot
             public static string ElevenOClock = "🕚";
         }
 
+        public static class Utilities
+        {
+            public static string ZWJ = "‍";
+        }
+
+        public static class Gender
+        {
+            public static string Female = "♀️";
+            public static string Male = "♂️";
+        }
+
+        public static class SkinTones
+        {
+            public static string LightSkinTone = "🏻";
+            public static string MediumLightSkinTone = "🏼";
+            public static string MediumSkinTone = "🏽";
+            public static string MediumDarkSkinTone = "🏾";
+            public static string DarkSkinTone = "🏿";
+        }
+
         public static Objects.ID GetID(string inputText)
         {
             foreach (KeyValuePair<Objects.ID, ObjectTraits> pair in ObjectTraits.idToTraitsMap)
@@ -218,6 +238,26 @@ namespace GridExplorerBot
                 Emoji.Symbols.PurpleHeart,
                 Emoji.Symbols.Peace,
                 Emoji.Sky.StarryNight,
+            };
+        }
+
+        public static string[] GetGenderSuffixes()
+        {
+            return new string[]{
+                Emoji.Utilities.ZWJ + Emoji.Gender.Female,
+                Emoji.Utilities.ZWJ + Emoji.Gender.Male,
+                "",
+            };
+        }
+
+        public static string[] GetSkinTones()
+        {
+            return new string[]{
+                Emoji.SkinTones.LightSkinTone,
+                Emoji.SkinTones.MediumLightSkinTone,
+                Emoji.SkinTones.MediumSkinTone,
+                Emoji.SkinTones.MediumDarkSkinTone,
+                Emoji.SkinTones.DarkSkinTone
             };
         }
 
