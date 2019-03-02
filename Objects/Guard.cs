@@ -6,7 +6,7 @@ namespace GridExplorerBot
     {
         public readonly Point mRelaxedPosition;
 
-        public GuardSetup(Point startingPosition, Point relaxedPosition) : base(Emoji.GetRandomEmoji(Objects.ID.Guard), startingPosition)
+        public GuardSetup(Point startingPosition, Point relaxedPosition) : base(Emoji.People.Guard, startingPosition)
         {
             mRelaxedPosition = relaxedPosition;
         }
@@ -25,13 +25,12 @@ namespace GridExplorerBot
 
     public class Guard : DynamicObject
     {
-        int mDisplayEmojiIndex;
+        NPCIdentifier mNPCIdentity = new NPCIdentifier();
         Point mStartingPosition;
         Point mRelaxedPosition;
 
         public void Setup(GuardSetup setup)
         {
-            mDisplayEmojiIndex = Emoji.GetEmojiIndex(mType, setup.mDisplayText);
             mStartingPosition = setup.mStartingPosition;
             mRelaxedPosition = setup.mRelaxedPosition;
         }
@@ -74,14 +73,14 @@ namespace GridExplorerBot
 
         public override string Render()
         {
-            return Emoji.GetEmoji(mType, mDisplayEmojiIndex);
+            return mNPCIdentity.GetEmojiVariant(Emoji.GetEmoji(GetTypeID()));
         }
 
         public override void Stream(SaveStream stream)
         {
             base.Stream(stream);
 
-            stream.Stream(ref mDisplayEmojiIndex, SaveUtils.GetNumBitsToStoreValue(StringUtils.GetNumPersonEmojiVariations()));
+            mNPCIdentity.Stream(stream);
             stream.Stream(ref mStartingPosition);
             stream.Stream(ref mRelaxedPosition);
         }

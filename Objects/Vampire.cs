@@ -4,18 +4,9 @@ namespace GridExplorerBot
 {
     public class VampireSetup : GridObjectSetup
     {
-        public VampireSetup(Point position) : base(Emoji.GetEmoji(Objects.ID.Vampire), position)
+        public VampireSetup(Point position) : base(Emoji.People.Vampire, position)
         {
 
-        }
-
-        public override GridObject CreateObject()
-        {
-            Vampire vampire = base.CreateObject() as Vampire;
-            
-            Debug.Assert(vampire != null);
-
-            return vampire;
         }
     }
 

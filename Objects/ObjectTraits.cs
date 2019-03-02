@@ -296,7 +296,7 @@ namespace GridExplorerBot
             },
             [Objects.ID.Guard] = new ObjectTraits()
             {
-                mDisplayEmoji = StringUtils.GetAllGenderAndSkinToneVariants(Emoji.People.Guard).ToArray(),
+                mDisplayEmoji = new string[]{Emoji.People.Guard},
                 mInputTokens = new string[]{"guard", "security guard", "guardsman"},
                 mDynamicObjectType = typeof(Guard),
                 mLookDescription = "A stoic security guard, serious about their job.",
