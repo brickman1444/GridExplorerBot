@@ -104,7 +104,8 @@ namespace GridExplorerBot
                                              Emoji.Environment.Hole,
                                              Emoji.Environment.Stairs,
                                              Emoji.Plants.Rosette,
-                                             Emoji.Buildings.DepartmentStore},
+                                             Emoji.Buildings.DepartmentStore,
+                                             Emoji.Buildings.ClassicalBuilding},
                 mInputTokens = new string[]{"door"},
                 mDynamicObjectType = typeof(Door),
                 mLookDescription = "A door to somewhere else",
@@ -378,6 +379,15 @@ namespace GridExplorerBot
                 mLookDescription = "",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = true,
+            },
+            [Objects.ID.PlaceOfWorship] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Environment.PlaceOfWorship},
+                mInputTokens = new string[]{"place of worship"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "The sacred walls of a place of worship",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
             },
         };
 

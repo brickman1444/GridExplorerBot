@@ -43,6 +43,7 @@ namespace GridExplorerBot
             MantelpieceClock,
             Watch,
             Hourglass,
+            PlaceOfWorship,
         }
     }
 }

@@ -18,6 +18,7 @@ namespace GridExplorerBot
             DepartmentStore,
             ResearchFacility,
             SpiderRoom,
+            LikeTemple,
         };
 
         public static bool IsValidInitialRoomIndex(ID id)
@@ -52,6 +53,7 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Buildings.NationalPark, new Point(4,2), InitialRooms.ID.MushroomGrove, new Point(6,1), "Magic Forest"),
                        new DoorSetup(Emoji.Environment.SatelliteAntenna, new Point(4,6), InitialRooms.ID.ResearchFacility, new Point(6,4), "Research Facility"),
                        new DoorSetup(Emoji.Buildings.DepartmentStore, new Point(6,4), InitialRooms.ID.DepartmentStore, new Point(6,4), "Department Store"),
+                       new DoorSetup(Emoji.Buildings.ClassicalBuilding, new Point(6,2), InitialRooms.ID.LikeTemple, new Point(1,4), "Like Temple"),
                        } ),
             [ID.Circus] = new Room( "The Circus",
                     new string[] {
@@ -227,6 +229,20 @@ namespace GridExplorerBot
                        new DoorSetup(Emoji.Environment.Door, new Point(7,4), InitialRooms.ID.Overworld, new Point(5,6)),
                        new LockSetup(Emoji.Environment.Unlocked, new Point(4,4)),
                        new GuardSetup(new Point(5,4), new Point(5,5)),
+                       } ),
+            [ID.LikeTemple] = new Room( "The Like Temple",
+                    new string[] {
+                   "🛐🛐🛐🛐⬜🛐🛐🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐🛐🛐🛐🛐🛐🛐🛐" },
+                   new GridObjectSetup[] {
+                       new GridObjectSetup(Emoji.Player.Default, new Point(1,4)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(0,4), InitialRooms.ID.Overworld, new Point(5,2)),
                        } ),
         };
     }

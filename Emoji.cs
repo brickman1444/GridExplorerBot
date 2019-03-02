@@ -45,6 +45,7 @@ namespace GridExplorerBot
             public static string MantelpieceClock = "🕰️";
             public static string HourglassDone = "⌛";
             public static string HourglassNotDone = "⏳";
+            public static string PlaceOfWorship = "🛐";
         }
 
         public static class InventoryItems
@@ -96,6 +97,7 @@ namespace GridExplorerBot
             public static string Castle = "🏰";
             public static string NationalPark = "🏞️";
             public static string DepartmentStore = "🏬";
+            public static string ClassicalBuilding = "🏛️";
         }
 
         public static class Symbols
