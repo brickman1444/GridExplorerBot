@@ -44,6 +44,10 @@ namespace GridExplorerBot
             Watch,
             Hourglass,
             PlaceOfWorship,
+            Worshipper,
+            ThumbsUp,
+            Retweet,
+            LikePriest,
         }
     }
 }

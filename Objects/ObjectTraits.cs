@@ -25,7 +25,7 @@ namespace GridExplorerBot
         {
             [Objects.ID.PlayerCharacter] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Player.Default, Emoji.Player.Confused},
+                mDisplayEmoji = new string[]{Emoji.Player.Default},
                 mInputTokens = new string[]{},
                 mDynamicObjectType = typeof(PlayerCharacter),
                 mLookDescription = "The loyal player character.",
@@ -386,6 +386,42 @@ namespace GridExplorerBot
                 mInputTokens = new string[]{"place of worship"},
                 mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "The sacred walls of a place of worship",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Worshipper] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Hands.FoldedHands, Emoji.Hands.SelfieHand, Emoji.Hands.PraiseHands},
+                mInputTokens = new string[]{"worshipper"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "An occupied worshipper",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.ThumbsUp] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Hands.ThumbsUp},
+                mInputTokens = new string[]{"thumbs up"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "One like. Equivalent to one prayer.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.Retweet] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.Symbols.ClockwiseVerticalArrows},
+                mInputTokens = new string[]{"clockwise vertical arrows", "retweet"},
+                mDynamicObjectType = typeof(StaticObject),
+                mLookDescription = "One retweet. Equivalent to five prayers.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = false,
+            },
+            [Objects.ID.LikePriest] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.People.ManInSuitLevitating},
+                mInputTokens = new string[]{"man in suit levitating", "priest", "like priest"},
+                mDynamicObjectType = typeof(LikePriest),
+                mLookDescription = "The Like Priest. Looks like he's... levitating?.",
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },

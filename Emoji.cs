@@ -90,6 +90,7 @@ namespace GridExplorerBot
             public static string Vampire = "🧛";
             public static string HappyDemon = "😈";
             public static string Guard = "💂";
+            public static string ManInSuitLevitating = "🕴";
         }
 
         public static class Buildings
@@ -107,6 +108,7 @@ namespace GridExplorerBot
             public static string RedCircle = "🔴";
             public static string PurpleHeart = "💜";
             public static string Peace = "☮";
+            public static string ClockwiseVerticalArrows = "🔃";
         }
 
         public static class CityScape
@@ -163,6 +165,14 @@ namespace GridExplorerBot
             public static string DarkSkinTone = "🏿";
         }
 
+        public static class Hands
+        {
+            public static string ThumbsUp = "👍";
+            public static string FoldedHands = "🙏";
+            public static string SelfieHand = "🤳";
+            public static string PraiseHands = "🙌";
+        }
+
         public static Objects.ID GetID(string inputText)
         {
             foreach (KeyValuePair<Objects.ID, ObjectTraits> pair in ObjectTraits.idToTraitsMap)
@@ -177,11 +187,20 @@ namespace GridExplorerBot
             return Objects.ID.Unknown;
         }
 
-        public static string GetEmoji(Objects.ID id, int index = 0)
+        public static string GetEmoji(Objects.ID id)
         {
             string[] displayChars = ObjectTraits.GetObjectTraits(id).mDisplayEmoji;
 
-            Debug.Assert(index < displayChars.Length);
+            int index = Game.random.Next() % displayChars.Count();
+
+            return displayChars[index];
+        }
+
+        public static string GetEmoji(Objects.ID id, int index)
+        {
+            string[] displayChars = ObjectTraits.GetObjectTraits(id).mDisplayEmoji;
+
+            Debug.Assert(index >= 0 && index < displayChars.Length);
 
             return displayChars[index];
         }

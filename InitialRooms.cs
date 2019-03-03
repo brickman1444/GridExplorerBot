@@ -232,17 +232,19 @@ namespace GridExplorerBot
                        } ),
             [ID.LikeTemple] = new Room( "The Like Temple",
                     new string[] {
-                   "🛐🛐🛐🛐⬜🛐🛐🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
-                   "🛐⬜⬜⬜⬜⬜⬜🛐",
+                   "🛐🛐🛐⬜⬜🛐🛐🛐",
+                   "🛐🤳🙌⬜⬜🙏🤳🛐",
+                   "🛐🤳🙌⬜⬜🙏🤳🛐",
+                   "🛐🤳🙌⬜⬜🙏🤳🛐",
+                   "🛐🤳🙌⬜⬜🙏🤳🛐",
+                   "🛐🤳🙌⬜⬜🙏🤳🛐",
+                   "🛐🔃👍🔃👍🔃👍🛐",
                    "🛐🛐🛐🛐🛐🛐🛐🛐" },
                    new GridObjectSetup[] {
                        new GridObjectSetup(Emoji.Player.Default, new Point(1,4)),
                        new DoorSetup(Emoji.Environment.Door, new Point(0,4), InitialRooms.ID.Overworld, new Point(5,2)),
+                       new DoorSetup(Emoji.Environment.Door, new Point(0,3), InitialRooms.ID.Overworld, new Point(5,2)),
+                       new GridObjectSetup(Emoji.People.ManInSuitLevitating, new Point(4,4)),
                        } ),
         };
     }
