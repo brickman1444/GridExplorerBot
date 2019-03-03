@@ -7,6 +7,9 @@ namespace GridExplorerBot
     static class Program
     {
         public static DateTimeOffset oldestSupportedData = DateTimeOffset.FromUnixTimeSeconds(1551579928);
+        public const int prayersRequiredForRewardInTemple = 10;
+        public const int prayersPerFavorite = 1;
+        public const int prayersPerRetweet = 5;
 
         public static Stream awsLambdaHandler(Stream inputStream)
         {

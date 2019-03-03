@@ -250,6 +250,12 @@ namespace GridExplorerBot
             public Tweetinvi.Streams.Model.AccountActivity.AccountActivityFavouriteEventDTO[] favorite_events = null;
         }
 
+        private class PrayerCount
+        {
+            public int mInitial = 0;
+            public int mCurrent = 0;
+        };
+
         public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
         {
             Console.WriteLine("Handling Account Activity Request");
@@ -258,8 +264,18 @@ namespace GridExplorerBot
 
             AccountActivityBody accountActivity = request.body.ConvertJsonTo<AccountActivityBody>();
 
-            HandleUserReplies(accountActivity);
-            HandleUserFavorites(accountActivity);
+            Dictionary<string, PrayerCount> tweetIdToPrayerCountMap = new Dictionary<string, PrayerCount>();
+            HandleCreatedTweets(accountActivity, tweetIdToPrayerCountMap);
+            HandleFavorites(accountActivity, tweetIdToPrayerCountMap);
+
+            foreach (KeyValuePair<string, PrayerCount> pair in tweetIdToPrayerCountMap)
+            {
+                if ( pair.Value.mInitial < Program.prayersRequiredForRewardInTemple
+                && pair.Value.mCurrent >= Program.prayersRequiredForRewardInTemple)
+                {
+                    Console.WriteLine("award phone");
+                }
+            }
 
             return WriteAccountActivityResponse();
         }
@@ -278,7 +294,7 @@ namespace GridExplorerBot
             return response;
         }
 
-        private static void HandleUserReplies(AccountActivityBody accountActivity)
+        private static void HandleCreatedTweets(AccountActivityBody accountActivity, Dictionary<string, PrayerCount> tweetIdToPrayerCountMap)
         {
             if (accountActivity.tweet_create_events == null || accountActivity.tweet_create_events.Length == 0)
             {
@@ -290,63 +306,120 @@ namespace GridExplorerBot
 
             foreach (Tweetinvi.Models.ITweet userTweet in userTweets)
             {
-                if (!userTweet.InReplyToStatusId.HasValue
-                || userTweet.InReplyToScreenName != gridExplorerBotScreenName)
-                {
-                    Console.WriteLine("Not a reply to grid explorer bot. id: " + userTweet.Id);
-                    continue;
-                }
-
-                if (userTweet.CreatedBy == null
-                || userTweet.CreatedBy.ScreenName == ""
-                || userTweet.CreatedBy.ScreenName == gridExplorerBotScreenName)
-                {
-                    Console.WriteLine("Invalid user info or reply to self. id: " + userTweet.Id);
-                    continue;
-                }
-
-                string userTextLower = userTweet.GetSafeDisplayText().ToLower();
-                string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
-
-                Console.WriteLine("Cleaned user text: " + cleanedUserText);
-
-                if (Game.MatchesResetCommand(cleanedUserText))
-                {
-                    string freshGameOutput = Program.StartFreshGame(DateTimeOffset.UtcNow);
-
-                    Tweet(freshGameOutput);
-                    continue;
-                }
-
-                if (Game.MatchesHelpCommand(cleanedUserText))
-                {
-                    string commandsListText = Game.GetCommandsList();
-
-                    TweetChain(commandsListText, userTweet);
-                    continue;
-                }
-
-                Console.WriteLine("Fetching parent tweet");
-                Tweetinvi.Models.ITweet parentGridBotTweet = Tweetinvi.Tweet.GetTweet(userTweet.InReplyToStatusId.Value);
-
-                if (parentGridBotTweet.CreatedAt < Program.oldestSupportedData)
-                {
-                    Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + userTweet.Id);
-
-                    TweetReplyTo("This tweet is too old to parse correctly.", userTweet);
-                    continue;
-                }
-
-                string cleanedParentText = System.Net.WebUtility.HtmlDecode(parentGridBotTweet.Text);
-
-                Console.WriteLine("Running one tick");
-                string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText, parentGridBotTweet.CreatedAt);
-
-                TweetReplyTo(gameOutput, userTweet);
+                HandleUserReply(userTweet);
+                HandleUserRetweet(userTweet, tweetIdToPrayerCountMap);
             }
         }
 
-        private static void HandleUserFavorites(AccountActivityBody accountActivity)
+        private static void HandleUserReply(Tweetinvi.Models.ITweet userTweet)
+        {
+            if (!userTweet.InReplyToStatusId.HasValue
+            || userTweet.InReplyToScreenName != gridExplorerBotScreenName)
+            {
+                Console.WriteLine("Not a reply to grid explorer bot. id: " + userTweet.Id);
+                return;
+            }
+
+            if (userTweet.CreatedBy == null
+            || userTweet.CreatedBy.ScreenName == ""
+            || userTweet.CreatedBy.ScreenName == gridExplorerBotScreenName)
+            {
+                Console.WriteLine("Invalid user info or reply to self. id: " + userTweet.Id);
+                return;
+            }
+
+            string userTextLower = userTweet.GetSafeDisplayText().ToLower();
+            string cleanedUserText = System.Net.WebUtility.HtmlDecode(userTextLower);
+
+            Console.WriteLine("Cleaned user text: " + cleanedUserText);
+
+            if (Game.MatchesResetCommand(cleanedUserText))
+            {
+                string freshGameOutput = Program.StartFreshGame(DateTimeOffset.UtcNow);
+
+                Tweet(freshGameOutput);
+                return;
+            }
+
+            if (Game.MatchesHelpCommand(cleanedUserText))
+            {
+                string commandsListText = Game.GetCommandsList();
+
+                TweetChain(commandsListText, userTweet);
+                return;
+            }
+
+            Console.WriteLine("Fetching parent tweet");
+            Tweetinvi.Models.ITweet parentGridBotTweet = Tweetinvi.Tweet.GetTweet(userTweet.InReplyToStatusId.Value);
+
+            if (parentGridBotTweet.CreatedAt < Program.oldestSupportedData)
+            {
+                Console.WriteLine("Parent tweet too old. Save data may not be read in correctly. id: " + userTweet.Id);
+
+                TweetReplyTo("This tweet is too old to parse correctly.", userTweet);
+                return;
+            }
+
+            string cleanedParentText = System.Net.WebUtility.HtmlDecode(parentGridBotTweet.Text);
+
+            Console.WriteLine("Running one tick");
+            string gameOutput = Program.RunOneTick(cleanedParentText, cleanedUserText, parentGridBotTweet.CreatedAt);
+
+            TweetReplyTo(gameOutput, userTweet);
+        }
+
+        private static void HandleUserRetweet(Tweetinvi.Models.ITweet userTweet, Dictionary<string, PrayerCount> tweetIdToPrayerCountMap)
+        {
+            if (!userTweet.IsRetweet)
+            {
+                Console.WriteLine("Not a retweet");
+                return;
+            }
+
+            if (userTweet.RetweetedTweet == null
+            || userTweet.RetweetedTweet.CreatedBy == null
+            || userTweet.RetweetedTweet.CreatedBy.ScreenName != gridExplorerBotScreenName)
+            {
+                Console.WriteLine("Not a retweet of grid explorer bot");
+                return;
+            }
+
+            int currentPrayerCount = GetPrayerCount(userTweet.RetweetedTweet);
+
+            if (currentPrayerCount > Program.prayersRequiredForRewardInTemple)
+            {
+                Console.WriteLine("Tweet already has enough prayers.");
+                return;
+            }
+
+            if (userTweet.RetweetedTweet.CreatedAt < Program.oldestSupportedData)
+            {
+                Console.WriteLine("Retweeted tweet is too old.");
+                return;
+            }
+
+            string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(userTweet.RetweetedTweet.Text);
+
+            Console.WriteLine("Checking if in Like Temple");
+            if (Program.IsInLikeTemple(cleanedFavoritedTweetText, userTweet.RetweetedTweet.CreatedAt))
+            {
+                Console.WriteLine("Is in Like Temple");
+                if (tweetIdToPrayerCountMap.ContainsKey(userTweet.RetweetedTweet.IdStr))
+                {
+                    tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr].mInitial -= Program.prayersPerRetweet;
+                }
+                else
+                {
+                    tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr] = new PrayerCount()
+                    {
+                        mInitial = currentPrayerCount - Program.prayersPerRetweet,
+                        mCurrent = currentPrayerCount,
+                    };
+                }
+            }
+        }
+
+        private static void HandleFavorites(AccountActivityBody accountActivity, Dictionary<string, PrayerCount> tweetIdToPrayerCountMap)
         {
             if (accountActivity.favorite_events == null || accountActivity.favorite_events.Length == 0)
             {
@@ -372,14 +445,39 @@ namespace GridExplorerBot
                     continue;
                 }
 
+                int currentPrayerCount = GetPrayerCount(favoritedTweet);
+
+                if (currentPrayerCount > Program.prayersRequiredForRewardInTemple)
+                {
+                    Console.WriteLine("Tweet already has enough prayers.");
+                    continue;
+                }
+
                 string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(favoritedTweet.Text);
 
                 Console.WriteLine("Checking if in Like Temple");
-                if ( Program.IsInLikeTemple(cleanedFavoritedTweetText, favoritedTweet.CreatedAt) )
+                if (Program.IsInLikeTemple(cleanedFavoritedTweetText, favoritedTweet.CreatedAt))
                 {
                     Console.WriteLine("Is in Like Temple");
+                    if (tweetIdToPrayerCountMap.ContainsKey(favoritedTweet.IdStr))
+                    {
+                        tweetIdToPrayerCountMap[favoritedTweet.IdStr].mCurrent -= Program.prayersPerFavorite;
+                    }
+                    else
+                    {
+                        tweetIdToPrayerCountMap[favoritedTweet.IdStr] = new PrayerCount()
+                        {
+                            mInitial = currentPrayerCount - Program.prayersPerFavorite,
+                            mCurrent = currentPrayerCount,
+                        };
+                    }
                 }
             }
+        }
+
+        private static int GetPrayerCount(Tweetinvi.Models.ITweet tweet)
+        {
+            return tweet.FavoriteCount * Program.prayersPerFavorite + tweet.RetweetCount * Program.prayersPerRetweet;
         }
 
         private static string GetSafeDisplayText(this Tweetinvi.Models.ITweet tweet)
@@ -423,7 +521,7 @@ namespace GridExplorerBot
 
         public static List<string> SplitLinesIntoTweets(string sourceText)
         {
-            List<string> lines = new List<string>( sourceText.Split('\n') );
+            List<string> lines = new List<string>(sourceText.Split('\n'));
 
             List<string> outTweets = new List<string>();
             outTweets.Add(lines[0]);
@@ -431,7 +529,7 @@ namespace GridExplorerBot
 
             while (lines.Count != 0)
             {
-                if ( StringExtension.EstimateTweetLength( outTweets[outTweets.Count - 1] + '\n' + lines[0]) <= 200 )
+                if (StringExtension.EstimateTweetLength(outTweets[outTweets.Count - 1] + '\n' + lines[0]) <= 200)
                 {
                     outTweets[outTweets.Count - 1] += '\n' + lines[0];
                     lines.RemoveAt(0);
