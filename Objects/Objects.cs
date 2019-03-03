@@ -48,6 +48,7 @@ namespace GridExplorerBot
             ThumbsUp,
             Retweet,
             LikePriest,
+            MobilePhone,
         }
     }
 }

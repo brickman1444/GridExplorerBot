@@ -47,6 +47,7 @@ namespace GridExplorerBot
                 if (input.Length > 0)
                 {
                     WebUtils.WebRequest request = WebUtils.GetJsonObject(input);
+                    TwitterUtils.InitializeCredentials();
                     TwitterUtils.HandleAccountActivityRequest(request);
                     return;
                 }
@@ -141,6 +142,26 @@ namespace GridExplorerBot
 
             string likeTempleWall = Emoji.GetEmoji(Objects.ID.PlaceOfWorship);
             return gameText.Contains(likeTempleWall + likeTempleWall + likeTempleWall);
+        }
+
+        public static string AwardMobilePhone(string previousGameText, DateTimeOffset seedTime)
+        {
+            Game theGame = new Game();
+
+            Game.InitializeRandom(seedTime);
+
+            bool successfullyParsed = theGame.ParsePreviousText(previousGameText);
+
+            if (!successfullyParsed)
+            {
+                theGame.GenerateFreshGame();
+            }
+
+            theGame.AwardMobilePhone();
+
+            theGame.Save();
+
+            return theGame.Render();
         }
     }
 }

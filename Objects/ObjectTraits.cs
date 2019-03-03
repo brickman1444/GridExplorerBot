@@ -425,6 +425,15 @@ namespace GridExplorerBot
                 mCanStaticObjectBeMovedThrough = false,
                 mCanStaticObjectBeThrownThrough = false,
             },
+            [Objects.ID.MobilePhone] = new ObjectTraits()
+            {
+                mDisplayEmoji = new string[]{Emoji.InventoryItems.MobilePhone},
+                mInputTokens = new string[]{"mobile phone", "cell phone", "smartphone"},
+                mDynamicObjectType = typeof(InventoryObject),
+                mLookDescription = "A mobile phone. Might be useful.",
+                mCanStaticObjectBeMovedThrough = false,
+                mCanStaticObjectBeThrownThrough = true,
+            }
         };
 
         public static ObjectTraits GetObjectTraits(Objects.ID id)

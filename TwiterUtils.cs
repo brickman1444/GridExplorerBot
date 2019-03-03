@@ -273,11 +273,24 @@ namespace GridExplorerBot
                 if (pair.Value.mInitial < Program.prayersRequiredForRewardInTemple
                 && pair.Value.mCurrent >= Program.prayersRequiredForRewardInTemple)
                 {
-                    Console.WriteLine("award phone");
+                    GivePhoneAndTweetReply(pair.Key);
                 }
             }
 
             return WriteAccountActivityResponse();
+        }
+
+        private static void GivePhoneAndTweetReply(string likeTempleTweetIdString)
+        {
+            Console.WriteLine("Awarding phone " + likeTempleTweetIdString);
+            long likeTempleTweetId = long.Parse(likeTempleTweetIdString);
+            Tweetinvi.Models.ITweet likeTempleTweet = Tweetinvi.Tweet.GetTweet(likeTempleTweetId);
+
+            string cleanedParentText = System.Net.WebUtility.HtmlDecode(likeTempleTweet.Text);
+
+            string gameOutput = Program.AwardMobilePhone(cleanedParentText, likeTempleTweet.CreatedAt);
+
+            TweetReplyTo(gameOutput, likeTempleTweet);
         }
 
         private static string WriteAccountActivityResponse()

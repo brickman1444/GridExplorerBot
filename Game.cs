@@ -173,5 +173,11 @@ namespace GridExplorerBot
             PlayerCharacter pc = new PlayerCharacter();
             return pc.GetCommandsListText();
         }
+
+        public void AwardMobilePhone()
+        {
+            mInventory.AddItem(Objects.ID.MobilePhone);
+            mLastCommandResponse = "Thank you so much for your prayers! Here's your mobile phone.";
+        }
     }
 }

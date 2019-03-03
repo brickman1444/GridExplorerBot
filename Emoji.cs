@@ -57,6 +57,7 @@ namespace GridExplorerBot
             public static string Handbag = "👜";
             public static string Blood = "🅱️";
             public static string Watch = "⌚";
+            public static string MobilePhone = "📱";
         }
 
         public static class Clothing
