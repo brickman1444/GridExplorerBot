@@ -134,18 +134,10 @@ namespace GridExplorerBot
 
         public static bool IsInLikeTemple(string gameText, DateTimeOffset seedTime)
         {
-            Game theGame = new Game();
+            // The favorite events don't send the full text so don't try to really parse it.
 
-            Game.InitializeRandom(seedTime);
-
-            bool successfullyParsed = theGame.ParsePreviousText(gameText);
-
-            if (!successfullyParsed)
-            {
-                return false;
-            }
-
-            return theGame.mRoom.GetInitialRoomIndex() == InitialRooms.ID.LikeTemple;
+            string likeTempleWall = Emoji.GetEmoji(Objects.ID.PlaceOfWorship);
+            return gameText.Contains(likeTempleWall + likeTempleWall + likeTempleWall);
         }
     }
 }

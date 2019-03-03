@@ -191,9 +191,16 @@ namespace GridExplorerBot
         {
             string[] displayChars = ObjectTraits.GetObjectTraits(id).mDisplayEmoji;
 
-            int index = Game.random.Next() % displayChars.Count();
+            if (displayChars.Length == 1)
+            {
+                return displayChars[0];
+            }
+            else
+            {
+                int index = Game.random.Next() % displayChars.Count();
 
-            return displayChars[index];
+                return displayChars[index];
+            }
         }
 
         public static string GetEmoji(Objects.ID id, int index)
