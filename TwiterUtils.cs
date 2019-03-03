@@ -270,7 +270,7 @@ namespace GridExplorerBot
 
             foreach (KeyValuePair<string, PrayerCount> pair in tweetIdToPrayerCountMap)
             {
-                if ( pair.Value.mInitial < Program.prayersRequiredForRewardInTemple
+                if (pair.Value.mInitial < Program.prayersRequiredForRewardInTemple
                 && pair.Value.mCurrent >= Program.prayersRequiredForRewardInTemple)
                 {
                     Console.WriteLine("award phone");
@@ -384,14 +384,6 @@ namespace GridExplorerBot
                 return;
             }
 
-            int currentPrayerCount = GetPrayerCount(userTweet.RetweetedTweet);
-
-            if (currentPrayerCount > Program.prayersRequiredForRewardInTemple)
-            {
-                Console.WriteLine("Tweet already has enough prayers.");
-                return;
-            }
-
             if (userTweet.RetweetedTweet.CreatedAt < Program.oldestSupportedData)
             {
                 Console.WriteLine("Retweeted tweet is too old.");
@@ -400,22 +392,24 @@ namespace GridExplorerBot
 
             string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(userTweet.RetweetedTweet.Text);
 
-            Console.WriteLine("Checking if in Like Temple");
-            if (Program.IsInLikeTemple(cleanedFavoritedTweetText, userTweet.RetweetedTweet.CreatedAt))
+            if (!Program.IsInLikeTemple(cleanedFavoritedTweetText, userTweet.RetweetedTweet.CreatedAt))
             {
-                Console.WriteLine("Is in Like Temple");
-                if (tweetIdToPrayerCountMap.ContainsKey(userTweet.RetweetedTweet.IdStr))
+                Console.WriteLine("Isn't in the Like Temple");
+                return;
+            }
+
+            if (tweetIdToPrayerCountMap.ContainsKey(userTweet.RetweetedTweet.IdStr))
+            {
+                tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr].mInitial -= Program.prayersPerRetweet;
+            }
+            else
+            {
+                int currentPrayerCount = GetPrayerCount(userTweet.RetweetedTweet);
+                tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr] = new PrayerCount()
                 {
-                    tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr].mInitial -= Program.prayersPerRetweet;
-                }
-                else
-                {
-                    tweetIdToPrayerCountMap[userTweet.RetweetedTweet.IdStr] = new PrayerCount()
-                    {
-                        mInitial = currentPrayerCount - Program.prayersPerRetweet,
-                        mCurrent = currentPrayerCount,
-                    };
-                }
+                    mInitial = currentPrayerCount - Program.prayersPerRetweet,
+                    mCurrent = currentPrayerCount,
+                };
             }
         }
 
@@ -445,32 +439,26 @@ namespace GridExplorerBot
                     continue;
                 }
 
-                int currentPrayerCount = GetPrayerCount(favoritedTweet);
+                string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(favoritedTweet.Text);
 
-                if (currentPrayerCount > Program.prayersRequiredForRewardInTemple)
+                if (!Program.IsInLikeTemple(cleanedFavoritedTweetText, favoritedTweet.CreatedAt))
                 {
-                    Console.WriteLine("Tweet already has enough prayers.");
+                    Console.WriteLine("Isn't in Like Temple");
                     continue;
                 }
 
-                string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(favoritedTweet.Text);
-
-                Console.WriteLine("Checking if in Like Temple");
-                if (Program.IsInLikeTemple(cleanedFavoritedTweetText, favoritedTweet.CreatedAt))
+                if (tweetIdToPrayerCountMap.ContainsKey(favoritedTweet.IdStr))
                 {
-                    Console.WriteLine("Is in Like Temple");
-                    if (tweetIdToPrayerCountMap.ContainsKey(favoritedTweet.IdStr))
+                    tweetIdToPrayerCountMap[favoritedTweet.IdStr].mCurrent -= Program.prayersPerFavorite;
+                }
+                else
+                {
+                    int currentPrayerCount = GetPrayerCount(favoritedTweet);
+                    tweetIdToPrayerCountMap[favoritedTweet.IdStr] = new PrayerCount()
                     {
-                        tweetIdToPrayerCountMap[favoritedTweet.IdStr].mCurrent -= Program.prayersPerFavorite;
-                    }
-                    else
-                    {
-                        tweetIdToPrayerCountMap[favoritedTweet.IdStr] = new PrayerCount()
-                        {
-                            mInitial = currentPrayerCount - Program.prayersPerFavorite,
-                            mCurrent = currentPrayerCount,
-                        };
-                    }
+                        mInitial = currentPrayerCount - Program.prayersPerFavorite,
+                        mCurrent = currentPrayerCount,
+                    };
                 }
             }
         }
