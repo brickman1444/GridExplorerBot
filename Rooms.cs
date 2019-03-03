@@ -94,6 +94,11 @@ namespace GridExplorerBot
             mDescription = InitialRooms.initialRooms[roomIndex].mDescription;
         }
 
+        public InitialRooms.ID GetInitialRoomIndex()
+        {
+            return mInitialRoomIndex;
+        }
+
         public string Render()
         {
             List<string> lines = new List<string>();

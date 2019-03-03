@@ -38,6 +38,17 @@ namespace GridExplorerBot
 
             Console.WriteLine("Beginning program");
 
+            using (StreamReader file = File.OpenText("input.txt"))
+            {
+                string input = file.ReadToEnd();
+                if (input.Length > 0)
+                {
+                    WebUtils.WebRequest request = WebUtils.GetJsonObject(input);
+                    TwitterUtils.HandleAccountActivityRequest(request);
+                    return;
+                }
+            }
+
             string previousGameText;
             using (StreamReader file = File.OpenText("output.txt"))
             {
@@ -119,6 +130,22 @@ namespace GridExplorerBot
             game.Save();
 
             return game.Render();
+        }
+
+        public static bool IsInLikeTemple(string gameText, DateTimeOffset seedTime)
+        {
+            Game theGame = new Game();
+
+            Game.InitializeRandom(seedTime);
+
+            bool successfullyParsed = theGame.ParsePreviousText(gameText);
+
+            if (!successfullyParsed)
+            {
+                return false;
+            }
+
+            return theGame.mRoom.GetInitialRoomIndex() == InitialRooms.ID.LikeTemple;
         }
     }
 }

@@ -247,6 +247,7 @@ namespace GridExplorerBot
         class AccountActivityBody
         {
             public Tweetinvi.Models.DTO.ITweetDTO[] tweet_create_events = null;
+            public Tweetinvi.Streams.Model.AccountActivity.AccountActivityFavouriteEventDTO[] favorite_events = null;
         }
 
         public static string HandleAccountActivityRequest(WebUtils.WebRequest request)
@@ -257,13 +258,32 @@ namespace GridExplorerBot
 
             AccountActivityBody accountActivity = request.body.ConvertJsonTo<AccountActivityBody>();
 
-            if (accountActivity.tweet_create_events.Length == 0)
-            {
-                // No tweets created. 
-                Console.WriteLine("No tweets created");
+            HandleUserReplies(accountActivity);
+            HandleUserFavorites(accountActivity);
 
-                // TODO: Return valid response?
-                return "";
+            return WriteAccountActivityResponse();
+        }
+
+        private static string WriteAccountActivityResponse()
+        {
+            string response =
+            "{\n" +
+            "\"isBase64Encoded\": false,\n" +
+            "\"statusCode\": 200,\n" +
+            "\"headers\": {},\n" +
+            "\"multiValueHeaders\": {},\n" +
+            "\"body\": \"\"\n" +
+            "}";
+
+            return response;
+        }
+
+        private static void HandleUserReplies(AccountActivityBody accountActivity)
+        {
+            if (accountActivity.tweet_create_events == null || accountActivity.tweet_create_events.Length == 0)
+            {
+                Console.WriteLine("No tweet create events");
+                return;
             }
 
             IEnumerable<Tweetinvi.Models.ITweet> userTweets = Tweetinvi.Tweet.GenerateTweetsFromDTO(accountActivity.tweet_create_events);
@@ -324,22 +344,42 @@ namespace GridExplorerBot
 
                 TweetReplyTo(gameOutput, userTweet);
             }
-
-            return WriteAccountActivityResponse();
         }
 
-        private static string WriteAccountActivityResponse()
+        private static void HandleUserFavorites(AccountActivityBody accountActivity)
         {
-            string response =
-            "{\n" +
-            "\"isBase64Encoded\": false,\n" +
-            "\"statusCode\": 200,\n" +
-            "\"headers\": {},\n" +
-            "\"multiValueHeaders\": {},\n" +
-            "\"body\": \"\"\n" +
-            "}";
+            if (accountActivity.favorite_events == null || accountActivity.favorite_events.Length == 0)
+            {
+                Console.WriteLine("No favorites events");
+                return;
+            }
 
-            return response;
+            foreach (Tweetinvi.Streams.Model.AccountActivity.AccountActivityFavouriteEventDTO favoriteEvent in accountActivity.favorite_events)
+            {
+                Tweetinvi.Models.ITweet favoritedTweet = Tweetinvi.Tweet.GenerateTweetFromDTO(favoriteEvent.FavouritedTweet);
+
+                if (favoritedTweet == null
+                || favoritedTweet.CreatedBy == null
+                || favoritedTweet.CreatedBy.ScreenName != gridExplorerBotScreenName)
+                {
+                    Console.WriteLine("Didn't favorite a Grid Explorer Bot tweet");
+                    continue;
+                }
+
+                if (favoritedTweet.CreatedAt < Program.oldestSupportedData)
+                {
+                    Console.WriteLine("Favorited tweet is too old.");
+                    continue;
+                }
+
+                string cleanedFavoritedTweetText = System.Net.WebUtility.HtmlDecode(favoritedTweet.Text);
+
+                Console.WriteLine("Checking if in Like Temple");
+                if ( Program.IsInLikeTemple(cleanedFavoritedTweetText, favoritedTweet.CreatedAt) )
+                {
+                    Console.WriteLine("Is in Like Temple");
+                }
+            }
         }
 
         private static string GetSafeDisplayText(this Tweetinvi.Models.ITweet tweet)
