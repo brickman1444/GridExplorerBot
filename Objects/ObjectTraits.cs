@@ -391,8 +391,8 @@ namespace GridExplorerBot
             },
             [Objects.ID.Worshipper] = new ObjectTraits()
             {
-                mDisplayEmoji = new string[]{Emoji.Hands.FoldedHands, Emoji.Hands.SelfieHand, Emoji.Hands.PraiseHands},
-                mInputTokens = new string[]{"worshipper"},
+                mDisplayEmoji = Emoji.GetAllWorsphipperEmoji().ToArray(),
+                mInputTokens = new string[]{"worshipper", Emoji.Hands.FoldedHands, Emoji.Hands.SelfieHand, Emoji.Hands.PraiseHands},
                 mDynamicObjectType = typeof(StaticObject),
                 mLookDescription = "An occupied worshipper",
                 mCanStaticObjectBeMovedThrough = false,

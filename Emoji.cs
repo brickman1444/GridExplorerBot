@@ -290,5 +290,16 @@ namespace GridExplorerBot
 
             return emoji[emojiIndex];
         }
+
+        public static List<string> GetAllWorsphipperEmoji()
+        {
+            List<string> outEmoji = new List<string>();
+
+            outEmoji.AddRange(StringUtils.GetAllSkinToneVariants(Emoji.Hands.FoldedHands));
+            outEmoji.AddRange(StringUtils.GetAllSkinToneVariants(Emoji.Hands.SelfieHand));
+            outEmoji.AddRange(StringUtils.GetAllSkinToneVariants(Emoji.Hands.PraiseHands));
+
+            return outEmoji;
+        }
     }
 }

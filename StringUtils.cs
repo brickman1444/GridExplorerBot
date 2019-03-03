@@ -67,6 +67,18 @@ namespace GridExplorerBot
             return outStrings;
         }
 
+        public static List<string> GetAllSkinToneVariants(string baseEmoji)
+        {
+            List<string> outStrings = new List<string>();
+
+            foreach ( string skinTone in Emoji.GetSkinTones() )
+            {
+                outStrings.Add( baseEmoji + skinTone );
+            }
+
+            return outStrings;
+        }
+
         public static string GetVariantEmoji(string baseEmoji, NPCIdentityData identityData)
         {
             string skinToneSuffix = Emoji.GetSkinTones()[identityData.GetSkinToneIndex()];
